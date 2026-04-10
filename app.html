@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elisa Health — Application</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">✦</span> Elisa Health
+      </a>
+      <nav class="nav">
+        <a href="index.html">Accueil</a>
+        <a href="index.html#pricing">Tarifs</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <p class="sidebar-title">Programmes</p>
+      <button class="sidebar-item active" data-programme="nutrition">
+        <span class="item-icon">🥗</span> Nutrition
+      </button>
+      <button class="sidebar-item" data-programme="biohacking">
+        <span class="item-icon">⚡</span> Biohacking
+      </button>
+      <button class="sidebar-item" data-programme="hormonal">
+        <span class="item-icon">🧬</span> Hormonal
+      </button>
+      <button class="sidebar-item" data-programme="beaute">
+        <span class="item-icon">✨</span> Beauté & Peau
+      </button>
+    </aside>
+
+    <!-- Main chat -->
+    <main class="chat-area">
+
+      <div class="chat-header">
+        <h2 id="chat-title">Programme Nutrition</h2>
+        <p id="chat-desc">Posez vos questions à Elisa sur votre alimentation et vos objectifs nutritionnels.</p>
+      </div>
+
+      <!-- API Key -->
+      <div class="api-notice" id="api-notice">
+        <strong>Clé API requise</strong> — Entrez votre clé API Anthropic pour utiliser Elisa.
+        <input type="password" id="api-key" placeholder="sk-ant-..." />
+      </div>
+
+      <!-- Photo upload (beauté only) -->
+      <div id="photo-section" style="display:none; padding: 16px 24px;">
+        <div class="photo-upload-zone" id="upload-zone">
+          <div class="upload-icon">📸</div>
+          <p>Cliquez ou glissez une photo de votre peau pour analyse IA</p>
+          <input type="file" id="photo-input" accept="image/*" hidden>
+        </div>
+        <img id="photo-preview" class="photo-preview" alt="Aperçu photo">
+      </div>
+
+      <div class="messages" id="messages">
+        <div class="message message-ai" id="welcome-msg">
+          Bonjour ! Je suis <strong>Elisa</strong>, votre nutritionniste IA. 👋<br><br>
+          Décrivez-moi votre profil (âge, poids, objectifs, allergies…) et je vous préparerai un plan personnalisé.
+        </div>
+      </div>
+
+      <div class="typing-indicator" id="typing">Elisa réfléchit...</div>
+
+      <div class="input-bar">
+        <textarea id="user-input" placeholder="Décrivez votre profil ou posez une question..." rows="1"></textarea>
+        <button class="btn btn-send" id="send-btn" title="Envoyer">↑</button>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    // ---- State ----
+    const programmes = {
+      nutrition: {
+        title: 'Programme Nutrition',
+        desc: 'Posez vos questions à Elisa sur votre alimentation et vos objectifs nutritionnels.',
+        welcome: 'Bonjour ! Je suis <strong>Elisa</strong>, votre nutritionniste IA. 👋<br><br>Décrivez-moi votre profil (âge, poids, objectifs, allergies…) et je vous préparerai un plan personnalisé.',
+        system: `Tu es Elisa, une nutritionniste IA experte et bienveillante de Elisa Health. Tu parles français. Tu crées des plans alimentaires personnalisés basés sur le profil de l'utilisateur (âge, poids, taille, objectifs, allergies, mode de vie). Tu fournis des macros précises, des suggestions de repas, et des conseils pratiques. Tu es scientifique mais accessible. Ne donne jamais de diagnostic médical. Recommande de consulter un professionnel si nécessaire.`
+      },
+      biohacking: {
+        title: 'Programme Biohacking',
+        desc: 'Protocoles avancés pour optimiser vos performances cognitives et physiques.',
+        welcome: 'Bienvenue dans le programme <strong>Biohacking</strong> ! ⚡<br><br>Dites-moi quels aspects vous souhaitez optimiser : sommeil, énergie, concentration, longévité…',
+        system: `Tu es Elisa, experte en biohacking et optimisation humaine chez Elisa Health. Tu parles français. Tu proposes des protocoles basés sur les dernières recherches en neuroscience, chronobiologie et nutrition fonctionnelle. Tu couvres : supplémentation (nootropiques, adapotgènes), protocoles de jeûne, optimisation du sommeil, exposition au froid/chaleur, HRV, luminothérapie. Sois précise sur les dosages et les timings. Cite des études quand pertinent. Ne remplace pas un avis médical.`
+      },
+      hormonal: {
+        title: 'Équilibre Hormonal',
+        desc: 'Analyse de vos symptômes et recommandations pour rééquilibrer votre système hormonal.',
+        welcome: 'Bienvenue dans le programme <strong>Équilibre Hormonal</strong> ! 🧬<br><br>Décrivez-moi vos symptômes et votre contexte (âge, sexe, cycle…) pour que je puisse vous guider.',
+        system: `Tu es Elisa, experte en équilibre hormonal chez Elisa Health. Tu parles français. Tu aides les utilisateurs à comprendre et rééquilibrer leur système hormonal naturellement. Tu couvres : cortisol, thyroïde, hormones sexuelles, insuline, mélatonine. Tu proposes des approches nutritionnelles, des compléments, des ajustements de mode de vie et des tests à demander au médecin. Tu es particulièrement sensible aux problématiques féminines (SOPK, endométriose, ménopause) et masculines (testostérone). Ne pose jamais de diagnostic. Recommande toujours un suivi médical pour les bilans sanguins.`
+      },
+      beaute: {
+        title: 'Beauté & Peau',
+        desc: 'Analyse photo IA de votre peau et conseils nutri-cosmétiques personnalisés.',
+        welcome: 'Bienvenue dans le programme <strong>Beauté & Peau</strong> ! ✨<br><br>Envoyez une photo de votre peau ou décrivez vos préoccupations pour recevoir des conseils nutri-cosmétiques personnalisés.',
+        system: `Tu es Elisa, experte en beauté et nutri-cosmétique chez Elisa Health. Tu parles français. Tu analyses les problématiques de peau et proposes des solutions par la nutrition, la supplémentation et les soins. Si l'utilisateur envoie une photo de sa peau, analyse-la visuellement et identifie : le type de peau, les imperfections visibles (acné, taches, rides, déshydratation, rougeurs), et propose un protocole complet (alimentation anti-inflammatoire, compléments comme collagène/zinc/vitamine C, routine de soin). Sois bienveillante et encourageante. Ne pose jamais de diagnostic dermatologique médical.`
+      }
+    };
+
+    let currentProgramme = 'nutrition';
+    let conversationHistory = [];
+    let photoBase64 = null;
+    let photoMediaType = null;
+
+    // ---- DOM ----
+    const messagesEl = document.getElementById('messages');
+    const welcomeMsg = document.getElementById('welcome-msg');
+    const typingEl = document.getElementById('typing');
+    const inputEl = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+    const chatTitle = document.getElementById('chat-title');
+    const chatDesc = document.getElementById('chat-desc');
+    const photoSection = document.getElementById('photo-section');
+    const uploadZone = document.getElementById('upload-zone');
+    const photoInput = document.getElementById('photo-input');
+    const photoPreview = document.getElementById('photo-preview');
+    const apiKeyInput = document.getElementById('api-key');
+
+    // ---- Load API key from localStorage ----
+    const savedKey = localStorage.getItem('elisa_api_key');
+    if (savedKey) apiKeyInput.value = savedKey;
+    apiKeyInput.addEventListener('change', () => {
+      localStorage.setItem('elisa_api_key', apiKeyInput.value.trim());
+    });
+
+    // ---- URL param ----
+    const urlParams = new URLSearchParams(window.location.search);
+    const initProgramme = urlParams.get('programme');
+    if (initProgramme && programmes[initProgramme]) {
+      switchProgramme(initProgramme);
+      document.querySelectorAll('.sidebar-item').forEach(el => {
+        el.classList.toggle('active', el.dataset.programme === initProgramme);
+      });
+    }
+
+    // ---- Programme switch ----
+    document.querySelectorAll('.sidebar-item').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        switchProgramme(btn.dataset.programme);
+      });
+    });
+
+    function switchProgramme(key) {
+      currentProgramme = key;
+      const prog = programmes[key];
+      chatTitle.textContent = prog.title;
+      chatDesc.textContent = prog.desc;
+      welcomeMsg.innerHTML = prog.welcome;
+      conversationHistory = [];
+      photoBase64 = null;
+      photoMediaType = null;
+      photoPreview.style.display = 'none';
+
+      // Clear messages except welcome
+      messagesEl.querySelectorAll('.message:not(#welcome-msg)').forEach(el => el.remove());
+
+      // Show/hide photo section
+      photoSection.style.display = key === 'beaute' ? 'block' : 'none';
+    }
+
+    // ---- Photo upload ----
+    uploadZone.addEventListener('click', () => photoInput.click());
+    uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.style.borderColor = 'var(--green)'; });
+    uploadZone.addEventListener('dragleave', () => { uploadZone.style.borderColor = ''; });
+    uploadZone.addEventListener('drop', e => {
+      e.preventDefault();
+      uploadZone.style.borderColor = '';
+      if (e.dataTransfer.files[0]) handlePhoto(e.dataTransfer.files[0]);
+    });
+    photoInput.addEventListener('change', () => {
+      if (photoInput.files[0]) handlePhoto(photoInput.files[0]);
+    });
+
+    function handlePhoto(file) {
+      if (!file.type.startsWith('image/')) return;
+      photoMediaType = file.type;
+      const reader = new FileReader();
+      reader.onload = e => {
+        photoBase64 = e.target.result.split(',')[1];
+        photoPreview.src = e.target.result;
+        photoPreview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // ---- Chat ----
+    inputEl.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+    });
+    inputEl.addEventListener('input', () => {
+      inputEl.style.height = 'auto';
+      inputEl.style.height = Math.min(inputEl.scrollHeight, 160) + 'px';
+    });
+    sendBtn.addEventListener('click', sendMessage);
+
+    async function sendMessage() {
+      const text = inputEl.value.trim();
+      if (!text && !photoBase64) return;
+
+      const apiKey = apiKeyInput.value.trim();
+      if (!apiKey) {
+        apiKeyInput.focus();
+        apiKeyInput.style.borderColor = '#ef4444';
+        return;
+      }
+
+      // Add user message to UI
+      const userMsgEl = document.createElement('div');
+      userMsgEl.className = 'message message-user';
+      userMsgEl.textContent = text || '📸 Photo envoyée pour analyse';
+      messagesEl.appendChild(userMsgEl);
+
+      // Build message content
+      const content = [];
+      if (photoBase64) {
+        content.push({
+          type: 'image',
+          source: { type: 'base64', media_type: photoMediaType, data: photoBase64 }
+        });
+      }
+      if (text) {
+        content.push({ type: 'text', text });
+      }
+
+      conversationHistory.push({ role: 'user', content });
+
+      // Reset input
+      inputEl.value = '';
+      inputEl.style.height = 'auto';
+      photoBase64 = null;
+      photoMediaType = null;
+      photoPreview.style.display = 'none';
+
+      // Show typing
+      typingEl.classList.add('visible');
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+
+      try {
+        const response = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': apiKey,
+            'anthropic-version': '2023-06-01',
+            'anthropic-dangerous-direct-browser-access': 'true'
+          },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 2048,
+            system: programmes[currentProgramme].system,
+            messages: conversationHistory
+          })
+        });
+
+        if (!response.ok) {
+          const err = await response.json();
+          throw new Error(err.error?.message || `Erreur ${response.status}`);
+        }
+
+        const data = await response.json();
+        const aiText = data.content[0].text;
+
+        conversationHistory.push({ role: 'assistant', content: aiText });
+
+        // Render AI message
+        const aiMsgEl = document.createElement('div');
+        aiMsgEl.className = 'message message-ai';
+        aiMsgEl.innerHTML = formatResponse(aiText);
+        messagesEl.appendChild(aiMsgEl);
+
+      } catch (err) {
+        const errEl = document.createElement('div');
+        errEl.className = 'message message-ai';
+        errEl.innerHTML = `<strong>Erreur :</strong> ${err.message}`;
+        messagesEl.appendChild(errEl);
+      } finally {
+        typingEl.classList.remove('visible');
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+      }
+    }
+
+    function formatResponse(text) {
+      return text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/^### (.*$)/gm, '<h4>$1</h4>')
+        .replace(/^## (.*$)/gm, '<h3>$1</h3>')
+        .replace(/^- (.*$)/gm, '<li>$1</li>')
+        .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
+        .replace(/<\/ul>\s*<ul>/g, '')
+        .replace(/\n{2,}/g, '</p><p>')
+        .replace(/\n/g, '<br>')
+        .replace(/^/, '<p>')
+        .replace(/$/, '</p>');
+    }
+  </script>
+
+</body>
+</html>
