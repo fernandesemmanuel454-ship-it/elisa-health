@@ -139,7 +139,7 @@
             <li>✓ Analyse photo peau</li>
             <li class="disabled">✗ Programme Hormonal</li>
           </ul>
-          <a href="app.html" class="btn btn-outline btn-block">Choisir</a>
+          <a href="#" data-plan="essentiel" class="btn btn-outline btn-block">Commander</a>
         </div>
         <div class="pricing-card pricing-featured">
           <div class="pricing-badge">Populaire</div>
@@ -152,7 +152,7 @@
             <li>✓ Analyse photo peau HD</li>
             <li>✓ Export PDF des plans</li>
           </ul>
-          <a href="app.html" class="btn btn-block">Choisir</a>
+          <a href="#" data-plan="precision" class="btn btn-block">Commander</a>
         </div>
         <div class="pricing-card">
           <div class="pricing-name">Pro</div>
@@ -164,7 +164,7 @@
             <li>✓ Support prioritaire</li>
             <li>✓ Multi-profils famille</li>
           </ul>
-          <a href="app.html" class="btn btn-outline btn-block">Contacter</a>
+          <a href="#" data-plan="pro" class="btn btn-outline btn-block">Commander</a>
         </div>
       </div>
     </div>
@@ -206,6 +206,36 @@
   <script>
     document.querySelector('.mobile-menu-btn').addEventListener('click', () => {
       document.querySelector('.nav').classList.toggle('nav-open');
+    });
+
+    // Stripe checkout — paid pricing buttons
+    document.querySelectorAll('[data-plan]').forEach(el => {
+      el.addEventListener('click', async (e) => {
+        e.preventDefault();
+        if (el.dataset.loading === '1') return;
+        const plan = el.dataset.plan;
+        const originalText = el.textContent;
+        el.dataset.loading = '1';
+        el.textContent = 'Redirection…';
+        el.style.pointerEvents = 'none';
+        try {
+          const res = await fetch('/api/checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ plan })
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok || !data.url) {
+            throw new Error(data.error?.message || `Erreur ${res.status}`);
+          }
+          window.location.href = data.url;
+        } catch (err) {
+          el.textContent = originalText;
+          el.style.pointerEvents = '';
+          delete el.dataset.loading;
+          alert('Impossible de lancer le paiement : ' + err.message);
+        }
+      });
     });
   </script>
 

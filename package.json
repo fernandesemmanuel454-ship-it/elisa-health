@@ -1,0 +1,9 @@
+{
+  "name": "elisa-health",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "stripe": "^17.5.0"
+  }
+}
