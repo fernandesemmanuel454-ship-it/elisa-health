@@ -50,12 +50,6 @@
         <p id="chat-desc">Posez vos questions à Elisa sur votre alimentation et vos objectifs nutritionnels.</p>
       </div>
 
-      <!-- API Key -->
-      <div class="api-notice" id="api-notice">
-        <strong>Clé API requise</strong> — Entrez votre clé API Anthropic pour utiliser Elisa.
-        <input type="password" id="api-key" placeholder="sk-ant-..." />
-      </div>
-
       <!-- Photo upload (beauté only) -->
       <div id="photo-section" style="display:none; padding: 16px 24px;">
         <div class="photo-upload-zone" id="upload-zone">
@@ -129,14 +123,6 @@
     const uploadZone = document.getElementById('upload-zone');
     const photoInput = document.getElementById('photo-input');
     const photoPreview = document.getElementById('photo-preview');
-    const apiKeyInput = document.getElementById('api-key');
-
-    // ---- Load API key from localStorage ----
-    const savedKey = localStorage.getItem('elisa_api_key');
-    if (savedKey) apiKeyInput.value = savedKey;
-    apiKeyInput.addEventListener('change', () => {
-      localStorage.setItem('elisa_api_key', apiKeyInput.value.trim());
-    });
 
     // ---- URL param ----
     const urlParams = new URLSearchParams(window.location.search);
@@ -214,13 +200,6 @@
       const text = inputEl.value.trim();
       if (!text && !photoBase64) return;
 
-      const apiKey = apiKeyInput.value.trim();
-      if (!apiKey) {
-        apiKeyInput.focus();
-        apiKeyInput.style.borderColor = '#ef4444';
-        return;
-      }
-
       // Add user message to UI
       const userMsgEl = document.createElement('div');
       userMsgEl.className = 'message message-user';
@@ -253,14 +232,9 @@
       messagesEl.scrollTop = messagesEl.scrollHeight;
 
       try {
-        const response = await fetch('https://api.anthropic.com/v1/messages', {
+        const response = await fetch('/api/chat', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': apiKey,
-            'anthropic-version': '2023-06-01',
-            'anthropic-dangerous-direct-browser-access': 'true'
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             model: 'claude-sonnet-4-20250514',
             max_tokens: 2048,
