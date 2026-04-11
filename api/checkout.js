@@ -22,7 +22,11 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: { message: 'Method not allowed' } });
   }
 
-  const secretKey = process.env.STRIPE_SECRET_KEY;
+  // .trim() guards against trailing whitespace/newlines in the env var
+  // value (common when pasting from a dashboard), which would otherwise
+  // corrupt the Authorization header and cause Node http.request to throw,
+  // surfacing as a misleading "connection to Stripe" error.
+  const secretKey = process.env.STRIPE_SECRET_KEY?.trim();
   if (!secretKey) {
     return res.status(500).json({
       error: { message: 'STRIPE_SECRET_KEY is not configured on the server.' }
