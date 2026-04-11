@@ -25,8 +25,12 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: { message: 'Method not allowed' } });
   }
 
-  const secretKey = process.env.STRIPE_SECRET_KEY;
-  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  // .trim() defends against trailing whitespace/newlines introduced when
+  // pasting secrets into the Vercel dashboard. For STRIPE_SECRET_KEY this
+  // prevents a malformed Authorization header; for STRIPE_WEBHOOK_SECRET
+  // this prevents a silently-wrong HMAC that would reject every live event.
+  const secretKey = process.env.STRIPE_SECRET_KEY?.trim();
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET?.trim();
   if (!secretKey || !webhookSecret) {
     return res.status(500).json({
       error: { message: 'Stripe is not configured on the server.' }
