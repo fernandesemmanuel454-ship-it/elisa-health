@@ -11,9 +11,9 @@ import Stripe from 'stripe';
 // swap "pro 129€" for any cheaper price and pay less. The client only sends
 // a plan slug; the server resolves it to the real price.
 const PLAN_TO_PRICE = {
-  essentiel: 'price_1TL8jK03wJRtI4Rfs8ydUqPL',
-  precision: 'price_1TL8ig03wJRtI4RfNHeH7pgn',
-  pro: 'price_1TL8je03wJRtI4RfXuC3ybyn'
+  essentiel: 'price_1TL99s03wJRtI4RfD78cOqMY',
+  precision: 'price_1TL9AG03wJRtI4Rf7zM9QGUp',
+  pro: 'price_1TL9AZ03wJRtI4RfaCLopaor'
 };
 
 export default async function handler(req, res) {
