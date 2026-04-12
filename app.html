@@ -170,7 +170,7 @@
     };
 
     let currentProgramme = 'nutrition';
-    let conversationHistory = [];
+    const conversations = { nutrition: [], biohacking: [], hormonal: [], beaute: [] };
     let photoBase64 = null;
     let photoMediaType = null;
 
@@ -237,27 +237,29 @@
     });
 
     function switchProgramme(key) {
-      console.log('[funnel] switchProgramme', { to: key, count: getMessageCount(), emailCaptured });
+      console.log('[funnel] switchProgramme', { to: key, globalCount: parseInt(localStorage.getItem('globalMessageCount')) || 0, emailCaptured });
       currentProgramme = key;
       const prog = programmes[key];
       chatTitle.textContent = prog.title;
       chatDesc.textContent = prog.desc;
-      welcomeMsg.innerHTML = prog.welcome;
-      conversationHistory = [];
       photoBase64 = null;
       photoMediaType = null;
       photoPreview.style.display = 'none';
       pendingBilan = null;
       pendingBilanEl = null;
 
-      // Clear messages except welcome
-      messagesEl.querySelectorAll('.message:not(#welcome-msg)').forEach(el => el.remove());
+      // RESET CSS : innerHTML = '' — hard wipe, zero bleed between programmes
+      messagesEl.innerHTML = '';
+      const welcomeEl = document.createElement('div');
+      welcomeEl.className = 'message message-ai';
+      welcomeEl.innerHTML = prog.welcome;
+      messagesEl.appendChild(welcomeEl);
 
       // Show/hide photo section
       photoSection.style.display = key === 'beaute' ? 'block' : 'none';
 
-      // Maintain input lock state for blocked visitors
-      if (getMessageCount() >= MSG_LIMIT && !emailCaptured) {
+      // Lock state if globally blocked
+      if (parseInt(localStorage.getItem('globalMessageCount')) >= 3 && !emailCaptured) {
         inputEl.disabled = true;
         sendBtn.disabled = true;
         inputEl.placeholder = 'Entrez votre email pour continuer…';
@@ -309,15 +311,18 @@
     });
 
     async function sendMessage() {
-      const text = inputEl.value.trim();
-      if (!text && !photoBase64) return;
-
-      // Funnel gate
-      console.log('[funnel] sendMessage', { count: getMessageCount(), emailCaptured });
-      if (getMessageCount() >= MSG_LIMIT && !emailCaptured) {
+      // BLOCAGE PRIORITAIRE — première instruction, avant tout
+      if (parseInt(localStorage.getItem('globalMessageCount')) >= 3 && !emailCaptured) {
+        console.log('[funnel] BLOCKED', { globalCount: parseInt(localStorage.getItem('globalMessageCount')) });
         showEmailModal();
         return;
       }
+
+      const text = inputEl.value.trim();
+      if (!text && !photoBase64) return;
+
+      // Capture le programme au moment de l'envoi (protection contre switch pendant await)
+      const programme = currentProgramme;
 
       // Add user message to UI
       const userMsgEl = document.createElement('div');
@@ -337,7 +342,7 @@
         content.push({ type: 'text', text });
       }
 
-      conversationHistory.push({ role: 'user', content });
+      conversations[programme].push({ role: 'user', content });
 
       // Reset input
       inputEl.value = '';
@@ -377,7 +382,7 @@
             model: 'claude-sonnet-4-20250514',
             max_tokens: isLastFreeMessage ? 4096 : 2048,
             system: systemPrompt,
-            messages: conversationHistory
+            messages: conversations[programme]
           })
         });
 
@@ -389,7 +394,7 @@
         const data = await response.json();
         const aiText = data.content[0].text;
 
-        conversationHistory.push({ role: 'assistant', content: aiText });
+        conversations[programme].push({ role: 'assistant', content: aiText });
 
         if (isLastFreeMessage) {
           // Store the real bilan for reveal after email capture
