@@ -8,6 +8,12 @@
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .lang-switcher { display:flex; align-items:center; gap:4px; font-size:.82rem; }
+    .lang-switcher button { background:none; border:none; color:var(--gray-600); font-weight:500; cursor:pointer; padding:2px 6px; border-radius:4px; font-family:inherit; font-size:inherit; }
+    .lang-switcher button.active { color:var(--green); font-weight:700; }
+    .lang-switcher span { color:var(--gray-300); }
+  </style>
 </head>
 <body>
 
@@ -18,10 +24,15 @@
         <span class="logo-icon">🌿</span> Elisa <span class="logo-accent">Health</span>
       </a>
       <nav class="nav">
-        <a href="#programmes">Programmes</a>
-        <a href="#comment-ca-marche">Comment ça marche</a>
-        <a href="#pricing">Tarifs</a>
-        <a href="app.html" class="btn btn-sm">Lancer l'app</a>
+        <a href="#programmes" data-i18n="nav.prog">Programmes</a>
+        <a href="#comment-ca-marche" data-i18n="nav.how">Comment ça marche</a>
+        <a href="#pricing" data-i18n="nav.pricing">Tarifs</a>
+        <a href="app.html" class="btn btn-sm" data-i18n="nav.launch">Lancer l'app</a>
+        <div class="lang-switcher">
+          <button onclick="setLang('fr')" id="btn-fr" class="active">FR</button>
+          <span>|</span>
+          <button onclick="setLang('en')" id="btn-en">EN</button>
+        </div>
       </nav>
       <button class="mobile-menu-btn" aria-label="Menu">☰</button>
     </div>
@@ -31,21 +42,21 @@
   <section class="hero">
     <div class="container hero-inner">
       <div class="hero-content">
-        <span class="badge">Propulsé par l'IA Claude</span>
-        <h1>Votre nutritionniste IA<br>disponible <span class="highlight">24h/24</span></h1>
-        <p class="hero-sub">Programmes personnalisés en nutrition, biohacking, équilibre hormonal et beauté — générés en temps réel par intelligence artificielle.</p>
+        <span class="badge" data-i18n="hero.badge">Propulsé par l'IA Claude</span>
+        <h1 data-i18n-html="hero.title">Votre nutritionniste IA<br>disponible <span class="highlight">24h/24</span></h1>
+        <p class="hero-sub" data-i18n="hero.sub">Programmes personnalisés en nutrition, biohacking, équilibre hormonal et beauté — générés en temps réel par intelligence artificielle.</p>
         <div class="hero-actions">
-          <a href="app.html" class="btn btn-lg">Commencer gratuitement</a>
-          <a href="#comment-ca-marche" class="btn btn-outline btn-lg">En savoir plus</a>
+          <a href="app.html" class="btn btn-lg" data-i18n="hero.cta1">Commencer gratuitement</a>
+          <a href="#comment-ca-marche" class="btn btn-outline btn-lg" data-i18n="hero.cta2">En savoir plus</a>
         </div>
-        <p class="hero-trust">✓ Sans engagement &nbsp; ✓ Conforme RGPD &nbsp; ✓ Données chiffrées</p>
+        <p class="hero-trust" data-i18n-html="hero.trust">✓ Sans engagement &nbsp; ✓ Conforme RGPD &nbsp; ✓ Données chiffrées</p>
       </div>
       <div class="hero-visual">
         <div class="hero-card">
-          <div class="hero-card-header">Analyse en cours…</div>
+          <div class="hero-card-header" data-i18n="hero.card.hdr">Analyse en cours…</div>
           <div class="hero-card-body">
             <div class="pulse-dot"></div>
-            <p>Elisa analyse votre profil et génère un plan nutritionnel sur mesure.</p>
+            <p data-i18n="hero.card.body">Elisa analyse votre profil et génère un plan nutritionnel sur mesure.</p>
           </div>
         </div>
       </div>
@@ -55,32 +66,32 @@
   <!-- PROGRAMMES -->
   <section id="programmes" class="section">
     <div class="container">
-      <h2 class="section-title">4 programmes experts</h2>
-      <p class="section-sub">Chaque programme est piloté par l'IA pour s'adapter à vos objectifs, votre métabolisme et votre mode de vie.</p>
+      <h2 class="section-title" data-i18n="prog.title">4 programmes experts</h2>
+      <p class="section-sub" data-i18n="prog.sub">Chaque programme est piloté par l'IA pour s'adapter à vos objectifs, votre métabolisme et votre mode de vie.</p>
       <div class="cards">
         <div class="card">
           <div class="card-icon">🥗</div>
-          <h3>Nutrition</h3>
-          <p>Plans alimentaires personnalisés, calcul de macros, suggestions de repas adaptées à vos intolérances et préférences.</p>
-          <a href="app.html#nutrition" class="card-link">Démarrer →</a>
+          <h3 data-i18n="prog.nut.t">Nutrition</h3>
+          <p data-i18n="prog.nut.d">Plans alimentaires personnalisés, calcul de macros, suggestions de repas adaptées à vos intolérances et préférences.</p>
+          <a href="app.html#nutrition" class="card-link" data-i18n="prog.start">Démarrer →</a>
         </div>
         <div class="card">
           <div class="card-icon">⚡</div>
-          <h3>Biohacking</h3>
-          <p>Optimisation du sommeil, suppléments ciblés, protocoles de jeûne intermittent et routines de performance cognitive.</p>
-          <a href="app.html#biohacking" class="card-link">Démarrer →</a>
+          <h3 data-i18n="prog.bio.t">Biohacking</h3>
+          <p data-i18n="prog.bio.d">Optimisation du sommeil, suppléments ciblés, protocoles de jeûne intermittent et routines de performance cognitive.</p>
+          <a href="app.html#biohacking" class="card-link" data-i18n="prog.start">Démarrer →</a>
         </div>
         <div class="card">
           <div class="card-icon">🔬</div>
-          <h3>Hormonal</h3>
-          <p>Équilibre hormonal naturel, gestion du stress, adaptation au cycle et soutien thyroïdien personnalisé.</p>
-          <a href="app.html#hormonal" class="card-link">Démarrer →</a>
+          <h3 data-i18n="prog.hor.t">Hormonal</h3>
+          <p data-i18n="prog.hor.d">Équilibre hormonal naturel, gestion du stress, adaptation au cycle et soutien thyroïdien personnalisé.</p>
+          <a href="app.html#hormonal" class="card-link" data-i18n="prog.start">Démarrer →</a>
         </div>
         <div class="card">
           <div class="card-icon">✨</div>
-          <h3>Beauté</h3>
-          <p>Analyse de peau par photo, nutricosmétique, routines anti-âge et recommandations d'hydratation ciblées.</p>
-          <a href="app.html#beaute" class="card-link">Démarrer →</a>
+          <h3 data-i18n="prog.bea.t">Beauté</h3>
+          <p data-i18n="prog.bea.d">Analyse de peau par photo, nutricosmétique, routines anti-âge et recommandations d'hydratation ciblées.</p>
+          <a href="app.html#beaute" class="card-link" data-i18n="prog.start">Démarrer →</a>
         </div>
       </div>
     </div>
@@ -89,23 +100,23 @@
   <!-- COMMENT ÇA MARCHE -->
   <section id="comment-ca-marche" class="section section-alt">
     <div class="container">
-      <h2 class="section-title">Comment ça marche</h2>
-      <p class="section-sub">En 3 étapes simples, obtenez un programme entièrement personnalisé.</p>
+      <h2 class="section-title" data-i18n="how.title">Comment ça marche</h2>
+      <p class="section-sub" data-i18n="how.sub">En 3 étapes simples, obtenez un programme entièrement personnalisé.</p>
       <div class="steps">
         <div class="step">
           <div class="step-number">1</div>
-          <h3>Décrivez votre profil</h3>
-          <p>Âge, objectifs, mode de vie, allergies… Elisa collecte uniquement ce qui est nécessaire.</p>
+          <h3 data-i18n="how.s1.t">Décrivez votre profil</h3>
+          <p data-i18n="how.s1.d">Âge, objectifs, mode de vie, allergies… Elisa collecte uniquement ce qui est nécessaire.</p>
         </div>
         <div class="step">
           <div class="step-number">2</div>
-          <h3>L'IA analyse et génère</h3>
-          <p>Claude, notre IA de pointe, croise vos données avec les dernières études nutritionnelles.</p>
+          <h3 data-i18n="how.s2.t">L'IA analyse et génère</h3>
+          <p data-i18n="how.s2.d">Claude, notre IA de pointe, croise vos données avec les dernières études nutritionnelles.</p>
         </div>
         <div class="step">
           <div class="step-number">3</div>
-          <h3>Recevez votre plan</h3>
-          <p>Un programme actionnable avec repas, suppléments et routines — mis à jour en continu.</p>
+          <h3 data-i18n="how.s3.t">Recevez votre plan</h3>
+          <p data-i18n="how.s3.d">Un programme actionnable avec repas, suppléments et routines — mis à jour en continu.</p>
         </div>
       </div>
     </div>
@@ -114,57 +125,57 @@
   <!-- PRICING -->
   <section id="pricing" class="section">
     <div class="container">
-      <h2 class="section-title">Tarifs simples et transparents</h2>
-      <p class="section-sub">Commencez gratuitement, évoluez selon vos besoins.</p>
+      <h2 class="section-title" data-i18n="price.title">Tarifs simples et transparents</h2>
+      <p class="section-sub" data-i18n="price.sub">Commencez gratuitement, évoluez selon vos besoins.</p>
       <div class="pricing-grid">
         <div class="pricing-card">
-          <div class="pricing-name">Gratuit</div>
+          <div class="pricing-name" data-i18n="price.free.name">Gratuit</div>
           <div class="pricing-price">0€<span>/mois</span></div>
           <ul class="pricing-features">
-            <li>✓ 5 consultations IA / mois</li>
-            <li>✓ Programme Nutrition de base</li>
-            <li>✓ Historique 7 jours</li>
-            <li class="disabled">✗ Analyse photo peau</li>
-            <li class="disabled">✗ Programmes avancés</li>
+            <li data-i18n="price.free.f1">✓ 5 consultations IA / mois</li>
+            <li data-i18n="price.free.f2">✓ Programme Nutrition de base</li>
+            <li data-i18n="price.free.f3">✓ Historique 7 jours</li>
+            <li class="disabled" data-i18n="price.free.f4">✗ Analyse photo peau</li>
+            <li class="disabled" data-i18n="price.free.f5">✗ Programmes avancés</li>
           </ul>
-          <a href="app.html" class="btn btn-outline btn-block">Commencer</a>
+          <a href="app.html" class="btn btn-outline btn-block" data-i18n="price.free.btn">Commencer</a>
         </div>
         <div class="pricing-card">
-          <div class="pricing-name">Essentiel</div>
+          <div class="pricing-name" data-i18n="price.ess.name">Essentiel</div>
           <div class="pricing-price">29€<span>/mois</span></div>
           <ul class="pricing-features">
-            <li>✓ 50 consultations IA / mois</li>
-            <li>✓ Nutrition + Biohacking</li>
-            <li>✓ Historique 30 jours</li>
-            <li>✓ Analyse photo peau</li>
-            <li class="disabled">✗ Programme Hormonal</li>
+            <li data-i18n="price.ess.f1">✓ 50 consultations IA / mois</li>
+            <li data-i18n="price.ess.f2">✓ Nutrition + Biohacking</li>
+            <li data-i18n="price.ess.f3">✓ Historique 30 jours</li>
+            <li data-i18n="price.ess.f4">✓ Analyse photo peau</li>
+            <li class="disabled" data-i18n="price.ess.f5">✗ Programme Hormonal</li>
           </ul>
-          <a href="#" data-plan="essentiel" class="btn btn-outline btn-block">Commander</a>
+          <a href="#" data-plan="essentiel" class="btn btn-outline btn-block" data-i18n="price.order">Commander</a>
         </div>
         <div class="pricing-card pricing-featured">
-          <div class="pricing-badge">Populaire</div>
-          <div class="pricing-name">Précision</div>
+          <div class="pricing-badge" data-i18n="price.prec.badge">Populaire</div>
+          <div class="pricing-name" data-i18n="price.prec.name">Précision</div>
           <div class="pricing-price">59€<span>/mois</span></div>
           <ul class="pricing-features">
-            <li>✓ Consultations illimitées</li>
-            <li>✓ Les 4 programmes complets</li>
-            <li>✓ Historique illimité</li>
-            <li>✓ Analyse photo peau HD</li>
-            <li>✓ Export PDF des plans</li>
+            <li data-i18n="price.prec.f1">✓ Consultations illimitées</li>
+            <li data-i18n="price.prec.f2">✓ Les 4 programmes complets</li>
+            <li data-i18n="price.prec.f3">✓ Historique illimité</li>
+            <li data-i18n="price.prec.f4">✓ Analyse photo peau HD</li>
+            <li data-i18n="price.prec.f5">✓ Export PDF des plans</li>
           </ul>
-          <a href="#" data-plan="precision" class="btn btn-block">Commander</a>
+          <a href="#" data-plan="precision" class="btn btn-block" data-i18n="price.order">Commander</a>
         </div>
         <div class="pricing-card">
-          <div class="pricing-name">Pro</div>
+          <div class="pricing-name" data-i18n="price.pro.name">Pro</div>
           <div class="pricing-price">129€<span>/mois</span></div>
           <ul class="pricing-features">
-            <li>✓ Tout Précision inclus</li>
-            <li>✓ API access</li>
-            <li>✓ Intégration labo sang</li>
-            <li>✓ Support prioritaire</li>
-            <li>✓ Multi-profils famille</li>
+            <li data-i18n="price.pro.f1">✓ Tout Précision inclus</li>
+            <li data-i18n="price.pro.f2">✓ API access</li>
+            <li data-i18n="price.pro.f3">✓ Intégration labo sang</li>
+            <li data-i18n="price.pro.f4">✓ Support prioritaire</li>
+            <li data-i18n="price.pro.f5">✓ Multi-profils famille</li>
           </ul>
-          <a href="#" data-plan="pro" class="btn btn-outline btn-block">Commander</a>
+          <a href="#" data-plan="pro" class="btn btn-outline btn-block" data-i18n="price.order">Commander</a>
         </div>
       </div>
     </div>
@@ -175,40 +186,125 @@
     <div class="container footer-inner">
       <div class="footer-brand">
         <span class="logo-icon">🌿</span> Elisa <span class="logo-accent">Health</span>
-        <p>Intelligence artificielle au service de votre santé.</p>
+        <p data-i18n="foot.brand">Intelligence artificielle au service de votre santé.</p>
       </div>
       <div class="footer-links">
         <div>
-          <h4>Produit</h4>
-          <a href="#programmes">Programmes</a>
-          <a href="#pricing">Tarifs</a>
-          <a href="app.html">Application</a>
+          <h4 data-i18n="foot.product">Produit</h4>
+          <a href="#programmes" data-i18n="nav.prog">Programmes</a>
+          <a href="#pricing" data-i18n="nav.pricing">Tarifs</a>
+          <a href="app.html" data-i18n="foot.app">Application</a>
         </div>
         <div>
-          <h4>Légal</h4>
-          <a href="#mentions">Mentions légales</a>
-          <a href="#cgv">CGV</a>
-          <a href="#confidentialite">Politique de confidentialité</a>
+          <h4 data-i18n="foot.legal">Légal</h4>
+          <a href="#mentions" data-i18n="foot.mentions">Mentions légales</a>
+          <a href="#cgv" data-i18n="foot.cgv">CGV</a>
+          <a href="#confidentialite" data-i18n="foot.privacy">Politique de confidentialité</a>
         </div>
         <div>
           <h4>Contact</h4>
           <a href="mailto:contact@elisahealth.eu">contact@elisahealth.eu</a>
-          <a href="#">Support</a>
+          <a href="#" data-i18n="foot.support">Support</a>
         </div>
       </div>
     </div>
     <div class="container footer-bottom">
-      <p>© 2026 Elisa Health SAS — Tous droits réservés.</p>
-      <p class="footer-legal">Conformément au Règlement (UE) 2016/679 (RGPD), vos données personnelles sont traitées de manière sécurisée et ne sont jamais revendues à des tiers. Elisa Health ne se substitue pas à un avis médical professionnel. Consultez votre médecin avant tout changement alimentaire significatif. Hébergement des données de santé conforme à la norme HDS (ISO 27001).</p>
+      <p data-i18n="foot.copy">© 2026 Elisa Health SAS — Tous droits réservés.</p>
+      <p class="footer-legal" data-i18n="foot.disclaimer">Conformément au Règlement (UE) 2016/679 (RGPD), vos données personnelles sont traitées de manière sécurisée et ne sont jamais revendues à des tiers. Elisa Health ne se substitue pas à un avis médical professionnel. Consultez votre médecin avant tout changement alimentaire significatif. Hébergement des données de santé conforme à la norme HDS (ISO 27001).</p>
     </div>
   </footer>
 
   <script>
+    // ---- i18n ----
+    const translations = {
+      fr: {
+        'nav.prog': 'Programmes', 'nav.how': 'Comment ça marche', 'nav.pricing': 'Tarifs', 'nav.launch': "Lancer l'app",
+        'hero.badge': "Propulsé par l'IA Claude",
+        'hero.title': 'Votre nutritionniste IA<br>disponible <span class="highlight">24h/24</span>',
+        'hero.sub': "Programmes personnalisés en nutrition, biohacking, équilibre hormonal et beauté — générés en temps réel par intelligence artificielle.",
+        'hero.cta1': 'Commencer gratuitement', 'hero.cta2': 'En savoir plus',
+        'hero.trust': '✓ Sans engagement &nbsp; ✓ Conforme RGPD &nbsp; ✓ Données chiffrées',
+        'hero.card.hdr': 'Analyse en cours…',
+        'hero.card.body': 'Elisa analyse votre profil et génère un plan nutritionnel sur mesure.',
+        'prog.title': '4 programmes experts',
+        'prog.sub': "Chaque programme est piloté par l'IA pour s'adapter à vos objectifs, votre métabolisme et votre mode de vie.",
+        'prog.nut.t': 'Nutrition', 'prog.nut.d': 'Plans alimentaires personnalisés, calcul de macros, suggestions de repas adaptées à vos intolérances et préférences.',
+        'prog.bio.t': 'Biohacking', 'prog.bio.d': 'Optimisation du sommeil, suppléments ciblés, protocoles de jeûne intermittent et routines de performance cognitive.',
+        'prog.hor.t': 'Hormonal', 'prog.hor.d': 'Équilibre hormonal naturel, gestion du stress, adaptation au cycle et soutien thyroïdien personnalisé.',
+        'prog.bea.t': 'Beauté', 'prog.bea.d': "Analyse de peau par photo, nutricosmétique, routines anti-âge et recommandations d'hydratation ciblées.",
+        'prog.start': 'Démarrer →',
+        'how.title': 'Comment ça marche', 'how.sub': 'En 3 étapes simples, obtenez un programme entièrement personnalisé.',
+        'how.s1.t': 'Décrivez votre profil', 'how.s1.d': 'Âge, objectifs, mode de vie, allergies… Elisa collecte uniquement ce qui est nécessaire.',
+        'how.s2.t': "L'IA analyse et génère", 'how.s2.d': 'Claude, notre IA de pointe, croise vos données avec les dernières études nutritionnelles.',
+        'how.s3.t': 'Recevez votre plan', 'how.s3.d': 'Un programme actionnable avec repas, suppléments et routines — mis à jour en continu.',
+        'price.title': 'Tarifs simples et transparents', 'price.sub': 'Commencez gratuitement, évoluez selon vos besoins.',
+        'price.free.name': 'Gratuit', 'price.free.f1': '✓ 5 consultations IA / mois', 'price.free.f2': '✓ Programme Nutrition de base', 'price.free.f3': '✓ Historique 7 jours', 'price.free.f4': '✗ Analyse photo peau', 'price.free.f5': '✗ Programmes avancés', 'price.free.btn': 'Commencer',
+        'price.ess.name': 'Essentiel', 'price.ess.f1': '✓ 50 consultations IA / mois', 'price.ess.f2': '✓ Nutrition + Biohacking', 'price.ess.f3': '✓ Historique 30 jours', 'price.ess.f4': '✓ Analyse photo peau', 'price.ess.f5': '✗ Programme Hormonal',
+        'price.prec.badge': 'Populaire', 'price.prec.name': 'Précision', 'price.prec.f1': '✓ Consultations illimitées', 'price.prec.f2': '✓ Les 4 programmes complets', 'price.prec.f3': '✓ Historique illimité', 'price.prec.f4': '✓ Analyse photo peau HD', 'price.prec.f5': '✓ Export PDF des plans',
+        'price.pro.name': 'Pro', 'price.pro.f1': '✓ Tout Précision inclus', 'price.pro.f2': '✓ API access', 'price.pro.f3': '✓ Intégration labo sang', 'price.pro.f4': '✓ Support prioritaire', 'price.pro.f5': '✓ Multi-profils famille',
+        'price.order': 'Commander',
+        'foot.brand': 'Intelligence artificielle au service de votre santé.', 'foot.product': 'Produit', 'foot.app': 'Application', 'foot.legal': 'Légal', 'foot.mentions': 'Mentions légales', 'foot.cgv': 'CGV', 'foot.privacy': 'Politique de confidentialité', 'foot.support': 'Support',
+        'foot.copy': '© 2026 Elisa Health SAS — Tous droits réservés.',
+        'foot.disclaimer': "Conformément au Règlement (UE) 2016/679 (RGPD), vos données personnelles sont traitées de manière sécurisée et ne sont jamais revendues à des tiers. Elisa Health ne se substitue pas à un avis médical professionnel. Consultez votre médecin avant tout changement alimentaire significatif. Hébergement des données de santé conforme à la norme HDS (ISO 27001)."
+      },
+      en: {
+        'nav.prog': 'Programs', 'nav.how': 'How it works', 'nav.pricing': 'Pricing', 'nav.launch': 'Launch app',
+        'hero.badge': 'Powered by Claude AI',
+        'hero.title': 'Your AI nutritionist<br>available <span class="highlight">24/7</span>',
+        'hero.sub': 'Personalized programs in nutrition, biohacking, hormonal balance and beauty — generated in real time by artificial intelligence.',
+        'hero.cta1': 'Start for free', 'hero.cta2': 'Learn more',
+        'hero.trust': '✓ No commitment &nbsp; ✓ GDPR compliant &nbsp; ✓ Encrypted data',
+        'hero.card.hdr': 'Analyzing…',
+        'hero.card.body': 'Elisa analyzes your profile and generates a custom nutritional plan.',
+        'prog.title': '4 expert programs',
+        'prog.sub': 'Each program is AI-driven to adapt to your goals, metabolism and lifestyle.',
+        'prog.nut.t': 'Nutrition', 'prog.nut.d': 'Personalized meal plans, macro calculations, meal suggestions adapted to your intolerances and preferences.',
+        'prog.bio.t': 'Biohacking', 'prog.bio.d': 'Sleep optimization, targeted supplements, intermittent fasting protocols and cognitive performance routines.',
+        'prog.hor.t': 'Hormonal', 'prog.hor.d': 'Natural hormonal balance, stress management, cycle adaptation and personalized thyroid support.',
+        'prog.bea.t': 'Beauty', 'prog.bea.d': 'Photo skin analysis, nutricosmetics, anti-aging routines and targeted hydration recommendations.',
+        'prog.start': 'Start →',
+        'how.title': 'How it works', 'how.sub': 'In 3 simple steps, get a fully personalized program.',
+        'how.s1.t': 'Describe your profile', 'how.s1.d': 'Age, goals, lifestyle, allergies… Elisa only collects what is necessary.',
+        'how.s2.t': 'AI analyzes and generates', 'how.s2.d': 'Claude, our cutting-edge AI, cross-references your data with the latest nutritional studies.',
+        'how.s3.t': 'Get your plan', 'how.s3.d': 'An actionable program with meals, supplements and routines — continuously updated.',
+        'price.title': 'Simple and transparent pricing', 'price.sub': 'Start for free, upgrade as you need.',
+        'price.free.name': 'Free', 'price.free.f1': '✓ 5 AI consultations / month', 'price.free.f2': '✓ Basic Nutrition program', 'price.free.f3': '✓ 7-day history', 'price.free.f4': '✗ Skin photo analysis', 'price.free.f5': '✗ Advanced programs', 'price.free.btn': 'Get started',
+        'price.ess.name': 'Essential', 'price.ess.f1': '✓ 50 AI consultations / month', 'price.ess.f2': '✓ Nutrition + Biohacking', 'price.ess.f3': '✓ 30-day history', 'price.ess.f4': '✓ Skin photo analysis', 'price.ess.f5': '✗ Hormonal program',
+        'price.prec.badge': 'Popular', 'price.prec.name': 'Precision', 'price.prec.f1': '✓ Unlimited consultations', 'price.prec.f2': '✓ All 4 complete programs', 'price.prec.f3': '✓ Unlimited history', 'price.prec.f4': '✓ HD skin photo analysis', 'price.prec.f5': '✓ PDF export of plans',
+        'price.pro.name': 'Pro', 'price.pro.f1': '✓ Everything in Precision', 'price.pro.f2': '✓ API access', 'price.pro.f3': '✓ Blood lab integration', 'price.pro.f4': '✓ Priority support', 'price.pro.f5': '✓ Family multi-profiles',
+        'price.order': 'Order',
+        'foot.brand': 'Artificial intelligence for your health.', 'foot.product': 'Product', 'foot.app': 'Application', 'foot.legal': 'Legal', 'foot.mentions': 'Legal notices', 'foot.cgv': 'Terms', 'foot.privacy': 'Privacy policy', 'foot.support': 'Support',
+        'foot.copy': '© 2026 Elisa Health SAS — All rights reserved.',
+        'foot.disclaimer': 'In accordance with Regulation (EU) 2016/679 (GDPR), your personal data is processed securely and is never resold to third parties. Elisa Health is not a substitute for professional medical advice. Consult your doctor before any significant dietary change. Health data hosting compliant with HDS standard (ISO 27001).'
+      }
+    };
+
+    function setLang(lang) {
+      localStorage.setItem('elisa_lang', lang);
+      document.documentElement.lang = lang;
+      document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+      const t = translations[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key] != null) el.textContent = t[key];
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const key = el.getAttribute('data-i18n-html');
+        if (t[key] != null) el.innerHTML = t[key];
+      });
+    }
+
+    // Apply saved language on load
+    const savedLang = localStorage.getItem('elisa_lang') || 'fr';
+    if (savedLang !== 'fr') setLang(savedLang);
+
+    // ---- Mobile menu ----
     document.querySelector('.mobile-menu-btn').addEventListener('click', () => {
       document.querySelector('.nav').classList.toggle('nav-open');
     });
 
-    // Stripe checkout — paid pricing buttons
+    // ---- Stripe checkout ----
     document.querySelectorAll('[data-plan]').forEach(el => {
       el.addEventListener('click', async (e) => {
         e.preventDefault();
