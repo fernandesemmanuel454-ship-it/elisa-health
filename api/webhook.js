@@ -224,6 +224,91 @@ async function sendWelcomeEmail(session) {
   }
 }
 
+// Internal notification so the founder knows about every new customer
+// in real time without having to poll the Stripe dashboard.
+async function sendOwnerNotification(session) {
+  const apiKey = process.env.RESEND_API_KEY?.trim();
+  if (!apiKey) return;
+
+  const customerEmail = session.customer_details?.email || session.customer_email || '(inconnu)';
+  const customerName = session.customer_details?.name || '(non renseigné)';
+  const planSlug = session.metadata?.plan;
+  const planLabel = PLAN_DISPLAY_NAME[planSlug] || planSlug || '(inconnu)';
+  const priceLabel = formatAmount(session.amount_total, session.currency);
+  const date = new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' });
+
+  const html = `<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="UTF-8"></head>
+<body style="margin:0; padding:0; background-color:#f3f4f6; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; color:#1a1d27;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f3f4f6; padding:40px 16px;">
+    <tr><td align="center">
+      <table role="presentation" width="520" cellpadding="0" cellspacing="0" style="max-width:520px; background:#ffffff; border-radius:12px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+        <tr><td style="padding:32px 40px 24px 40px;">
+          <h1 style="margin:0 0 20px 0; font-size:22px; color:#0f1117;">🎉 Nouveau client Elisa Health !</h1>
+          <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="font-size:15px; line-height:1.7; color:#1a1d27;">
+            <tr><td style="padding:6px 0; color:#6b7280; width:130px;">Email</td><td style="padding:6px 0; font-weight:600;">${customerEmail}</td></tr>
+            <tr><td style="padding:6px 0; color:#6b7280;">Nom</td><td style="padding:6px 0; font-weight:600;">${customerName}</td></tr>
+            <tr><td style="padding:6px 0; color:#6b7280;">Plan</td><td style="padding:6px 0; font-weight:600;">${planLabel}</td></tr>
+            <tr><td style="padding:6px 0; color:#6b7280;">Montant</td><td style="padding:6px 0; font-weight:600;">${priceLabel} / mois</td></tr>
+            <tr><td style="padding:6px 0; color:#6b7280;">Date</td><td style="padding:6px 0;">${date}</td></tr>
+            <tr><td style="padding:6px 0; color:#6b7280;">Session</td><td style="padding:6px 0; font-size:12px; color:#6b7280;">${session.id}</td></tr>
+          </table>
+        </td></tr>
+        <tr><td style="padding:16px 40px 32px 40px;">
+          <a href="https://dashboard.stripe.com/customers/${session.customer || ''}"
+             style="display:inline-block; padding:10px 20px; font-size:14px; font-weight:600; color:#ffffff; background-color:#0ea571; text-decoration:none; border-radius:6px;">
+            Voir dans Stripe →
+          </a>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+
+  const text = [
+    '🎉 Nouveau client Elisa Health !',
+    '',
+    `Email : ${customerEmail}`,
+    `Nom : ${customerName}`,
+    `Plan : ${planLabel}`,
+    `Montant : ${priceLabel} / mois`,
+    `Date : ${date}`,
+    `Session : ${session.id}`,
+    '',
+    `Voir dans Stripe : https://dashboard.stripe.com/customers/${session.customer || ''}`
+  ].join('\n');
+
+  try {
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from: 'Elisa Health <contact@elisahealth.eu>',
+        to: ['emmanuel@elisahealth.eu'],
+        subject: '🎉 Nouveau client Elisa Health !',
+        html,
+        text
+      })
+    });
+
+    if (!response.ok) {
+      const body = await response.text().catch(() => '');
+      console.error('[resend] owner notification failed', { status: response.status, body: body.slice(0, 500) });
+      return;
+    }
+
+    const data = await response.json().catch(() => ({}));
+    console.log('[resend] owner notification sent', { resendId: data.id });
+  } catch (err) {
+    console.error('[resend] owner notification threw', { error: err.message });
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -272,9 +357,12 @@ export default async function handler(req, res) {
         amountTotal: session.amount_total,
         currency: session.currency
       });
-      // Fire-and-(self-contained-)forget: sendWelcomeEmail catches its
-      // own errors so a mail failure never causes Stripe to retry.
-      await sendWelcomeEmail(session);
+      // Both helpers catch their own errors so a mail failure never
+      // causes Stripe to retry the webhook for three days.
+      await Promise.all([
+        sendWelcomeEmail(session),
+        sendOwnerNotification(session)
+      ]);
       break;
     }
     case 'customer.subscription.deleted': {
