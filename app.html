@@ -345,13 +345,24 @@
       photoMediaType = null;
       photoPreview.style.display = 'none';
 
-      // Show typing
+      // Increment count IMMEDIATELY — before API call
+      const newCount = incrementMessageCount();
+      const isLastFreeMessage = newCount === MSG_LIMIT && !emailCaptured;
+      console.log('[funnel] incremented', { newCount, isLastFreeMessage });
+
+      // 3rd message: lock input + show modal INSTANTLY — don't wait for AI
+      if (isLastFreeMessage) {
+        inputEl.disabled = true;
+        sendBtn.disabled = true;
+        inputEl.placeholder = 'Entrez votre email pour continuer…';
+        showEmailModal();
+      }
+
+      // Show typing (behind the modal for 3rd message)
       typingEl.classList.add('visible');
       messagesEl.scrollTop = messagesEl.scrollHeight;
 
-      // On the 3rd message, enhance system prompt for a comprehensive bilan
-      const currentCount = getMessageCount();
-      const isLastFreeMessage = currentCount === MSG_LIMIT - 1 && !emailCaptured;
+      // Build system prompt
       let systemPrompt = programmes[currentProgramme].system + GUARDRAIL;
       if (isLastFreeMessage) {
         systemPrompt += '\n\nIMPORTANT : Ceci est le dernier échange de l\'analyse gratuite. Fournis un bilan COMPLET et détaillé du profil de l\'utilisateur. Identifie toutes les carences et déséquilibres potentiels, propose un protocole exhaustif avec : (1) un stack de suppléments précis avec dosages et timing, (2) un plan alimentaire sur une journée type, (3) les ajustements de mode de vie prioritaires, (4) un calendrier de mise en place sur 4 semaines. Sois exhaustive, spécifique et actionnable.';
@@ -379,26 +390,34 @@
 
         conversationHistory.push({ role: 'assistant', content: aiText });
 
-        const newCount = incrementMessageCount();
-        console.log('[funnel] incremented', { newCount, willBlock: newCount >= MSG_LIMIT && !emailCaptured });
-
-        if (newCount >= MSG_LIMIT && !emailCaptured) {
-          // 3rd message: show cliffhanger, store real response for reveal
+        if (isLastFreeMessage) {
+          // Store the real bilan for reveal after email capture
           pendingBilan = aiText;
-          const cliffhanger = 'Votre profil est analysé. J\'ai identifié **3 carences prioritaires** et composé votre stack personnalisé... mais pour révéler votre protocole complet, j\'ai besoin de savoir où vous l\'envoyer.';
-          const aiMsgEl = document.createElement('div');
-          aiMsgEl.className = 'message message-ai';
-          aiMsgEl.innerHTML = formatResponse(cliffhanger);
-          messagesEl.appendChild(aiMsgEl);
-          pendingBilanEl = aiMsgEl;
 
-          // Lock input and show modal after a beat
-          inputEl.disabled = true;
-          sendBtn.disabled = true;
-          inputEl.placeholder = 'Entrez votre email pour continuer…';
-          setTimeout(showEmailModal, 1500);
+          if (emailCaptured) {
+            // Race: user already submitted email while API was in flight
+            // Reveal the bilan directly (replace loading placeholder if any)
+            if (pendingBilanEl) {
+              pendingBilanEl.innerHTML = formatResponse(aiText);
+              pendingBilanEl = null;
+            } else {
+              const aiMsgEl = document.createElement('div');
+              aiMsgEl.className = 'message message-ai';
+              aiMsgEl.innerHTML = formatResponse(aiText);
+              messagesEl.appendChild(aiMsgEl);
+            }
+            appendCTA();
+          } else {
+            // Normal case: user still filling the modal — show cliffhanger behind it
+            const cliffhanger = 'Votre profil est analysé. J\'ai identifié **3 carences prioritaires** et composé votre stack personnalisé... mais pour révéler votre protocole complet, j\'ai besoin de savoir où vous l\'envoyer.';
+            const aiMsgEl = document.createElement('div');
+            aiMsgEl.className = 'message message-ai';
+            aiMsgEl.innerHTML = formatResponse(cliffhanger);
+            messagesEl.appendChild(aiMsgEl);
+            pendingBilanEl = aiMsgEl;
+          }
         } else {
-          // Normal rendering
+          // Messages 1 & 2: normal rendering
           const aiMsgEl = document.createElement('div');
           aiMsgEl.className = 'message message-ai';
           aiMsgEl.innerHTML = formatResponse(aiText);
@@ -406,14 +425,31 @@
         }
 
       } catch (err) {
-        const errEl = document.createElement('div');
-        errEl.className = 'message message-ai';
-        errEl.innerHTML = `<strong>Erreur :</strong> ${err.message}`;
-        messagesEl.appendChild(errEl);
+        if (isLastFreeMessage) {
+          // API failed while modal is shown — store fallback so email flow still works
+          console.error('[funnel] bilan API error (behind modal):', err.message);
+          pendingBilan = 'Votre analyse est en cours de finalisation. Notre équipe vous enverra votre protocole personnalisé par email.';
+        } else {
+          const errEl = document.createElement('div');
+          errEl.className = 'message message-ai';
+          errEl.innerHTML = `<strong>Erreur :</strong> ${err.message}`;
+          messagesEl.appendChild(errEl);
+        }
       } finally {
         typingEl.classList.remove('visible');
         messagesEl.scrollTop = messagesEl.scrollHeight;
       }
+    }
+
+    // ---- CTA helper (used by both submit handler and race-condition reveal) ----
+    function appendCTA() {
+      const ctaEl = document.createElement('div');
+      ctaEl.className = 'message message-ai';
+      ctaEl.innerHTML = '<p>Votre protocole complet est ci-dessus \u{1F446}</p>' +
+        '<p>Pour commencer votre cure dès aujourd\u2019hui avec les compléments et dosages exacts que j\u2019ai sélectionnés pour vous\u00A0:</p>' +
+        '<a href="/index.html#pricing" style="display:inline-block; margin-top:12px; padding:12px 24px; background:#0ea571; color:#fff; font-weight:600; font-size:0.9rem; border-radius:8px; text-decoration:none;">Commander ma cure à -50% ce mois \u2192</a>';
+      messagesEl.appendChild(ctaEl);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
     // ---- Email capture modal ----
@@ -444,20 +480,24 @@
         // Close modal
         document.getElementById('email-modal').classList.remove('visible');
 
-        // Reveal the real bilan
-        if (pendingBilanEl && pendingBilan) {
-          pendingBilanEl.innerHTML = formatResponse(pendingBilan);
-          pendingBilanEl = null;
+        // Reveal the real bilan — or show loading if API still in flight
+        if (pendingBilan) {
+          // API already responded — reveal now
+          if (pendingBilanEl) {
+            pendingBilanEl.innerHTML = formatResponse(pendingBilan);
+            pendingBilanEl = null;
+          }
           pendingBilan = null;
+          appendCTA();
+        } else {
+          // API still in flight — show loading placeholder
+          // sendMessage will auto-reveal when it resolves (checks emailCaptured)
+          const loadingEl = document.createElement('div');
+          loadingEl.className = 'message message-ai';
+          loadingEl.innerHTML = '<p><em>Votre protocole se génère...</em></p>';
+          messagesEl.appendChild(loadingEl);
+          pendingBilanEl = loadingEl;
         }
-
-        // CTA message
-        const ctaEl = document.createElement('div');
-        ctaEl.className = 'message message-ai';
-        ctaEl.innerHTML = '<p>Votre protocole complet est ci-dessus \u{1F446}</p>' +
-          '<p>Pour commencer votre cure dès aujourd\u2019hui avec les compléments et dosages exacts que j\u2019ai sélectionnés pour vous\u00A0:</p>' +
-          '<a href="/index.html#pricing" style="display:inline-block; margin-top:12px; padding:12px 24px; background:#0ea571; color:#fff; font-weight:600; font-size:0.9rem; border-radius:8px; text-decoration:none;">Commander ma cure à -50% ce mois \u2192</a>';
-        messagesEl.appendChild(ctaEl);
 
         // Unlock input
         inputEl.disabled = false;
