@@ -193,31 +193,47 @@ async function sendEmail(apiKey, { from, to, subject, html, text, reply_to }) {
 // ---- Supabase lead insert ----
 
 async function insertLead(email, programme, date) {
-  const url = process.env.SUPABASE_URL?.trim();
+  const rawUrl = process.env.SUPABASE_URL?.trim();
   const key = process.env.SUPABASE_ANON_KEY?.trim();
-  if (!url || !key) {
-    console.warn('[supabase] not configured — skipping lead insert');
-    return;
+
+  console.log('[supabase] env check', {
+    hasUrl: !!rawUrl,
+    urlPrefix: rawUrl ? rawUrl.slice(0, 30) + '…' : '(missing)',
+    hasKey: !!key,
+    keyPrefix: key ? key.slice(0, 12) + '…' : '(missing)'
+  });
+
+  if (!rawUrl || !key) {
+    console.warn('[supabase] SUPABASE_URL or SUPABASE_ANON_KEY is not configured — skipping');
+    return { skipped: true };
   }
-  const res = await fetch(`${url}/rest/v1/leads`, {
+
+  // Strip trailing slash to avoid double-slash in the path
+  const url = rawUrl.replace(/\/+$/, '');
+  const endpoint = `${url}/rest/v1/leads`;
+  const payload = { email, programme, date, source: 'capture_funnel' };
+
+  console.log('[supabase] inserting lead', { endpoint, payload });
+
+  const res = await fetch(endpoint, {
     method: 'POST',
     headers: {
       'apikey': key,
       'Authorization': `Bearer ${key}`,
       'Content-Type': 'application/json',
-      'Prefer': 'return=minimal'
+      'Prefer': 'return=representation'
     },
-    body: JSON.stringify({
-      email,
-      programme,
-      date,
-      source: 'capture_funnel'
-    })
+    body: JSON.stringify(payload)
   });
+
+  const body = await res.text().catch(() => '');
+  console.log('[supabase] response', { status: res.status, body: body.slice(0, 500) });
+
   if (!res.ok) {
-    const body = await res.text().catch(() => '');
     throw new Error(`HTTP ${res.status}: ${body.slice(0, 300)}`);
   }
+
+  return { inserted: true };
 }
 
 // ---- Handler ----
@@ -280,8 +296,10 @@ export default async function handler(req, res) {
 
     // 3. Supabase lead
     (async () => {
-      await insertLead(email, programme, date);
-      console.log('[supabase] lead inserted', { email, programme });
+      const result = await insertLead(email, programme, date);
+      if (result?.inserted) {
+        console.log('[supabase] lead inserted OK', { email, programme });
+      }
     })()
   ]);
 
