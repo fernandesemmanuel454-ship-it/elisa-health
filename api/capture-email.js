@@ -303,13 +303,17 @@ export default async function handler(req, res) {
     })()
   ]);
 
-  // Log any failures without breaking the response
+  // Build diagnostic output — returned in the response so curl can see it
+  const labels = ['prospect_email', 'owner_notification', 'supabase_insert'];
+  const debug = {};
   results.forEach((r, i) => {
     if (r.status === 'rejected') {
-      const labels = ['prospect email', 'owner notification', 'supabase insert'];
+      debug[labels[i]] = { status: 'error', message: r.reason?.message || String(r.reason) };
       console.error(`[capture] ${labels[i]} failed:`, r.reason?.message || r.reason);
+    } else {
+      debug[labels[i]] = { status: 'ok' };
     }
   });
 
-  return res.status(200).json({ ok: true });
+  return res.status(200).json({ ok: true, debug });
 }
