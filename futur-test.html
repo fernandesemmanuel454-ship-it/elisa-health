@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elisa Health — Futur Test</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ---- SCI-FI DARK THEME ---- */
+    body { background: #0a0a0a !important; color: #d4d4d8 !important; }
+    .header { background: rgba(10,10,10,0.8) !important; backdrop-filter: blur(12px); border-bottom: 1px solid rgba(14,165,113,0.15) !important; }
+    .header .logo, .header .nav a { color: #d4d4d8 !important; }
+    .header .nav a:hover { color: #0ea571 !important; }
+
+    .app-layout { background: transparent !important; }
+    .sidebar {
+      background: rgba(255,255,255,0.05) !important;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(14,165,113,0.3) !important;
+      border-radius: 12px;
+      margin: 8px;
+    }
+    .sidebar-title { color: #0ea571 !important; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.7rem !important; }
+    .sidebar-item { color: #a1a1aa !important; border-color: rgba(14,165,113,0.1) !important; }
+    .sidebar-item:hover, .sidebar-item.active { background: rgba(14,165,113,0.15) !important; color: #0ea571 !important; border-color: rgba(14,165,113,0.4) !important; }
+
+    .chat-area { background: transparent !important; }
+    .chat-header { border-bottom: 1px solid rgba(14,165,113,0.15) !important; }
+    #chat-title { color: #e4e4e7 !important; }
+    #chat-desc { color: #71717a !important; }
+
+    .messages { background: transparent !important; }
+    .message-ai {
+      background: rgba(255,255,255,0.05) !important;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(14,165,113,0.3) !important;
+      color: #d4d4d8 !important;
+      border-radius: 12px !important;
+    }
+    .message-ai strong, .message-ai h3, .message-ai h4 { color: #0ea571 !important; }
+    .message-user {
+      background: rgba(14,165,113,0.2) !important;
+      border: 1px solid rgba(14,165,113,0.4) !important;
+      color: #e4e4e7 !important;
+      border-radius: 12px !important;
+    }
+
+    .input-bar {
+      background: rgba(255,255,255,0.05) !important;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(14,165,113,0.3) !important;
+      border-radius: 12px !important;
+    }
+    #user-input { background: transparent !important; color: #d4d4d8 !important; }
+    #user-input::placeholder { color: #52525b !important; }
+    .btn-send { background: #0ea571 !important; }
+
+    .typing-indicator { color: #0ea571 !important; font-family: 'JetBrains Mono', monospace; }
+
+    .photo-upload-zone { border-color: rgba(14,165,113,0.3) !important; background: rgba(255,255,255,0.03) !important; color: #71717a !important; }
+
+    /* ---- MODAL SCI-FI ---- */
+    .modal-overlay { background: rgba(0,0,0,0.85) !important; }
+    .modal-card {
+      background: rgba(15,15,20,0.95) !important;
+      border: 1px solid rgba(14,165,113,0.4) !important;
+      box-shadow: 0 0 60px rgba(14,165,113,0.15) !important;
+    }
+    .modal-card h2 { color: #0ea571 !important; }
+    .modal-sub { color: #a1a1aa !important; }
+    .modal-form input[type="email"] {
+      background: rgba(255,255,255,0.05) !important;
+      border-color: rgba(14,165,113,0.3) !important;
+      color: #e4e4e7 !important;
+    }
+    .modal-form input[type="email"]::placeholder { color: #52525b; }
+    .modal-security { color: #52525b !important; }
+
+    /* ---- LANG SWITCHER ---- */
+    .lang-switcher { display:flex; align-items:center; gap:4px; font-size:.82rem; }
+    .lang-switcher button { background:none; border:none; color:#71717a; font-weight:500; cursor:pointer; padding:2px 6px; border-radius:4px; font-family:inherit; font-size:inherit; }
+    .lang-switcher button.active { color:#0ea571; font-weight:700; }
+    .lang-switcher span { color:#3f3f46; }
+
+    /* ---- GREEN PARTICLES ---- */
+    .particles { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+    .particles span {
+      position: absolute;
+      display: block;
+      width: 3px; height: 3px;
+      background: #0ea571;
+      border-radius: 50%;
+      opacity: 0;
+      animation: particle-float linear infinite;
+    }
+    @keyframes particle-float {
+      0%   { opacity: 0; transform: translateY(0) scale(0.5); }
+      10%  { opacity: 0.6; }
+      90%  { opacity: 0.1; }
+      100% { opacity: 0; transform: translateY(-100vh) scale(0.2); }
+    }
+
+    /* ---- SCAN OVERLAY ---- */
+    #scan-overlay {
+      position: fixed; inset: 0; z-index: 2000;
+      display: none; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.95);
+      transition: opacity 0.5s ease;
+    }
+    .scan-ring {
+      width: 160px; height: 160px;
+      border: 3px solid transparent;
+      border-top-color: #0ea571;
+      border-right-color: rgba(14,165,113,0.3);
+      border-radius: 50%;
+      animation: scan-spin 1.2s linear infinite;
+      box-shadow: 0 0 40px rgba(14,165,113,0.4), inset 0 0 40px rgba(14,165,113,0.1);
+    }
+    @keyframes scan-spin { to { transform: rotate(360deg); } }
+    @keyframes scan-pulse {
+      0%, 100% { box-shadow: 0 0 40px rgba(14,165,113,0.4), inset 0 0 40px rgba(14,165,113,0.1); }
+      50%      { box-shadow: 0 0 80px rgba(14,165,113,0.6), inset 0 0 60px rgba(14,165,113,0.2); }
+    }
+    .scan-ring { animation: scan-spin 1.2s linear infinite, scan-pulse 2s ease-in-out infinite; }
+    .scan-text {
+      margin-top: 32px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: #0ea571;
+      letter-spacing: 0.05em;
+      min-height: 20px;
+      opacity: 0.8;
+    }
+    .scan-sub {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #3f3f46;
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Particles -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Scan overlay -->
+  <div id="scan-overlay">
+    <div class="scan-ring"></div>
+    <div class="scan-text" id="scan-text"></div>
+    <div class="scan-sub">ELISA HEALTH BIOMETRIC ENGINE v2.1</div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">✦</span> Elisa Health
+      </a>
+      <nav class="nav">
+        <a href="index.html" data-i18n="nav.home">Accueil</a>
+        <a href="index.html#pricing" data-i18n="nav.pricing">Tarifs</a>
+        <div class="lang-switcher">
+          <button onclick="setLang('fr')" id="btn-fr" class="active">FR</button>
+          <span>|</span>
+          <button onclick="setLang('en')" id="btn-en">EN</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div class="app-layout">
+    <aside class="sidebar">
+      <p class="sidebar-title" data-i18n="sidebar.title">Programmes</p>
+      <button class="sidebar-item active" data-programme="nutrition">
+        <span class="item-icon">🥗</span> <span data-i18n="sidebar.nutrition">Nutrition</span>
+      </button>
+      <button class="sidebar-item" data-programme="biohacking">
+        <span class="item-icon">⚡</span> <span data-i18n="sidebar.biohacking">Biohacking</span>
+      </button>
+      <button class="sidebar-item" data-programme="hormonal">
+        <span class="item-icon">🧬</span> <span data-i18n="sidebar.hormonal">Hormonal</span>
+      </button>
+      <button class="sidebar-item" data-programme="beaute">
+        <span class="item-icon">✨</span> <span data-i18n="sidebar.beaute">Beauté & Peau</span>
+      </button>
+    </aside>
+
+    <main class="chat-area">
+      <div class="chat-header">
+        <h2 id="chat-title">Programme Nutrition</h2>
+        <p id="chat-desc">Posez vos questions à Elisa sur votre alimentation et vos objectifs nutritionnels.</p>
+      </div>
+
+      <div id="photo-section" style="display:none; padding: 16px 24px;">
+        <div class="photo-upload-zone" id="upload-zone">
+          <div class="upload-icon">📸</div>
+          <p data-i18n="photo.hint">Cliquez ou glissez une photo de votre peau pour analyse IA</p>
+          <input type="file" id="photo-input" accept="image/*" hidden>
+        </div>
+        <img id="photo-preview" class="photo-preview" alt="Aperçu photo">
+      </div>
+
+      <div class="messages" id="messages">
+        <div class="message message-ai" id="welcome-msg">
+          Bonjour ! Je suis <strong>Elisa</strong>, votre nutritionniste IA. 👋<br><br>
+          Décrivez-moi votre profil (âge, poids, objectifs, allergies…) et je vous préparerai un plan personnalisé.
+        </div>
+      </div>
+
+      <div class="typing-indicator" id="typing" data-i18n="typing">Elisa réfléchit...</div>
+
+      <div class="input-bar">
+        <textarea id="user-input" placeholder="Décrivez votre profil ou posez une question..." rows="1"></textarea>
+        <button class="btn btn-send" id="send-btn" title="Envoyer">↑</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- Email capture modal -->
+  <div class="modal-overlay" id="email-modal">
+    <div class="modal-card">
+      <div class="modal-icon">✨</div>
+      <h2 data-i18n="modal.title">Votre bilan Elisa est prêt ✨</h2>
+      <p class="modal-sub" data-i18n="modal.sub">Entrez votre email pour recevoir votre protocole personnalisé de 12 pages</p>
+      <form class="modal-form" id="capture-form">
+        <input type="email" id="capture-email" placeholder="votre@email.com" required>
+        <button type="submit" id="capture-btn" data-i18n="modal.btn">Recevoir mon bilan →</button>
+      </form>
+      <p class="modal-security" data-i18n="modal.security">🔒 Aucune carte bancaire requise</p>
+    </div>
+  </div>
+
+  <script>
+    // ---- Generate particles (CSS-pure animation, JS-generated positions) ----
+    (function() {
+      const container = document.getElementById('particles');
+      for (let i = 0; i < 30; i++) {
+        const span = document.createElement('span');
+        span.style.left = Math.random() * 100 + '%';
+        span.style.top = (80 + Math.random() * 40) + '%';
+        span.style.animationDuration = (6 + Math.random() * 8) + 's';
+        span.style.animationDelay = (Math.random() * 10) + 's';
+        span.style.width = span.style.height = (2 + Math.random() * 3) + 'px';
+        container.appendChild(span);
+      }
+    })();
+
+    // ---- Biometric scan overlay ----
+    const scanMessages = [
+      'Analyse ADN nutritionnel...',
+      'Détection des carences...',
+      'Cartographie métabolique...',
+      'Génération du protocole personnalisé...',
+      'Calibration du score de vitalité...',
+      'Synchronisation des biomarqueurs...',
+      'Profilage microbiome intestinal...',
+      'Optimisation mitochondriale...'
+    ];
+
+    function showScanOverlay() {
+      return new Promise(resolve => {
+        const overlay = document.getElementById('scan-overlay');
+        const textEl = document.getElementById('scan-text');
+        overlay.style.display = 'flex';
+        overlay.style.opacity = '1';
+
+        let idx = 0;
+        textEl.textContent = scanMessages[0];
+        const interval = setInterval(() => {
+          idx++;
+          textEl.textContent = scanMessages[idx % scanMessages.length];
+        }, 700);
+
+        setTimeout(() => {
+          clearInterval(interval);
+          overlay.style.opacity = '0';
+          setTimeout(() => {
+            overlay.style.display = 'none';
+            resolve();
+          }, 500);
+        }, 5000);
+      });
+    }
+
+    // ---- Typing effect for AI messages ----
+    function typeMessage(el, formattedHtml, speed) {
+      return new Promise(resolve => {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = formattedHtml;
+        const plainText = tmp.textContent;
+        el.textContent = '';
+        let i = 0;
+        const interval = setInterval(() => {
+          el.textContent += plainText[i];
+          i++;
+          messagesEl.scrollTop = messagesEl.scrollHeight;
+          if (i >= plainText.length) {
+            clearInterval(interval);
+            el.innerHTML = formattedHtml;
+            resolve();
+          }
+        }, speed || 12);
+      });
+    }
+
+    // ---- Language ----
+    let lang = localStorage.getItem('elisa_lang') || 'fr';
+
+    const uiText = {
+      fr: {
+        'nav.home': 'Accueil', 'nav.pricing': 'Tarifs',
+        'sidebar.title': 'Programmes', 'sidebar.nutrition': 'Nutrition', 'sidebar.biohacking': 'Biohacking', 'sidebar.hormonal': 'Hormonal', 'sidebar.beaute': 'Beauté & Peau',
+        'photo.hint': 'Cliquez ou glissez une photo de votre peau pour analyse IA',
+        'typing': 'Elisa réfléchit...', 'placeholder': 'Décrivez votre profil ou posez une question...',
+        'placeholder.blocked': 'Entrez votre email pour continuer…',
+        'modal.title': 'Votre bilan Elisa est prêt ✨', 'modal.sub': 'Entrez votre email pour recevoir votre protocole personnalisé de 12 pages',
+        'modal.btn': 'Recevoir mon bilan →', 'modal.security': '🔒 Aucune carte bancaire requise', 'modal.sending': 'Envoi en cours…',
+        'cta.above': 'Votre protocole complet est ci-dessus 👆',
+        'cta.text': 'Pour commencer votre cure dès aujourd\u2019hui avec les compléments et dosages exacts que j\u2019ai sélectionnés pour vous\u00A0:',
+        'cta.btn': 'Commander ma cure à -50% ce mois →',
+        'loading': 'Votre protocole se génère...', 'photo.sent': '📸 Photo envoyée pour analyse',
+        'cliffhanger': 'Votre profil est analysé. J\'ai identifié **3 carences prioritaires** et composé votre stack personnalisé... mais pour révéler votre protocole complet, j\'ai besoin de savoir où vous l\'envoyer.',
+        'fallback': 'Votre analyse est en cours de finalisation. Notre équipe vous enverra votre protocole personnalisé par email.'
+      },
+      en: {
+        'nav.home': 'Home', 'nav.pricing': 'Pricing',
+        'sidebar.title': 'Programs', 'sidebar.nutrition': 'Nutrition', 'sidebar.biohacking': 'Biohacking', 'sidebar.hormonal': 'Hormonal', 'sidebar.beaute': 'Beauty & Skin',
+        'photo.hint': 'Click or drag a photo of your skin for AI analysis',
+        'typing': 'Elisa is thinking...', 'placeholder': 'Describe your profile or ask a question...',
+        'placeholder.blocked': 'Enter your email to continue…',
+        'modal.title': 'Your Elisa report is ready ✨', 'modal.sub': 'Enter your email to receive your personalized 12-page protocol',
+        'modal.btn': 'Get my report →', 'modal.security': '🔒 No credit card required', 'modal.sending': 'Sending…',
+        'cta.above': 'Your full protocol is above 👆',
+        'cta.text': 'Start your cure today with the exact supplements and dosages I selected for you:',
+        'cta.btn': 'Order my cure at -50% this month →',
+        'loading': 'Your protocol is being generated...', 'photo.sent': '📸 Photo sent for analysis',
+        'cliffhanger': 'Your profile has been analyzed. I\'ve identified **3 priority deficiencies** and designed your personalized stack... but to reveal your complete protocol, I need to know where to send it.',
+        'fallback': 'Your analysis is being finalized. Our team will send you your personalized protocol by email.'
+      }
+    };
+
+    function T(key) { return uiText[lang]?.[key] || uiText.fr[key] || key; }
+
+    const programmes = {
+      nutrition: {
+        title:   { fr: 'Programme Nutrition',   en: 'Nutrition Program' },
+        desc:    { fr: 'Posez vos questions à Elisa sur votre alimentation et vos objectifs nutritionnels.', en: 'Ask Elisa about your diet and nutritional goals.' },
+        welcome: { fr: 'Bonjour ! Je suis <strong>Elisa</strong>, votre nutritionniste IA. 👋<br><br>Décrivez-moi votre profil (âge, poids, objectifs, allergies…) et je vous préparerai un plan personnalisé.', en: 'Hello! I\'m <strong>Elisa</strong>, your AI nutritionist. 👋<br><br>Tell me about your profile (age, weight, goals, allergies…) and I\'ll prepare a personalized plan for you.' },
+        system:  { fr: `Tu es Elisa, une nutritionniste IA experte et bienveillante de Elisa Health. Tu parles français. Tu crées des plans alimentaires personnalisés basés sur le profil de l'utilisateur (âge, poids, taille, objectifs, allergies, mode de vie). Tu fournis des macros précises, des suggestions de repas, et des conseils pratiques. Tu es scientifique mais accessible. Ne donne jamais de diagnostic médical. Recommande de consulter un professionnel si nécessaire.`, en: `You are Elisa, an expert and caring AI nutritionist at Elisa Health. You speak English. You create personalized meal plans based on the user's profile (age, weight, height, goals, allergies, lifestyle). You provide precise macros, meal suggestions, and practical advice. You are scientific yet approachable. Never give a medical diagnosis. Recommend consulting a professional when necessary.` }
+      },
+      biohacking: {
+        title:   { fr: 'Programme Biohacking',  en: 'Biohacking Program' },
+        desc:    { fr: 'Protocoles avancés pour optimiser vos performances cognitives et physiques.', en: 'Advanced protocols to optimize your cognitive and physical performance.' },
+        welcome: { fr: 'Bienvenue dans le programme <strong>Biohacking</strong> ! ⚡<br><br>Dites-moi quels aspects vous souhaitez optimiser : sommeil, énergie, concentration, longévité…', en: 'Welcome to the <strong>Biohacking</strong> program! ⚡<br><br>Tell me what you\'d like to optimize: sleep, energy, focus, longevity…' },
+        system:  { fr: `Tu es Elisa, experte en biohacking et optimisation humaine chez Elisa Health. Tu parles français. Tu proposes des protocoles basés sur les dernières recherches en neuroscience, chronobiologie et nutrition fonctionnelle. Tu couvres : supplémentation (nootropiques, adapotgènes), protocoles de jeûne, optimisation du sommeil, exposition au froid/chaleur, HRV, luminothérapie. Sois précise sur les dosages et les timings. Cite des études quand pertinent. Ne remplace pas un avis médical.`, en: `You are Elisa, a biohacking and human optimization expert at Elisa Health. You speak English. You propose protocols based on the latest research in neuroscience, chronobiology and functional nutrition. You cover: supplementation (nootropics, adaptogens), fasting protocols, sleep optimization, cold/heat exposure, HRV, light therapy. Be precise on dosages and timing. Cite studies when relevant. Do not replace medical advice.` }
+      },
+      hormonal: {
+        title:   { fr: 'Équilibre Hormonal',    en: 'Hormonal Balance' },
+        desc:    { fr: 'Analyse de vos symptômes et recommandations pour rééquilibrer votre système hormonal.', en: 'Analysis of your symptoms and recommendations to rebalance your hormonal system.' },
+        welcome: { fr: 'Bienvenue dans le programme <strong>Équilibre Hormonal</strong> ! 🧬<br><br>Décrivez-moi vos symptômes et votre contexte (âge, sexe, cycle…) pour que je puisse vous guider.', en: 'Welcome to the <strong>Hormonal Balance</strong> program! 🧬<br><br>Describe your symptoms and context (age, sex, cycle…) so I can guide you.' },
+        system:  { fr: `Tu es Elisa, experte en équilibre hormonal chez Elisa Health. Tu parles français. Tu aides les utilisateurs à comprendre et rééquilibrer leur système hormonal naturellement. Tu couvres : cortisol, thyroïde, hormones sexuelles, insuline, mélatonine. Tu proposes des approches nutritionnelles, des compléments, des ajustements de mode de vie et des tests à demander au médecin. Tu es particulièrement sensible aux problématiques féminines (SOPK, endométriose, ménopause) et masculines (testostérone). Ne pose jamais de diagnostic. Recommande toujours un suivi médical pour les bilans sanguins.`, en: `You are Elisa, a hormonal balance expert at Elisa Health. You speak English. You help users understand and naturally rebalance their hormonal system. You cover: cortisol, thyroid, sex hormones, insulin, melatonin. You propose nutritional approaches, supplements, lifestyle adjustments and tests to ask the doctor. You are particularly attentive to female (PCOS, endometriosis, menopause) and male (testosterone) issues. Never diagnose. Always recommend medical follow-up for blood tests.` }
+      },
+      beaute: {
+        title:   { fr: 'Beauté & Peau',         en: 'Beauty & Skin' },
+        desc:    { fr: 'Analyse photo IA de votre peau et conseils nutri-cosmétiques personnalisés.', en: 'AI photo analysis of your skin and personalized nutri-cosmetic advice.' },
+        welcome: { fr: 'Bienvenue dans le programme <strong>Beauté & Peau</strong> ! ✨<br><br>Envoyez une photo de votre peau ou décrivez vos préoccupations pour recevoir des conseils nutri-cosmétiques personnalisés.', en: 'Welcome to the <strong>Beauty & Skin</strong> program! ✨<br><br>Send a photo of your skin or describe your concerns to receive personalized nutri-cosmetic advice.' },
+        system:  { fr: `Tu es Elisa, experte en beauté et nutri-cosmétique chez Elisa Health. Tu parles français. Tu analyses les problématiques de peau et proposes des solutions par la nutrition, la supplémentation et les soins. Si l'utilisateur envoie une photo de sa peau, analyse-la visuellement et identifie : le type de peau, les imperfections visibles (acné, taches, rides, déshydratation, rougeurs), et propose un protocole complet (alimentation anti-inflammatoire, compléments comme collagène/zinc/vitamine C, routine de soin). Sois bienveillante et encourageante. Ne pose jamais de diagnostic dermatologique médical.`, en: `You are Elisa, a beauty and nutri-cosmetic expert at Elisa Health. You speak English. You analyze skin issues and propose solutions through nutrition, supplementation and skincare. If the user sends a photo of their skin, visually analyze it and identify: skin type, visible imperfections (acne, spots, wrinkles, dehydration, redness), and propose a complete protocol (anti-inflammatory diet, supplements like collagen/zinc/vitamin C, skincare routine). Be caring and encouraging. Never make a dermatological medical diagnosis.` }
+      }
+    };
+
+    const GUARDRAIL = {
+      fr: `\nRÈGLE PRIORITAIRE : Tu ne réponds qu'aux questions liées à la santé, la nutrition, le biohacking, l'équilibre hormonal et la beauté/peau. Si l'utilisateur pose une question hors de ces domaines, réponds UNIQUEMENT : "Je suis spécialisée dans votre optimisation biologique. Restons concentrés sur votre santé 🌿"`,
+      en: `\nPRIORITY RULE: You only answer questions related to health, nutrition, biohacking, hormonal balance and beauty/skin. If the user asks about anything outside these domains, reply ONLY: "I specialize in your biological optimization. Let's stay focused on your health 🌿"`
+    };
+    const BILAN_BOOST = {
+      fr: `\n\nIMPORTANT : Ceci est le dernier échange de l'analyse gratuite. Fournis un bilan COMPLET et détaillé.`,
+      en: `\n\nIMPORTANT: This is the last exchange of the free analysis. Provide a COMPLETE and detailed analysis.`
+    };
+
+    // ---- State ----
+    let currentProgramme = 'nutrition';
+    const conversations = { nutrition: [], biohacking: [], hormonal: [], beaute: [] };
+    let photoBase64 = null;
+    let photoMediaType = null;
+    const MSG_LIMIT = 3;
+    let emailCaptured = localStorage.getItem('elisa_email_captured') === 'true';
+    let pendingBilan = null;
+    let pendingBilanEl = null;
+
+    function getMessageCount() { return parseInt(localStorage.getItem('globalMessageCount') || '0', 10); }
+    function incrementMessageCount() {
+      const c = getMessageCount() + 1;
+      localStorage.setItem('globalMessageCount', String(c));
+      return c;
+    }
+
+    // showEmailModal: scan overlay 5s → then email modal
+    async function showEmailModal() {
+      await showScanOverlay();
+      document.getElementById('email-modal').classList.add('visible');
+      setTimeout(() => document.getElementById('capture-email').focus(), 350);
+    }
+
+    // ---- DOM ----
+    const messagesEl = document.getElementById('messages');
+    const typingEl = document.getElementById('typing');
+    const inputEl = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+    const chatTitle = document.getElementById('chat-title');
+    const chatDesc = document.getElementById('chat-desc');
+    const photoSection = document.getElementById('photo-section');
+    const uploadZone = document.getElementById('upload-zone');
+    const photoInput = document.getElementById('photo-input');
+    const photoPreview = document.getElementById('photo-preview');
+
+    // ---- i18n ----
+    function setLang(newLang) {
+      lang = newLang;
+      localStorage.setItem('elisa_lang', lang);
+      document.documentElement.lang = lang;
+      document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const val = uiText[lang]?.[el.getAttribute('data-i18n')];
+        if (val != null) el.textContent = val;
+      });
+      inputEl.placeholder = T(getMessageCount() >= 3 && !emailCaptured ? 'placeholder.blocked' : 'placeholder');
+      switchProgramme(currentProgramme);
+    }
+    if (lang !== 'fr') setLang(lang);
+
+    // ---- URL param ----
+    const urlParams = new URLSearchParams(window.location.search);
+    const initProgramme = urlParams.get('programme');
+    if (initProgramme && programmes[initProgramme]) {
+      switchProgramme(initProgramme);
+      document.querySelectorAll('.sidebar-item').forEach(el => { el.classList.toggle('active', el.dataset.programme === initProgramme); });
+    }
+
+    // ---- Programme switch ----
+    document.querySelectorAll('.sidebar-item').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        switchProgramme(btn.dataset.programme);
+      });
+    });
+
+    function switchProgramme(key) {
+      currentProgramme = key;
+      const prog = programmes[key];
+      chatTitle.textContent = prog.title[lang];
+      chatDesc.textContent = prog.desc[lang];
+      photoBase64 = null; photoMediaType = null;
+      photoPreview.style.display = 'none';
+      pendingBilan = null; pendingBilanEl = null;
+      messagesEl.innerHTML = '';
+      const w = document.createElement('div');
+      w.className = 'message message-ai';
+      w.innerHTML = prog.welcome[lang];
+      messagesEl.appendChild(w);
+      photoSection.style.display = key === 'beaute' ? 'block' : 'none';
+      if (getMessageCount() >= 3 && !emailCaptured) {
+        inputEl.disabled = true; sendBtn.disabled = true;
+        inputEl.placeholder = T('placeholder.blocked');
+      } else {
+        inputEl.disabled = false; sendBtn.disabled = false;
+        inputEl.placeholder = T('placeholder');
+      }
+    }
+
+    // ---- Photo upload ----
+    uploadZone.addEventListener('click', () => photoInput.click());
+    uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.style.borderColor = '#0ea571'; });
+    uploadZone.addEventListener('dragleave', () => { uploadZone.style.borderColor = ''; });
+    uploadZone.addEventListener('drop', e => { e.preventDefault(); uploadZone.style.borderColor = ''; if (e.dataTransfer.files[0]) handlePhoto(e.dataTransfer.files[0]); });
+    photoInput.addEventListener('change', () => { if (photoInput.files[0]) handlePhoto(photoInput.files[0]); });
+
+    function handlePhoto(file) {
+      if (!file.type.startsWith('image/')) return;
+      photoMediaType = file.type;
+      const reader = new FileReader();
+      reader.onload = e => { photoBase64 = e.target.result.split(',')[1]; photoPreview.src = e.target.result; photoPreview.style.display = 'block'; };
+      reader.readAsDataURL(file);
+    }
+
+    // ---- Chat ----
+    inputEl.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+    inputEl.addEventListener('input', () => { inputEl.style.height = 'auto'; inputEl.style.height = Math.min(inputEl.scrollHeight, 160) + 'px'; });
+    sendBtn.addEventListener('click', sendMessage);
+    document.querySelector('.input-bar').addEventListener('click', () => { if (getMessageCount() >= MSG_LIMIT && !emailCaptured) showEmailModal(); });
+
+    async function sendMessage() {
+      if (parseInt(localStorage.getItem('globalMessageCount')) >= 3 && !emailCaptured) { showEmailModal(); return; }
+      const text = inputEl.value.trim();
+      if (!text && !photoBase64) return;
+      const programme = currentProgramme;
+
+      const userMsgEl = document.createElement('div');
+      userMsgEl.className = 'message message-user';
+      userMsgEl.textContent = text || T('photo.sent');
+      messagesEl.appendChild(userMsgEl);
+
+      const content = [];
+      if (photoBase64) content.push({ type: 'image', source: { type: 'base64', media_type: photoMediaType, data: photoBase64 } });
+      if (text) content.push({ type: 'text', text });
+      conversations[programme].push({ role: 'user', content });
+
+      inputEl.value = ''; inputEl.style.height = 'auto';
+      photoBase64 = null; photoMediaType = null; photoPreview.style.display = 'none';
+
+      const newCount = incrementMessageCount();
+      const isLast = newCount === MSG_LIMIT && !emailCaptured;
+      if (isLast) { inputEl.disabled = true; sendBtn.disabled = true; inputEl.placeholder = T('placeholder.blocked'); showEmailModal(); }
+
+      typingEl.classList.add('visible');
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+
+      let sys = programmes[programme].system[lang] + GUARDRAIL[lang];
+      if (isLast) sys += BILAN_BOOST[lang];
+
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: isLast ? 4096 : 2048, system: sys, messages: conversations[programme] })
+        });
+        if (!response.ok) { const err = await response.json(); throw new Error(err.error?.message || `Erreur ${response.status}`); }
+        const data = await response.json();
+        const aiText = data.content[0].text;
+        conversations[programme].push({ role: 'assistant', content: aiText });
+
+        if (isLast) {
+          pendingBilan = aiText;
+          if (emailCaptured) {
+            if (pendingBilanEl) { pendingBilanEl.innerHTML = formatResponse(aiText); pendingBilanEl = null; }
+            else { const m = document.createElement('div'); m.className = 'message message-ai'; m.innerHTML = formatResponse(aiText); messagesEl.appendChild(m); }
+            appendCTA();
+          } else {
+            const m = document.createElement('div'); m.className = 'message message-ai';
+            m.innerHTML = formatResponse(T('cliffhanger'));
+            messagesEl.appendChild(m); pendingBilanEl = m;
+          }
+        } else {
+          // Typing effect for normal messages
+          const aiMsgEl = document.createElement('div');
+          aiMsgEl.className = 'message message-ai';
+          messagesEl.appendChild(aiMsgEl);
+          await typeMessage(aiMsgEl, formatResponse(aiText));
+        }
+      } catch (err) {
+        if (isLast) { pendingBilan = T('fallback'); }
+        else { const e = document.createElement('div'); e.className = 'message message-ai'; e.innerHTML = `<strong>Erreur :</strong> ${err.message}`; messagesEl.appendChild(e); }
+      } finally { typingEl.classList.remove('visible'); messagesEl.scrollTop = messagesEl.scrollHeight; }
+    }
+
+    function appendCTA() {
+      const c = document.createElement('div'); c.className = 'message message-ai';
+      c.innerHTML = `<p>${T('cta.above')}</p><p>${T('cta.text')}</p><a href="/index.html#pricing" style="display:inline-block;margin-top:12px;padding:12px 24px;background:#0ea571;color:#fff;font-weight:600;font-size:0.9rem;border-radius:8px;text-decoration:none;">${T('cta.btn')}</a>`;
+      messagesEl.appendChild(c); messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    // ---- Email capture modal ----
+    document.getElementById('capture-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const emailInput = document.getElementById('capture-email');
+      const email = emailInput.value.trim();
+      if (!email) return;
+      const btn = document.getElementById('capture-btn');
+      const orig = btn.textContent;
+      btn.textContent = T('modal.sending'); btn.disabled = true;
+      try {
+        const res = await fetch('/api/capture-email', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, programme: currentProgramme }) });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error?.message || 'Erreur serveur');
+        emailCaptured = true; localStorage.setItem('elisa_email_captured', 'true');
+        document.getElementById('email-modal').classList.remove('visible');
+        if (pendingBilan) {
+          if (pendingBilanEl) { pendingBilanEl.innerHTML = formatResponse(pendingBilan); pendingBilanEl = null; }
+          pendingBilan = null; appendCTA();
+        } else {
+          const l = document.createElement('div'); l.className = 'message message-ai';
+          l.innerHTML = `<p><em>${T('loading')}</em></p>`; messagesEl.appendChild(l); pendingBilanEl = l;
+        }
+        inputEl.disabled = false; sendBtn.disabled = false; inputEl.placeholder = T('placeholder');
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+      } catch (err) { btn.textContent = orig; btn.disabled = false; alert('Erreur : ' + err.message); }
+    });
+
+    function formatResponse(text) {
+      return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/^### (.*$)/gm, '<h4>$1</h4>').replace(/^## (.*$)/gm, '<h3>$1</h3>')
+        .replace(/^- (.*$)/gm, '<li>$1</li>').replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>').replace(/<\/ul>\s*<ul>/g, '')
+        .replace(/\n{2,}/g, '</p><p>').replace(/\n/g, '<br>').replace(/^/, '<p>').replace(/$/, '</p>');
+    }
+  </script>
+
+</body>
+</html>
