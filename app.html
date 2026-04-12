@@ -196,6 +196,14 @@
       setTimeout(() => document.getElementById('capture-email').focus(), 350);
     }
 
+    // Diagnostic — visible in browser DevTools console (F12)
+    console.log('[funnel] init', {
+      count: getMessageCount(),
+      limit: MSG_LIMIT,
+      emailCaptured,
+      blocked: getMessageCount() >= MSG_LIMIT && !emailCaptured
+    });
+
     // ---- DOM ----
     const messagesEl = document.getElementById('messages');
     const welcomeMsg = document.getElementById('welcome-msg');
@@ -246,6 +254,17 @@
 
       // Show/hide photo section
       photoSection.style.display = key === 'beaute' ? 'block' : 'none';
+
+      // Maintain input lock state for blocked visitors
+      if (getMessageCount() >= MSG_LIMIT && !emailCaptured) {
+        inputEl.disabled = true;
+        sendBtn.disabled = true;
+        inputEl.placeholder = 'Entrez votre email pour continuer…';
+      } else {
+        inputEl.disabled = false;
+        sendBtn.disabled = false;
+        inputEl.placeholder = 'Décrivez votre profil ou posez une question...';
+      }
     }
 
     // ---- Photo upload ----
@@ -293,6 +312,7 @@
       if (!text && !photoBase64) return;
 
       // Funnel gate
+      console.log('[funnel] sendMessage', { count: getMessageCount(), emailCaptured });
       if (getMessageCount() >= MSG_LIMIT && !emailCaptured) {
         showEmailModal();
         return;
@@ -360,6 +380,7 @@
         conversationHistory.push({ role: 'assistant', content: aiText });
 
         const newCount = incrementMessageCount();
+        console.log('[funnel] incremented', { newCount, willBlock: newCount >= MSG_LIMIT && !emailCaptured });
 
         if (newCount >= MSG_LIMIT && !emailCaptured) {
           // 3rd message: show cliffhanger, store real response for reveal
