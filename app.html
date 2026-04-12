@@ -7,6 +7,55 @@
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(15, 17, 23, 0.6);
+      backdrop-filter: blur(4px);
+      padding: 24px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .modal-overlay.visible { opacity: 1; pointer-events: auto; }
+    .modal-card {
+      background: #fff; border-radius: 16px;
+      padding: 48px 40px; max-width: 440px; width: 100%;
+      text-align: center;
+      box-shadow: 0 24px 48px rgba(15, 17, 23, 0.15);
+      transform: translateY(16px);
+      transition: transform 0.3s ease;
+    }
+    .modal-overlay.visible .modal-card { transform: translateY(0); }
+    .modal-icon { font-size: 48px; line-height: 1; margin-bottom: 16px; }
+    .modal-card h2 {
+      font-size: 24px; font-weight: 700; color: #0f1117;
+      margin: 0 0 8px 0; letter-spacing: -0.02em;
+    }
+    .modal-sub {
+      font-size: 15px; color: #6b7280;
+      margin: 0 0 28px 0; line-height: 1.5;
+    }
+    .modal-form { display: flex; flex-direction: column; gap: 12px; }
+    .modal-form input[type="email"] {
+      width: 100%; padding: 14px 16px;
+      border: 1.5px solid #d1d5db; border-radius: 8px;
+      font-size: 15px; font-family: inherit;
+      outline: none; transition: border-color 0.2s;
+      box-sizing: border-box;
+    }
+    .modal-form input[type="email"]:focus { border-color: #0ea571; }
+    .modal-form button {
+      padding: 14px 24px; background: #0ea571; color: #fff;
+      border: none; border-radius: 8px;
+      font-size: 15px; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+      transition: background 0.2s;
+    }
+    .modal-form button:hover { background: #0b8a5e; }
+    .modal-form button:disabled { opacity: 0.7; cursor: not-allowed; }
+    .modal-security { font-size: 13px; color: #6b7280; margin: 20px 0 0 0; }
+  </style>
 </head>
 <body>
 
@@ -77,6 +126,20 @@
     </main>
   </div>
 
+  <!-- Email capture modal -->
+  <div class="modal-overlay" id="email-modal">
+    <div class="modal-card">
+      <div class="modal-icon">✨</div>
+      <h2>Votre bilan Elisa est prêt ✨</h2>
+      <p class="modal-sub">Entrez votre email pour recevoir votre protocole personnalisé de 12 pages</p>
+      <form class="modal-form" id="capture-form">
+        <input type="email" id="capture-email" placeholder="votre@email.com" required>
+        <button type="submit" id="capture-btn">Recevoir mon bilan →</button>
+      </form>
+      <p class="modal-security">🔒 Aucune carte bancaire requise</p>
+    </div>
+  </div>
+
   <script>
     // ---- State ----
     const programmes = {
@@ -110,6 +173,25 @@
     let conversationHistory = [];
     let photoBase64 = null;
     let photoMediaType = null;
+
+    // ---- Conversion funnel ----
+    const MSG_LIMIT = 3;
+    let emailCaptured = localStorage.getItem('elisa_email_captured') === 'true';
+    let pendingBilan = null;
+    let pendingBilanEl = null;
+
+    function getMessageCount() {
+      return parseInt(localStorage.getItem('elisa_msg_count') || '0', 10);
+    }
+    function incrementMessageCount() {
+      const count = getMessageCount() + 1;
+      localStorage.setItem('elisa_msg_count', String(count));
+      return count;
+    }
+    function showEmailModal() {
+      document.getElementById('email-modal').classList.add('visible');
+      setTimeout(() => document.getElementById('capture-email').focus(), 350);
+    }
 
     // ---- DOM ----
     const messagesEl = document.getElementById('messages');
@@ -153,6 +235,8 @@
       photoBase64 = null;
       photoMediaType = null;
       photoPreview.style.display = 'none';
+      pendingBilan = null;
+      pendingBilanEl = null;
 
       // Clear messages except welcome
       messagesEl.querySelectorAll('.message:not(#welcome-msg)').forEach(el => el.remove());
@@ -196,9 +280,20 @@
     });
     sendBtn.addEventListener('click', sendMessage);
 
+    // If returning visitor is already blocked, intercept interactions
+    document.querySelector('.input-bar').addEventListener('click', () => {
+      if (getMessageCount() >= MSG_LIMIT && !emailCaptured) showEmailModal();
+    });
+
     async function sendMessage() {
       const text = inputEl.value.trim();
       if (!text && !photoBase64) return;
+
+      // Funnel gate
+      if (getMessageCount() >= MSG_LIMIT && !emailCaptured) {
+        showEmailModal();
+        return;
+      }
 
       // Add user message to UI
       const userMsgEl = document.createElement('div');
@@ -231,14 +326,22 @@
       typingEl.classList.add('visible');
       messagesEl.scrollTop = messagesEl.scrollHeight;
 
+      // On the 3rd message, enhance system prompt for a comprehensive bilan
+      const currentCount = getMessageCount();
+      const isLastFreeMessage = currentCount === MSG_LIMIT - 1 && !emailCaptured;
+      let systemPrompt = programmes[currentProgramme].system;
+      if (isLastFreeMessage) {
+        systemPrompt += '\n\nIMPORTANT : Ceci est le dernier échange de l\'analyse gratuite. Fournis un bilan COMPLET et détaillé du profil de l\'utilisateur. Identifie toutes les carences et déséquilibres potentiels, propose un protocole exhaustif avec : (1) un stack de suppléments précis avec dosages et timing, (2) un plan alimentaire sur une journée type, (3) les ajustements de mode de vie prioritaires, (4) un calendrier de mise en place sur 4 semaines. Sois exhaustive, spécifique et actionnable.';
+      }
+
       try {
         const response = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             model: 'claude-sonnet-4-20250514',
-            max_tokens: 2048,
-            system: programmes[currentProgramme].system,
+            max_tokens: isLastFreeMessage ? 4096 : 2048,
+            system: systemPrompt,
             messages: conversationHistory
           })
         });
@@ -253,11 +356,30 @@
 
         conversationHistory.push({ role: 'assistant', content: aiText });
 
-        // Render AI message
-        const aiMsgEl = document.createElement('div');
-        aiMsgEl.className = 'message message-ai';
-        aiMsgEl.innerHTML = formatResponse(aiText);
-        messagesEl.appendChild(aiMsgEl);
+        const newCount = incrementMessageCount();
+
+        if (newCount >= MSG_LIMIT && !emailCaptured) {
+          // 3rd message: show cliffhanger, store real response for reveal
+          pendingBilan = aiText;
+          const cliffhanger = 'Votre profil est analysé. J\'ai identifié **3 carences prioritaires** et composé votre stack personnalisé... mais pour révéler votre protocole complet, j\'ai besoin de savoir où vous l\'envoyer.';
+          const aiMsgEl = document.createElement('div');
+          aiMsgEl.className = 'message message-ai';
+          aiMsgEl.innerHTML = formatResponse(cliffhanger);
+          messagesEl.appendChild(aiMsgEl);
+          pendingBilanEl = aiMsgEl;
+
+          // Lock input and show modal after a beat
+          inputEl.disabled = true;
+          sendBtn.disabled = true;
+          inputEl.placeholder = 'Entrez votre email pour continuer…';
+          setTimeout(showEmailModal, 1500);
+        } else {
+          // Normal rendering
+          const aiMsgEl = document.createElement('div');
+          aiMsgEl.className = 'message message-ai';
+          aiMsgEl.innerHTML = formatResponse(aiText);
+          messagesEl.appendChild(aiMsgEl);
+        }
 
       } catch (err) {
         const errEl = document.createElement('div');
@@ -269,6 +391,62 @@
         messagesEl.scrollTop = messagesEl.scrollHeight;
       }
     }
+
+    // ---- Email capture modal ----
+    document.getElementById('capture-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const emailInput = document.getElementById('capture-email');
+      const email = emailInput.value.trim();
+      if (!email) return;
+
+      const btn = document.getElementById('capture-btn');
+      const originalText = btn.textContent;
+      btn.textContent = 'Envoi en cours…';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('/api/capture-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, programme: currentProgramme })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error?.message || 'Erreur serveur');
+
+        // Mark as captured
+        emailCaptured = true;
+        localStorage.setItem('elisa_email_captured', 'true');
+
+        // Close modal
+        document.getElementById('email-modal').classList.remove('visible');
+
+        // Reveal the real bilan
+        if (pendingBilanEl && pendingBilan) {
+          pendingBilanEl.innerHTML = formatResponse(pendingBilan);
+          pendingBilanEl = null;
+          pendingBilan = null;
+        }
+
+        // CTA message
+        const ctaEl = document.createElement('div');
+        ctaEl.className = 'message message-ai';
+        ctaEl.innerHTML = '<p>Votre protocole complet est ci-dessus \u{1F446}</p>' +
+          '<p>Pour commencer votre cure dès aujourd\u2019hui avec les compléments et dosages exacts que j\u2019ai sélectionnés pour vous\u00A0:</p>' +
+          '<a href="/index.html#pricing" style="display:inline-block; margin-top:12px; padding:12px 24px; background:#0ea571; color:#fff; font-weight:600; font-size:0.9rem; border-radius:8px; text-decoration:none;">Commander ma cure à -50% ce mois \u2192</a>';
+        messagesEl.appendChild(ctaEl);
+
+        // Unlock input
+        inputEl.disabled = false;
+        sendBtn.disabled = false;
+        inputEl.placeholder = 'Décrivez votre profil ou posez une question...';
+
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+      } catch (err) {
+        btn.textContent = originalText;
+        btn.disabled = false;
+        alert('Erreur : ' + err.message);
+      }
+    });
 
     function formatResponse(text) {
       return text
