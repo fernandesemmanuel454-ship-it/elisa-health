@@ -174,8 +174,11 @@
     }
     .scan-video {
       position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-      width: 120px; height: 120px; border-radius: 50%; object-fit: cover;
-      mix-blend-mode: screen; opacity: 0.5;
+      width: 130px; height: 130px; border-radius: 50%; object-fit: cover;
+      mix-blend-mode: screen; opacity: 0.6;
+      filter: drop-shadow(0 0 12px rgba(14,165,113,0.6)) drop-shadow(0 0 30px rgba(14,165,113,0.2));
+      /* Transparent by default — no black hole if video fails to load */
+      background: transparent;
     }
     .scan-center {
       position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
@@ -210,7 +213,7 @@
       <div class="scan-ring-outer"></div>
       <div class="scan-ring-mid"></div>
       <div class="scan-ring-inner"></div>
-      <video class="scan-video" src="hologram-faces.mp4" autoplay loop muted playsinline></video>
+      <video class="scan-video" src="/hologram-faces.mp4" preload="auto" autoplay loop muted playsinline></video>
       <div class="scan-center"></div>
     </div>
     <div class="scan-text" id="scan-text"></div>
