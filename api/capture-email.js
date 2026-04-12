@@ -56,15 +56,9 @@ export default async function handler(req, res) {
             <tr><td style="padding:6px 0; color:#6b7280; width:120px;">Email</td><td style="padding:6px 0; font-weight:600;">${email}</td></tr>
             <tr><td style="padding:6px 0; color:#6b7280;">Programme</td><td style="padding:6px 0; font-weight:600;">${progLabel}</td></tr>
             <tr><td style="padding:6px 0; color:#6b7280;">Date</td><td style="padding:6px 0;">${date}</td></tr>
-            <tr><td style="padding:6px 0; color:#6b7280;">Source</td><td style="padding:6px 0;">Tunnel de conversion (3 msgs gratuits)</td></tr>
           </table>
         </td></tr>
-        <tr><td style="padding:0 40px 32px 40px;">
-          <p style="margin:16px 0 0 0; font-size:13px; color:#6b7280; line-height:1.5;">
-            Ce prospect a utilisé ses 3 messages gratuits et a donné son email pour voir son bilan complet.
-            Il n'est pas encore client payant.
-          </p>
-        </td></tr>
+        <tr><td style="height:16px;"></td></tr>
       </table>
     </td></tr>
   </table>
@@ -76,11 +70,7 @@ export default async function handler(req, res) {
     '',
     `Email : ${email}`,
     `Programme : ${progLabel}`,
-    `Date : ${date}`,
-    `Source : Tunnel de conversion (3 msgs gratuits)`,
-    '',
-    'Ce prospect a utilisé ses 3 messages gratuits et a donné son email pour voir son bilan complet.',
-    'Il n\'est pas encore client payant.'
+    `Date : ${date}`
   ].join('\n');
 
   try {
