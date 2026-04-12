@@ -184,11 +184,11 @@
     let pendingBilanEl = null;
 
     function getMessageCount() {
-      return parseInt(localStorage.getItem('elisa_msg_count') || '0', 10);
+      return parseInt(localStorage.getItem('globalMessageCount') || '0', 10);
     }
     function incrementMessageCount() {
       const count = getMessageCount() + 1;
-      localStorage.setItem('elisa_msg_count', String(count));
+      localStorage.setItem('globalMessageCount', String(count));
       return count;
     }
     function showEmailModal() {
