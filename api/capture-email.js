@@ -208,8 +208,11 @@ async function insertLead(email, programme, date) {
     return { skipped: true };
   }
 
-  // Strip trailing slash to avoid double-slash in the path
-  const url = rawUrl.replace(/\/+$/, '');
+  // Normalize: handle project ref only, missing protocol, trailing dots/slashes
+  let url = rawUrl.replace(/[./]+$/, '');
+  if (!url.startsWith('http')) {
+    url = `https://${url}.supabase.co`;
+  }
   const endpoint = `${url}/rest/v1/leads`;
   const payload = { email, programme, date, source: programme || 'unknown' };
 
