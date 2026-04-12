@@ -211,7 +211,7 @@ async function insertLead(email, programme, date) {
   // Strip trailing slash to avoid double-slash in the path
   const url = rawUrl.replace(/\/+$/, '');
   const endpoint = `${url}/rest/v1/leads`;
-  const payload = { email, programme, date, source: 'capture_funnel' };
+  const payload = { email, programme, date, source: programme || 'unknown' };
 
   console.log('[supabase] inserting lead', { endpoint, payload });
 

@@ -237,6 +237,7 @@
     });
 
     function switchProgramme(key) {
+      console.log('[funnel] switchProgramme', { to: key, count: getMessageCount(), emailCaptured });
       currentProgramme = key;
       const prog = programmes[key];
       chatTitle.textContent = prog.title;
