@@ -146,76 +146,81 @@
 
       <!-- Questions container -->
       <div id="quiz-questions">
-        <!-- Q1 -->
         <div class="quiz-step" data-step="0">
           <p class="quiz-label">Question 1 / 5</p>
-          <h3>Quel est votre objectif principal ?</h3>
+          <h3>Qu'est-ce qui vous dérange le plus aujourd'hui ?</h3>
           <div class="quiz-options">
-            <button class="quiz-opt" data-tags="weight">Perdre du poids</button>
-            <button class="quiz-opt" data-tags="energy">Retrouver de l'énergie</button>
-            <button class="quiz-opt" data-tags="stress">Réduire le stress</button>
-            <button class="quiz-opt" data-tags="energy">Mieux dormir</button>
+            <button class="quiz-opt" data-tags="energy">Fatigue constante</button>
+            <button class="quiz-opt" data-tags="weight">Prise de poids</button>
+            <button class="quiz-opt" data-tags="stress">Stress / anxiété</button>
+            <button class="quiz-opt" data-tags="energy">Mauvais sommeil</button>
           </div>
         </div>
-        <!-- Q2 -->
         <div class="quiz-step" data-step="1" style="display:none;">
           <p class="quiz-label">Question 2 / 5</p>
-          <h3>Comment vous sentez-vous au quotidien ?</h3>
+          <h3>Depuis combien de temps ressentez-vous cela ?</h3>
           <div class="quiz-options">
-            <button class="quiz-opt" data-tags="energy">Fatiguée</button>
-            <button class="quiz-opt" data-tags="stress">Stressée</button>
-            <button class="quiz-opt" data-tags="energy,stress">Les deux</button>
-            <button class="quiz-opt" data-tags="energy,hormonal">Épuisée</button>
+            <button class="quiz-opt" data-tags="">Quelques semaines</button>
+            <button class="quiz-opt" data-tags="energy">Plusieurs mois</button>
+            <button class="quiz-opt" data-tags="energy,hormonal">Plus d'un an</button>
           </div>
         </div>
-        <!-- Q3 -->
         <div class="quiz-step" data-step="2" style="display:none;">
           <p class="quiz-label">Question 3 / 5</p>
-          <h3>Avez-vous déjà essayé des solutions ?</h3>
+          <h3>Qu'est-ce que cela impacte le plus dans votre vie ?</h3>
           <div class="quiz-options">
-            <button class="quiz-opt" data-tags="">Oui, sans résultat</button>
-            <button class="quiz-opt" data-tags="">Oui, un peu efficace</button>
-            <button class="quiz-opt" data-tags="">Non</button>
-            <button class="quiz-opt" data-tags="stress">Trop de choses différentes</button>
+            <button class="quiz-opt" data-tags="energy">Mon énergie au quotidien</button>
+            <button class="quiz-opt" data-tags="stress">Mon moral</button>
+            <button class="quiz-opt" data-tags="weight">Mon corps / mon apparence</button>
+            <button class="quiz-opt" data-tags="stress">Mon travail / ma concentration</button>
           </div>
         </div>
-        <!-- Q4 -->
         <div class="quiz-step" data-step="3" style="display:none;">
           <p class="quiz-label">Question 4 / 5</p>
-          <h3>Votre tranche d'âge ?</h3>
+          <h3>Avez-vous déjà essayé de résoudre ce problème ?</h3>
           <div class="quiz-options">
-            <button class="quiz-opt" data-tags="">30 à 39 ans</button>
-            <button class="quiz-opt" data-tags="hormonal">40 à 49 ans</button>
-            <button class="quiz-opt" data-tags="hormonal">50 ans et plus</button>
+            <button class="quiz-opt" data-tags="">Oui, sans résultat</button>
+            <button class="quiz-opt" data-tags="">Oui, mais ça ne dure pas</button>
+            <button class="quiz-opt" data-tags="hormonal">Non, je ne sais pas quoi faire</button>
           </div>
         </div>
-        <!-- Q5 -->
         <div class="quiz-step" data-step="4" style="display:none;">
           <p class="quiz-label">Question 5 / 5</p>
-          <h3>Quel résultat voulez-vous en priorité ?</h3>
+          <h3>Si rien ne change, comment vous voyez-vous dans 3 mois ?</h3>
           <div class="quiz-options">
-            <button class="quiz-opt" data-tags="energy">Me sentir mieux rapidement</button>
-            <button class="quiz-opt" data-tags="weight">Perdre du poids durablement</button>
-            <button class="quiz-opt" data-tags="hormonal">Retrouver mon équilibre</button>
-            <button class="quiz-opt" data-tags="stress">Réduire ma charge mentale</button>
+            <button class="quiz-opt" data-tags="energy">Fatiguée comme aujourd'hui</button>
+            <button class="quiz-opt" data-tags="energy,stress">Encore plus épuisée</button>
+            <button class="quiz-opt" data-tags="weight,hormonal">Toujours bloquée</button>
+            <button class="quiz-opt" data-tags="stress">Je préfère ne pas y penser</button>
           </div>
         </div>
       </div>
 
-      <!-- Result screen (hidden until quiz completes) -->
+      <!-- Transition screen (hidden) -->
+      <div id="quiz-transition" style="display:none; text-align:center; padding:40px 0;">
+        <div style="font-size:2rem; margin-bottom:24px;">🌿</div>
+        <div style="display:flex; flex-direction:column; gap:16px; align-items:center;">
+          <p class="quiz-trans-line" style="font-size:.95rem; color:var(--gray-600); opacity:0; transition:opacity .5s ease;">Analyse de votre profil…</p>
+          <p class="quiz-trans-line" style="font-size:.95rem; color:var(--gray-600); opacity:0; transition:opacity .5s ease;">Identification de vos priorités…</p>
+          <p class="quiz-trans-line" style="font-size:.95rem; color:var(--gray-600); opacity:0; transition:opacity .5s ease;">Préparation de votre programme…</p>
+        </div>
+      </div>
+
+      <!-- Result screen -->
       <div id="quiz-result" style="display:none; text-align:center;">
         <div style="font-size:2.5rem; margin-bottom:16px;">🌿</div>
         <h3 style="font-size:1.3rem; font-weight:700; color:var(--black); margin-bottom:12px;">Votre corps montre des signes de déséquilibre</h3>
-        <p style="font-size:.95rem; color:var(--gray-600); margin-bottom:24px;">Bonne nouvelle : il est possible d'agir avec un programme adapté à votre profil.</p>
-        <div style="background:var(--green-light); border-radius:12px; padding:20px 24px; margin-bottom:24px; text-align:left;">
+        <p style="font-size:.95rem; color:var(--gray-600); margin-bottom:20px;">Bonne nouvelle : il est possible d'agir avec un programme adapté à votre profil.</p>
+        <div style="background:var(--green-light); border-radius:12px; padding:20px 24px; margin-bottom:16px; text-align:left;">
           <p id="quiz-profile-text" style="font-size:.95rem; color:var(--black); line-height:1.6; margin:0; font-weight:500;"></p>
         </div>
+        <p style="font-size:.88rem; color:var(--gray-900); margin-bottom:24px; font-weight:500;">Votre situation n'est pas anodine — sans action, elle a tendance à s'installer.</p>
         <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:32px; text-align:left;">
           <span style="font-size:.9rem; color:var(--gray-600);">✓ Programme adapté à votre profil</span>
           <span style="font-size:.9rem; color:var(--gray-600);">✓ Sans régime strict</span>
           <span style="font-size:.9rem; color:var(--gray-600);">✓ Simple à suivre au quotidien</span>
         </div>
-        <button class="btn btn-lg btn-block" id="quiz-see-program">Voir mon programme</button>
+        <button class="btn btn-lg btn-block" id="quiz-see-program">Accéder à mon programme personnalisé</button>
       </div>
 
       <!-- Offer screen (hidden until result CTA click) -->
@@ -231,7 +236,7 @@
           <span style="font-size:.9rem; color:var(--gray-600);">✓ Analyse photo peau HD</span>
           <span style="font-size:.9rem; color:var(--gray-600);">✓ Export PDF des plans</span>
         </div>
-        <p style="font-size:.9rem; color:var(--gray-600); margin-bottom:24px; font-style:italic;">Conçu pour vous aider à retrouver votre énergie durablement.</p>
+        <p style="font-size:.9rem; color:var(--gray-600); margin-bottom:24px; font-style:italic;">Conçu pour vous aider à retrouver votre énergie durablement et reprendre le contrôle.</p>
         <a href="#" data-plan="precision" class="btn btn-lg btn-block" id="quiz-checkout">Commencer à 59€/mois</a>
         <p style="font-size:.78rem; color:#9ca3af; margin-top:16px;">Ou <a href="app.html" style="color:var(--green); text-decoration:underline;">essayer gratuitement</a> avec 5 consultations/mois</p>
       </div>
@@ -682,6 +687,7 @@
       quizSteps.forEach((s, i) => s.style.display = i === 0 ? '' : 'none');
       document.getElementById('quiz-result').style.display = 'none';
       document.getElementById('quiz-offer').style.display = 'none';
+      document.getElementById('quiz-transition').style.display = 'none';
       document.getElementById('quiz-questions').style.display = '';
       quizProgressFill.style.width = (1 / totalSteps * 100) + '%';
       quizOverlay.classList.add('visible');
@@ -710,15 +716,28 @@
     function showResult() {
       document.getElementById('quiz-questions').style.display = 'none';
       quizProgressFill.style.width = '100%';
-      const profileTexts = {
-        energy: 'Votre priorité semble être de retrouver de l\u2019énergie et de réduire la fatigue quotidienne.',
-        stress: 'Votre profil suggère un déséquilibre lié au stress et à la fatigue.',
-        weight: 'Votre corps semble surtout avoir besoin d\u2019un cadre simple pour relancer l\u2019énergie et faciliter la perte de poids.',
-        hormonal: 'Votre profil indique un possible déséquilibre hormonal qui impacte votre énergie et votre bien-être.'
-      };
-      const top = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
-      document.getElementById('quiz-profile-text').textContent = profileTexts[top];
-      document.getElementById('quiz-result').style.display = '';
+
+      // Show transition screen
+      const transEl = document.getElementById('quiz-transition');
+      transEl.style.display = '';
+      const lines = transEl.querySelectorAll('.quiz-trans-line');
+      lines.forEach(l => l.style.opacity = '0');
+      lines[0] && setTimeout(() => lines[0].style.opacity = '1', 200);
+      lines[1] && setTimeout(() => lines[1].style.opacity = '1', 700);
+      lines[2] && setTimeout(() => lines[2].style.opacity = '1', 1200);
+
+      setTimeout(() => {
+        transEl.style.display = 'none';
+        const profileTexts = {
+          energy: 'Votre priorité semble être de retrouver votre énergie et de réduire la fatigue quotidienne.',
+          stress: 'Votre profil suggère une tension durable liée au stress et à la charge mentale.',
+          weight: 'Votre corps semble avoir besoin d\u2019un cadre plus simple et plus stable pour retrouver son équilibre.',
+          hormonal: 'Votre profil montre plusieurs déséquilibres combinés qui méritent une approche globale.'
+        };
+        const top = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
+        document.getElementById('quiz-profile-text').textContent = profileTexts[top];
+        document.getElementById('quiz-result').style.display = '';
+      }, 1800);
     }
 
     // Result → offer
