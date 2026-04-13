@@ -42,73 +42,201 @@
   <section class="hero">
     <div class="container">
       <h1 data-i18n="hero.title" style="max-width:600px; margin-left:auto; margin-right:auto;">Fatigue, stress, prise de poids ?</h1>
-      <p class="hero-sub" data-i18n="hero.sub">Elisa identifie la cause et vous aide à retrouver votre énergie.</p>
+      <p class="hero-sub" data-i18n="hero.sub">Elisa identifie la cause et vous aide à retrouver votre énergie durablement.</p>
       <p class="hero-proof" data-i18n="hero.proof">Analyse gratuite en 2 minutes — sans engagement</p>
       <div class="hero-actions">
-        <a href="app.html" class="btn btn-lg" data-i18n="hero.cta1">Commencer gratuitement</a>
-        <a href="#comment-ca-marche" class="btn btn-outline btn-lg" data-i18n="hero.cta2">En savoir plus</a>
+        <a href="#" class="btn btn-lg" id="start-quiz-hero">Commencer gratuitement</a>
+        <a href="#probleme" class="btn btn-outline btn-lg">En savoir plus</a>
       </div>
     </div>
   </section>
 
-  <!-- PROGRAMMES -->
-  <section id="programmes" class="section">
-    <div class="container">
-      <h2 class="section-title" data-i18n="prog.title">4 programmes pour retrouver votre énergie</h2>
-      <p class="section-sub" data-i18n="prog.sub">Chaque programme s'adapte à votre corps, vos objectifs et votre mode de vie.</p>
-      <div class="cards">
-        <div class="card">
-          <div class="card-icon">🥗</div>
-          <h3 data-i18n="prog.nut.t">Nutrition</h3>
-          <p data-i18n="prog.nut.d">Des repas adaptés à votre corps pour retrouver de l'énergie et faciliter la perte de poids.</p>
-          <a href="app.html#nutrition" class="card-link" data-i18n="prog.start">Démarrer →</a>
+  <!-- BLOC PROBLÈME -->
+  <section id="probleme" class="section">
+    <div class="container" style="text-align:center;">
+      <h2 class="section-title">Pourquoi vous vous sentez comme ça ?</h2>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:24px; max-width:760px; margin:0 auto 40px;">
+        <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:16px; padding:32px 24px; text-align:center;">
+          <div style="font-size:2rem; margin-bottom:12px;">😴</div>
+          <h3 style="font-size:1.05rem; font-weight:700; margin-bottom:6px; color:var(--black);">Fatigue constante</h3>
+          <p style="font-size:.9rem; color:var(--gray-600);">Même après une nuit complète</p>
         </div>
-        <div class="card">
-          <div class="card-icon">⚡</div>
-          <h3 data-i18n="prog.bio.t">Biohacking</h3>
-          <p data-i18n="prog.bio.d">Améliorez votre sommeil, votre concentration et votre énergie au quotidien.</p>
-          <a href="app.html#biohacking" class="card-link" data-i18n="prog.start">Démarrer →</a>
+        <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:16px; padding:32px 24px; text-align:center;">
+          <div style="font-size:2rem; margin-bottom:12px;">⚖️</div>
+          <h3 style="font-size:1.05rem; font-weight:700; margin-bottom:6px; color:var(--black);">Prise de poids inexpliquée</h3>
+          <p style="font-size:.9rem; color:var(--gray-600);">Malgré vos efforts</p>
         </div>
-        <div class="card">
-          <div class="card-icon">🔬</div>
-          <h3 data-i18n="prog.hor.t">Hormonal</h3>
-          <p data-i18n="prog.hor.d">Rééquilibrez votre corps pour réduire fatigue, stress et dérèglements hormonaux.</p>
-          <a href="app.html#hormonal" class="card-link" data-i18n="prog.start">Démarrer →</a>
-        </div>
-        <div class="card">
-          <div class="card-icon">✨</div>
-          <h3 data-i18n="prog.bea.t">Beauté</h3>
-          <p data-i18n="prog.bea.d">Améliorez votre peau et votre bien-être grâce à une approche interne et personnalisée.</p>
-          <a href="app.html#beaute" class="card-link" data-i18n="prog.start">Démarrer →</a>
+        <div style="background:var(--white); border:1px solid var(--gray-100); border-radius:16px; padding:32px 24px; text-align:center;">
+          <div style="font-size:2rem; margin-bottom:12px;">🧠</div>
+          <h3 style="font-size:1.05rem; font-weight:700; margin-bottom:6px; color:var(--black);">Stress et anxiété</h3>
+          <p style="font-size:.9rem; color:var(--gray-600);">Difficiles à contrôler</p>
         </div>
       </div>
+      <p style="font-size:1.1rem; color:var(--gray-600); margin-bottom:32px; font-style:italic;">Votre corps essaie de vous dire quelque chose.</p>
+      <a href="#" class="btn btn-lg" id="start-quiz-problem">Faire mon analyse gratuite</a>
     </div>
   </section>
 
   <!-- COMMENT ÇA MARCHE -->
   <section id="comment-ca-marche" class="section section-alt">
     <div class="container">
-      <h2 class="section-title" data-i18n="how.title">Comment ça marche</h2>
-      <p class="section-sub" data-i18n="how.sub">En 3 étapes simples, retrouvez votre énergie.</p>
+      <h2 class="section-title">Comment ça marche</h2>
+      <p class="section-sub">En 3 étapes simples, retrouvez votre énergie.</p>
       <div class="steps">
         <div class="step">
           <div class="step-number">1</div>
-          <h3 data-i18n="how.s1.t">Parlez-nous de vous</h3>
-          <p data-i18n="how.s1.d">2 minutes suffisent pour décrire votre situation, vos objectifs et votre mode de vie.</p>
+          <h3>Répondez à 5 questions</h3>
+          <p>2 minutes suffisent pour identifier votre profil et vos priorités.</p>
         </div>
         <div class="step">
           <div class="step-number">2</div>
-          <h3 data-i18n="how.s2.t">Elisa analyse votre profil</h3>
-          <p data-i18n="how.s2.d">Analyse votre profil et identifie les causes réelles de votre fatigue et les déséquilibres à corriger en priorité.</p>
+          <h3>Elisa analyse votre profil</h3>
+          <p>Elle identifie les causes réelles de votre fatigue et les déséquilibres à corriger.</p>
         </div>
         <div class="step">
           <div class="step-number">3</div>
-          <h3 data-i18n="how.s3.t">Recevez votre plan personnalisé</h3>
-          <p data-i18n="how.s3.d">Un programme clair pour retrouver votre énergie et atteindre vos objectifs.</p>
+          <h3>Recevez votre programme</h3>
+          <p>Un plan clair et personnalisé pour retrouver votre énergie.</p>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- PROGRAMMES (kept for SEO / direct visitors) -->
+  <section id="programmes" class="section">
+    <div class="container">
+      <h2 class="section-title">4 programmes pour retrouver votre énergie</h2>
+      <p class="section-sub">Chaque programme s'adapte à votre corps, vos objectifs et votre mode de vie.</p>
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon">🥗</div>
+          <h3>Nutrition</h3>
+          <p>Des repas adaptés à votre corps pour retrouver de l'énergie et faciliter la perte de poids.</p>
+          <a href="app.html?programme=nutrition" class="card-link">Démarrer →</a>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <h3>Biohacking</h3>
+          <p>Améliorez votre sommeil, votre concentration et votre énergie au quotidien.</p>
+          <a href="app.html?programme=biohacking" class="card-link">Démarrer →</a>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔬</div>
+          <h3>Hormonal</h3>
+          <p>Rééquilibrez votre corps pour réduire fatigue, stress et dérèglements hormonaux.</p>
+          <a href="app.html?programme=hormonal" class="card-link">Démarrer →</a>
+        </div>
+        <div class="card">
+          <div class="card-icon">✨</div>
+          <h3>Beauté</h3>
+          <p>Améliorez votre peau et votre bien-être grâce à une approche interne et personnalisée.</p>
+          <a href="app.html?programme=beaute" class="card-link">Démarrer →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ OVERLAY -->
+  <div class="quiz-overlay" id="quiz-overlay">
+    <div class="quiz-modal">
+      <button class="quiz-close" id="quiz-close">&times;</button>
+
+      <!-- Progress bar -->
+      <div class="quiz-progress"><div class="quiz-progress-fill" id="quiz-progress-fill"></div></div>
+
+      <!-- Questions container -->
+      <div id="quiz-questions">
+        <!-- Q1 -->
+        <div class="quiz-step" data-step="0">
+          <p class="quiz-label">Question 1 / 5</p>
+          <h3>Quel est votre objectif principal ?</h3>
+          <div class="quiz-options">
+            <button class="quiz-opt" data-tags="weight">Perdre du poids</button>
+            <button class="quiz-opt" data-tags="energy">Retrouver de l'énergie</button>
+            <button class="quiz-opt" data-tags="stress">Réduire le stress</button>
+            <button class="quiz-opt" data-tags="energy">Mieux dormir</button>
+          </div>
+        </div>
+        <!-- Q2 -->
+        <div class="quiz-step" data-step="1" style="display:none;">
+          <p class="quiz-label">Question 2 / 5</p>
+          <h3>Comment vous sentez-vous au quotidien ?</h3>
+          <div class="quiz-options">
+            <button class="quiz-opt" data-tags="energy">Fatiguée</button>
+            <button class="quiz-opt" data-tags="stress">Stressée</button>
+            <button class="quiz-opt" data-tags="energy,stress">Les deux</button>
+            <button class="quiz-opt" data-tags="energy,hormonal">Épuisée</button>
+          </div>
+        </div>
+        <!-- Q3 -->
+        <div class="quiz-step" data-step="2" style="display:none;">
+          <p class="quiz-label">Question 3 / 5</p>
+          <h3>Avez-vous déjà essayé des solutions ?</h3>
+          <div class="quiz-options">
+            <button class="quiz-opt" data-tags="">Oui, sans résultat</button>
+            <button class="quiz-opt" data-tags="">Oui, un peu efficace</button>
+            <button class="quiz-opt" data-tags="">Non</button>
+            <button class="quiz-opt" data-tags="stress">Trop de choses différentes</button>
+          </div>
+        </div>
+        <!-- Q4 -->
+        <div class="quiz-step" data-step="3" style="display:none;">
+          <p class="quiz-label">Question 4 / 5</p>
+          <h3>Votre tranche d'âge ?</h3>
+          <div class="quiz-options">
+            <button class="quiz-opt" data-tags="">30 à 39 ans</button>
+            <button class="quiz-opt" data-tags="hormonal">40 à 49 ans</button>
+            <button class="quiz-opt" data-tags="hormonal">50 ans et plus</button>
+          </div>
+        </div>
+        <!-- Q5 -->
+        <div class="quiz-step" data-step="4" style="display:none;">
+          <p class="quiz-label">Question 5 / 5</p>
+          <h3>Quel résultat voulez-vous en priorité ?</h3>
+          <div class="quiz-options">
+            <button class="quiz-opt" data-tags="energy">Me sentir mieux rapidement</button>
+            <button class="quiz-opt" data-tags="weight">Perdre du poids durablement</button>
+            <button class="quiz-opt" data-tags="hormonal">Retrouver mon équilibre</button>
+            <button class="quiz-opt" data-tags="stress">Réduire ma charge mentale</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result screen (hidden until quiz completes) -->
+      <div id="quiz-result" style="display:none; text-align:center;">
+        <div style="font-size:2.5rem; margin-bottom:16px;">🌿</div>
+        <h3 style="font-size:1.3rem; font-weight:700; color:var(--black); margin-bottom:12px;">Votre corps montre des signes de déséquilibre</h3>
+        <p style="font-size:.95rem; color:var(--gray-600); margin-bottom:24px;">Bonne nouvelle : il est possible d'agir avec un programme adapté à votre profil.</p>
+        <div style="background:var(--green-light); border-radius:12px; padding:20px 24px; margin-bottom:24px; text-align:left;">
+          <p id="quiz-profile-text" style="font-size:.95rem; color:var(--black); line-height:1.6; margin:0; font-weight:500;"></p>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:32px; text-align:left;">
+          <span style="font-size:.9rem; color:var(--gray-600);">✓ Programme adapté à votre profil</span>
+          <span style="font-size:.9rem; color:var(--gray-600);">✓ Sans régime strict</span>
+          <span style="font-size:.9rem; color:var(--gray-600);">✓ Simple à suivre au quotidien</span>
+        </div>
+        <button class="btn btn-lg btn-block" id="quiz-see-program">Voir mon programme</button>
+      </div>
+
+      <!-- Offer screen (hidden until result CTA click) -->
+      <div id="quiz-offer" style="display:none; text-align:center;">
+        <p style="font-size:.82rem; font-weight:600; color:var(--green); text-transform:uppercase; letter-spacing:.05em; margin-bottom:8px;">Recommandé pour vous</p>
+        <h3 style="font-size:1.3rem; font-weight:700; color:var(--black); margin-bottom:24px;">Le programme adapté à votre profil</h3>
+        <div style="font-size:2.8rem; font-weight:800; color:var(--black); line-height:1; margin-bottom:4px;">59€<span style="font-size:.95rem; font-weight:500; color:var(--gray-600);">/mois</span></div>
+        <p style="font-size:.85rem; color:var(--gray-600); margin-bottom:28px;">Résiliable à tout moment</p>
+        <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:28px; text-align:left;">
+          <span style="font-size:.9rem; color:var(--gray-600);">✓ Consultations illimitées</span>
+          <span style="font-size:.9rem; color:var(--gray-600);">✓ Programme complet personnalisé</span>
+          <span style="font-size:.9rem; color:var(--gray-600);">✓ Historique illimité</span>
+          <span style="font-size:.9rem; color:var(--gray-600);">✓ Analyse photo peau HD</span>
+          <span style="font-size:.9rem; color:var(--gray-600);">✓ Export PDF des plans</span>
+        </div>
+        <p style="font-size:.9rem; color:var(--gray-600); margin-bottom:24px; font-style:italic;">Conçu pour vous aider à retrouver votre énergie durablement.</p>
+        <a href="#" data-plan="precision" class="btn btn-lg btn-block" id="quiz-checkout">Commencer à 59€/mois</a>
+        <p style="font-size:.78rem; color:#9ca3af; margin-top:16px;">Ou <a href="app.html" style="color:var(--green); text-decoration:underline;">essayer gratuitement</a> avec 5 consultations/mois</p>
+      </div>
+    </div>
+  </div>
 
   <!-- PRICING -->
   <section id="pricing" class="section">
@@ -291,6 +419,64 @@
     }
     @media (max-width: 480px) {
       .checkout-modal { padding: 32px 24px 28px; }
+    }
+
+    /* ---- Quiz overlay ---- */
+    .quiz-overlay {
+      position: fixed; inset: 0; z-index: 999;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(15,17,23,.5);
+      backdrop-filter: blur(4px);
+      padding: 24px;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s ease;
+    }
+    .quiz-overlay.visible { opacity: 1; pointer-events: auto; }
+    .quiz-modal {
+      background: #fff; border-radius: 20px;
+      padding: 44px 40px 40px; max-width: 500px; width: 100%;
+      position: relative;
+      box-shadow: 0 24px 64px rgba(15,17,23,.14);
+      transform: translateY(12px);
+      transition: transform .3s ease;
+      max-height: 90vh; overflow-y: auto;
+    }
+    .quiz-overlay.visible .quiz-modal { transform: translateY(0); }
+    .quiz-close {
+      position: absolute; top: 16px; right: 20px;
+      background: none; border: none; font-size: 1.5rem;
+      color: var(--gray-600); cursor: pointer;
+    }
+    .quiz-close:hover { color: var(--black); }
+    .quiz-progress {
+      height: 4px; background: var(--gray-100); border-radius: 4px;
+      margin-bottom: 32px; overflow: hidden;
+    }
+    .quiz-progress-fill {
+      height: 100%; width: 20%; background: var(--green);
+      border-radius: 4px; transition: width .4s ease;
+    }
+    .quiz-label {
+      font-size: .78rem; font-weight: 600; color: var(--green);
+      text-transform: uppercase; letter-spacing: .04em; margin-bottom: 8px;
+    }
+    .quiz-step h3 {
+      font-size: 1.2rem; font-weight: 700; color: var(--black);
+      margin-bottom: 24px; line-height: 1.35;
+    }
+    .quiz-options { display: flex; flex-direction: column; gap: 10px; }
+    .quiz-opt {
+      display: block; width: 100%;
+      padding: 14px 20px; border: 1.5px solid var(--gray-300);
+      border-radius: 10px; background: #fff;
+      font-size: .95rem; font-family: inherit; font-weight: 500;
+      color: var(--gray-900); cursor: pointer;
+      text-align: left; transition: all .15s ease;
+    }
+    .quiz-opt:hover { border-color: var(--green); background: var(--green-light); color: var(--green-dark); }
+    @media (max-width: 480px) {
+      .quiz-modal { padding: 32px 24px 28px; border-radius: 16px; }
+      .quiz-step h3 { font-size: 1.1rem; }
     }
   </style>
 
@@ -481,6 +667,73 @@
         checkoutConfirm.disabled = false;
         alert((getLang() === 'fr' ? 'Impossible de lancer le paiement : ' : 'Unable to start payment: ') + err.message);
       }
+    });
+    // ---- Quiz funnel ----
+    const quizOverlay = document.getElementById('quiz-overlay');
+    const quizSteps = document.querySelectorAll('.quiz-step');
+    const quizProgressFill = document.getElementById('quiz-progress-fill');
+    const totalSteps = quizSteps.length;
+    let currentStep = 0;
+    const scores = { energy: 0, stress: 0, weight: 0, hormonal: 0 };
+
+    function openQuiz() {
+      currentStep = 0;
+      Object.keys(scores).forEach(k => scores[k] = 0);
+      quizSteps.forEach((s, i) => s.style.display = i === 0 ? '' : 'none');
+      document.getElementById('quiz-result').style.display = 'none';
+      document.getElementById('quiz-offer').style.display = 'none';
+      document.getElementById('quiz-questions').style.display = '';
+      quizProgressFill.style.width = (1 / totalSteps * 100) + '%';
+      quizOverlay.classList.add('visible');
+    }
+
+    document.getElementById('start-quiz-hero').addEventListener('click', e => { e.preventDefault(); openQuiz(); });
+    document.getElementById('start-quiz-problem').addEventListener('click', e => { e.preventDefault(); openQuiz(); });
+    document.getElementById('quiz-close').addEventListener('click', () => quizOverlay.classList.remove('visible'));
+    quizOverlay.addEventListener('click', e => { if (e.target === quizOverlay) quizOverlay.classList.remove('visible'); });
+
+    // Answer click
+    document.querySelectorAll('.quiz-opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tags = btn.dataset.tags.split(',').filter(Boolean);
+        tags.forEach(t => { if (scores[t] !== undefined) scores[t]++; });
+        currentStep++;
+        if (currentStep < totalSteps) {
+          quizSteps.forEach((s, i) => s.style.display = i === currentStep ? '' : 'none');
+          quizProgressFill.style.width = ((currentStep + 1) / totalSteps * 100) + '%';
+        } else {
+          showResult();
+        }
+      });
+    });
+
+    function showResult() {
+      document.getElementById('quiz-questions').style.display = 'none';
+      quizProgressFill.style.width = '100%';
+      const profileTexts = {
+        energy: 'Votre priorité semble être de retrouver de l\u2019énergie et de réduire la fatigue quotidienne.',
+        stress: 'Votre profil suggère un déséquilibre lié au stress et à la fatigue.',
+        weight: 'Votre corps semble surtout avoir besoin d\u2019un cadre simple pour relancer l\u2019énergie et faciliter la perte de poids.',
+        hormonal: 'Votre profil indique un possible déséquilibre hormonal qui impacte votre énergie et votre bien-être.'
+      };
+      const top = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
+      document.getElementById('quiz-profile-text').textContent = profileTexts[top];
+      document.getElementById('quiz-result').style.display = '';
+    }
+
+    // Result → offer
+    document.getElementById('quiz-see-program').addEventListener('click', () => {
+      document.getElementById('quiz-result').style.display = 'none';
+      document.getElementById('quiz-offer').style.display = '';
+    });
+
+    // Offer → Stripe checkout (reuses existing checkout modal)
+    document.getElementById('quiz-checkout').addEventListener('click', (e) => {
+      e.preventDefault();
+      quizOverlay.classList.remove('visible');
+      // Trigger the precision plan checkout
+      const precisionBtn = document.querySelector('[data-plan="precision"]');
+      if (precisionBtn) precisionBtn.click();
     });
   </script>
 
