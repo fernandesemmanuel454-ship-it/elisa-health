@@ -338,22 +338,36 @@
   <div class="checkout-overlay" id="checkout-modal">
     <div class="checkout-modal">
       <button class="checkout-close" id="checkout-close" aria-label="Fermer">&times;</button>
-      <h3 id="checkout-plan-name"></h3>
-      <div class="checkout-reassurance">
-        <div class="checkout-check">✔ <span data-i18n="ck.instant">Accès immédiat après paiement</span></div>
-        <div class="checkout-check">✔ <span data-i18n="ck.monthly">Abonnement mensuel avec renouvellement automatique</span></div>
-        <div class="checkout-check">✔ <span data-i18n="ck.cancel">Résiliable à tout moment</span></div>
-        <div class="checkout-check">✔ <span data-i18n="ck.secure">Paiement sécurisé via Stripe</span></div>
+
+      <h3 id="checkout-plan-name" style="font-size:1.2rem; margin-bottom:6px;">Dernière étape pour accéder à votre programme personnalisé</h3>
+      <p class="checkout-subtitle" style="font-size:.92rem; color:var(--gray-600); margin:0 0 28px; line-height:1.5;">Votre programme est prêt — vous pouvez commencer immédiatement.</p>
+
+      <!-- Bloc valeur -->
+      <div class="checkout-reassurance" style="margin-bottom:20px;">
+        <div class="checkout-check">✔ <span>Programme 100% adapté à votre profil</span></div>
+        <div class="checkout-check">✔ <span>Accès immédiat après paiement</span></div>
+        <div class="checkout-check">✔ <span>Suivi simple au quotidien</span></div>
       </div>
-      <label class="checkout-cgv-label">
+
+      <!-- Bloc rassurance -->
+      <div style="margin-bottom:24px; padding:14px 16px; background:var(--gray-100); border-radius:10px;">
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <span style="font-size:.82rem; color:var(--gray-600);">✓ Abonnement mensuel avec renouvellement automatique</span>
+          <span style="font-size:.82rem; color:var(--gray-600);">✓ Résiliable à tout moment</span>
+          <span style="font-size:.82rem; color:var(--gray-600);">✓ Paiement sécurisé via Stripe</span>
+        </div>
+      </div>
+
+      <label class="checkout-cgv-label" style="margin-bottom:20px;">
         <input type="checkbox" id="checkout-cgv">
-        <span><span data-i18n="ck.accept">J'accepte les</span> <a href="cgv.html" target="_blank" rel="noopener">Conditions Générales de Vente</a></span>
+        <span style="font-size:.82rem; color:#9ca3af;">J'accepte les <a href="cgv.html" target="_blank" rel="noopener" style="color:var(--green);">Conditions Générales de Vente</a></span>
       </label>
-      <p class="checkout-digital-note" data-i18n="ck.digital">Service numérique fourni immédiatement après paiement.</p>
+
       <button class="btn btn-lg btn-block" id="checkout-confirm" disabled>
         <span id="checkout-btn-text"></span>
       </button>
-      <p class="checkout-legal" data-i18n="ck.legal">En validant, vous souscrivez à un abonnement mensuel à renouvellement automatique. Vous pouvez résilier à tout moment. L'accès au service est immédiat après paiement.</p>
+
+      <p class="checkout-legal">En validant, vous activez votre abonnement mensuel à 59€/mois. Vous pouvez résilier à tout moment. L'accès à votre programme est immédiat après paiement.</p>
     </div>
   </div>
 
@@ -617,8 +631,10 @@
         const price = planPrices[plan] || '';
         const name = planNames[plan]?.[l] || plan;
         const perMonth = l === 'fr' ? '/mois' : '/month';
-        document.getElementById('checkout-plan-name').textContent = name + ' — ' + price + perMonth;
-        checkoutBtnText.textContent = Tr('ck.btn').replace('{price}', price);
+        document.getElementById('checkout-plan-name').textContent = l === 'fr'
+          ? 'Dernière étape pour accéder à votre programme personnalisé'
+          : 'Last step to access your personalized program';
+        checkoutBtnText.textContent = (l === 'fr' ? 'Accéder à mon programme pour ' : 'Access my program for ') + price + perMonth;
         checkoutCgv.checked = false;
         checkoutConfirm.disabled = true;
         // Update i18n in modal
