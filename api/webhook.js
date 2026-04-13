@@ -125,8 +125,8 @@ function renderWelcomeEmail({ firstName, planLabel, priceLabel, appUrl }) {
           <tr>
             <td style="padding:24px 48px 32px 48px; background-color:#f3f4f6;">
               <p style="margin:0; font-size:12px; line-height:1.5; color:#6b7280; text-align:center;">
-                © 2026 Elisa Health SAS · Intelligence artificielle au service de votre santé.<br>
-                Elisa Health ne se substitue pas à un avis médical professionnel.
+                © 2026 F.E.E.E Exploitation Sàrl · Intelligence artificielle au service de votre bien-être.<br>
+                Elisa Health est un outil d'accompagnement au bien-être. Il ne constitue pas un avis médical.
               </p>
             </td>
           </tr>
