@@ -73,21 +73,15 @@ export default async function handler(req, res) {
         description: `Abonnement mensuel ${PLAN_LABELS[plan] || 'Elisa Health'} — renouvelé automatiquement chaque mois. Résiliable à tout moment.`,
         metadata: { plan }
       },
-      consent_collection: {
-        terms_of_service: 'required'
-      },
       custom_text: {
-        terms_of_service_acceptance: {
-          message: 'J\'accepte les [Conditions Générales de Vente](https://elisahealth.eu/cgv.html) de F.E.E.E Exploitation Sàrl.'
-        },
         submit: {
-          message: 'Abonnement mensuel avec renouvellement automatique. Service numérique fourni immédiatement après paiement.'
+          message: 'Abonnement mensuel avec renouvellement automatique. Résiliable à tout moment. Service numérique fourni immédiatement après paiement.'
         }
       }
     });
     return res.status(200).json({ url: session.url });
   } catch (err) {
-    console.error('[stripe] checkout session creation failed:', err.message);
+    console.error('[stripe] checkout session creation failed:', { plan, priceId, error: err.message, type: err.type, code: err.code });
     return res.status(502).json({
       error: { message: `Stripe error: ${err.message}` }
     });
