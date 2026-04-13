@@ -55,6 +55,11 @@ export default async function handler(req, res) {
 
   try {
     const stripe = new Stripe(secretKey);
+    const PLAN_LABELS = {
+      essentiel: 'Elisa Health — Essentiel',
+      precision: 'Elisa Health — Précision',
+      pro: 'Elisa Health — Pro'
+    };
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
       line_items: [{ price: priceId, quantity: 1 }],
@@ -63,7 +68,22 @@ export default async function handler(req, res) {
       allow_promotion_codes: true,
       billing_address_collection: 'auto',
       locale: 'fr',
-      metadata: { plan }
+      metadata: { plan },
+      subscription_data: {
+        description: `Abonnement mensuel ${PLAN_LABELS[plan] || 'Elisa Health'} — renouvelé automatiquement chaque mois. Résiliable à tout moment.`,
+        metadata: { plan }
+      },
+      consent_collection: {
+        terms_of_service: 'required'
+      },
+      custom_text: {
+        terms_of_service_acceptance: {
+          message: 'J\'accepte les [Conditions Générales de Vente](https://elisahealth.eu/cgv.html) de F.E.E.E Exploitation Sàrl.'
+        },
+        submit: {
+          message: 'Abonnement mensuel avec renouvellement automatique. Service numérique fourni immédiatement après paiement.'
+        }
+      }
     });
     return res.status(200).json({ url: session.url });
   } catch (err) {

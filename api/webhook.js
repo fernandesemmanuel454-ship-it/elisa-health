@@ -45,8 +45,8 @@ function formatAmount(amountTotal, currency) {
 function renderWelcomeEmail({ firstName, planLabel, priceLabel, appUrl }) {
   const greeting = firstName ? `Bonjour ${firstName},` : 'Bonjour,';
   const planLine = planLabel
-    ? `Votre abonnement <strong>${planLabel}</strong>${priceLabel ? ` (${priceLabel} / mois)` : ''} est désormais actif.`
-    : 'Votre abonnement est désormais actif.';
+    ? `Votre abonnement mensuel <strong>${planLabel}</strong>${priceLabel ? ` (${priceLabel}/mois)` : ''} est désormais actif. Il sera renouvelé automatiquement chaque mois.`
+    : 'Votre abonnement mensuel est désormais actif. Il sera renouvelé automatiquement chaque mois.';
   const planLineText = planLine.replace(/<[^>]+>/g, '');
 
   const html = `<!DOCTYPE html>
@@ -118,7 +118,9 @@ function renderWelcomeEmail({ firstName, planLabel, priceLabel, appUrl }) {
                 à <a href="mailto:contact@elisahealth.eu" style="color:#0ea571; text-decoration:none;">contact@elisahealth.eu</a>.
               </p>
               <p style="margin:0 0 24px 0; font-size:13px; line-height:1.6; color:#6b7280;">
-                Vous pouvez gérer ou annuler votre abonnement à tout moment depuis votre espace client.
+                Vous pouvez résilier votre abonnement à tout moment en écrivant à
+                <a href="mailto:contact@elisahealth.eu" style="color:#0ea571; text-decoration:none;">contact@elisahealth.eu</a>.
+                La résiliation prend effet à la fin de la période en cours.
               </p>
             </td>
           </tr>
