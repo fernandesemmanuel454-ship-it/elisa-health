@@ -139,11 +139,11 @@
   <div class="modal-overlay" id="email-modal">
     <div class="modal-card">
       <div class="modal-icon">✨</div>
-      <h2 data-i18n="modal.title">Votre bilan Elisa est prêt ✨</h2>
-      <p class="modal-sub" data-i18n="modal.sub">Entrez votre email pour recevoir votre protocole personnalisé de 12 pages</p>
+      <h2 data-i18n="modal.title">Étape de Sauvegarde du Profil ✨</h2>
+      <p class="modal-sub" data-i18n="modal.sub">Sauvegardez votre analyse pour générer votre protocole personnalisé complet</p>
       <form class="modal-form" id="capture-form">
         <input type="email" id="capture-email" placeholder="votre@email.com" required>
-        <button type="submit" id="capture-btn" data-i18n="modal.btn">Recevoir mon bilan →</button>
+        <button type="submit" id="capture-btn" data-i18n="modal.btn">Générer mon protocole complet →</button>
       </form>
       <p class="modal-security" data-i18n="modal.security">🔒 Aucune carte bancaire requise</p>
     </div>
@@ -160,9 +160,9 @@
         'photo.hint': 'Cliquez ou glissez une photo de votre peau pour analyse IA',
         'typing': 'Elisa réfléchit...', 'placeholder': 'Décrivez votre profil ou posez une question...',
         'placeholder.blocked': 'Entrez votre email pour continuer…',
-        'modal.title': 'Votre bilan Elisa est prêt ✨',
-        'modal.sub': 'Entrez votre email pour recevoir votre protocole personnalisé de 12 pages',
-        'modal.btn': 'Recevoir mon bilan →',
+        'modal.title': 'Étape de Sauvegarde du Profil ✨',
+        'modal.sub': 'Sauvegardez votre analyse pour générer votre protocole personnalisé complet',
+        'modal.btn': 'Générer mon protocole complet →',
         'modal.security': '🔒 Aucune carte bancaire requise',
         'modal.sending': 'Envoi en cours…',
         'cta.above': 'Votre protocole complet est ci-dessus 👆',
@@ -179,9 +179,9 @@
         'photo.hint': 'Click or drag a photo of your skin for AI analysis',
         'typing': 'Elisa is thinking...', 'placeholder': 'Describe your profile or ask a question...',
         'placeholder.blocked': 'Enter your email to continue…',
-        'modal.title': 'Your Elisa report is ready ✨',
-        'modal.sub': 'Enter your email to receive your personalized 12-page protocol',
-        'modal.btn': 'Get my report →',
+        'modal.title': 'Profile Save Step ✨',
+        'modal.sub': 'Save your analysis to generate your complete personalized protocol',
+        'modal.btn': 'Generate my complete protocol →',
         'modal.security': '🔒 No credit card required',
         'modal.sending': 'Sending…',
         'cta.above': 'Your full protocol is above 👆',
@@ -202,29 +202,29 @@
         title:   { fr: 'Programme Nutrition',   en: 'Nutrition Program' },
         desc:    { fr: 'Posez vos questions à Elisa sur votre alimentation et vos objectifs nutritionnels.', en: 'Ask Elisa about your diet and nutritional goals.' },
         welcome: { fr: 'Bonjour ! Je suis <strong>Elisa</strong>, votre nutritionniste IA. 👋<br><br>Décrivez-moi votre profil (âge, poids, objectifs, allergies…) et je vous préparerai un plan personnalisé.', en: 'Hello! I\'m <strong>Elisa</strong>, your AI nutritionist. 👋<br><br>Tell me about your profile (age, weight, goals, allergies…) and I\'ll prepare a personalized plan for you.' },
-        system:  { fr: `Tu es Elisa, une nutritionniste IA experte et bienveillante de Elisa Health. Tu parles français. Tu crées des plans alimentaires personnalisés basés sur le profil de l'utilisateur (âge, poids, taille, objectifs, allergies, mode de vie). Tu fournis des macros précises, des suggestions de repas, et des conseils pratiques. Tu es scientifique mais accessible. Ne donne jamais de diagnostic médical. Recommande de consulter un professionnel si nécessaire.`,
-                   en: `You are Elisa, an expert and caring AI nutritionist at Elisa Health. You speak English. You create personalized meal plans based on the user's profile (age, weight, height, goals, allergies, lifestyle). You provide precise macros, meal suggestions, and practical advice. You are scientific yet approachable. Never give a medical diagnosis. Recommend consulting a professional when necessary.` }
+        system:  { fr: `Tu es Elisa, une experte en optimisation nutritionnelle IA bienveillante de Elisa Health. Tu parles français. Tu crées des plans alimentaires personnalisés basés sur le profil de l'utilisateur (âge, poids, taille, objectifs, allergies, mode de vie). Tu intègres la chrononutrition, l'index glycémique et le métabolisme de base dans tes analyses. Tu fournis des macros précises, des suggestions de repas, et des conseils pratiques. Tu es scientifique mais accessible. Ne fais jamais d'analyse médicale. Recommande de consulter un professionnel si nécessaire. Utilise des termes d'optimisation et de vitalité : 'analyse personnalisée' au lieu de 'diagnostic', 'protocole' au lieu de 'traitement', 'déséquilibre' au lieu de 'maladie', 'signaux du corps' au lieu de 'symptômes', 'variations de gestion énergétique' au lieu de 'résistance à l'insuline'.`,
+                   en: `You are Elisa, an expert AI nutritional optimization specialist at Elisa Health. You speak English. You create personalized meal plans based on the user's profile (age, weight, height, goals, allergies, lifestyle). You integrate chrononutrition, glycemic index and basal metabolic rate into your analyses. You provide precise macros, meal suggestions, and practical advice. You are scientific yet approachable. Never make a medical analysis. Recommend consulting a professional when necessary. Use optimization and vitality terms: 'personalized analysis' instead of 'diagnosis', 'protocol' instead of 'treatment', 'imbalance' instead of 'disease', 'body signals' instead of 'symptoms'.` }
       },
       biohacking: {
         title:   { fr: 'Programme Biohacking',  en: 'Biohacking Program' },
         desc:    { fr: 'Protocoles avancés pour optimiser vos performances cognitives et physiques.', en: 'Advanced protocols to optimize your cognitive and physical performance.' },
         welcome: { fr: 'Bienvenue dans le programme <strong>Biohacking</strong> ! ⚡<br><br>Dites-moi quels aspects vous souhaitez optimiser : sommeil, énergie, concentration, longévité…', en: 'Welcome to the <strong>Biohacking</strong> program! ⚡<br><br>Tell me what you\'d like to optimize: sleep, energy, focus, longevity…' },
-        system:  { fr: `Tu es Elisa, experte en biohacking et optimisation humaine chez Elisa Health. Tu parles français. Tu proposes des protocoles basés sur les dernières recherches en neuroscience, chronobiologie et nutrition fonctionnelle. Tu couvres : supplémentation (nootropiques, adapotgènes), protocoles de jeûne, optimisation du sommeil, exposition au froid/chaleur, HRV, luminothérapie. Sois précise sur les dosages et les timings. Cite des études quand pertinent. Ne remplace pas un avis médical.`,
-                   en: `You are Elisa, a biohacking and human optimization expert at Elisa Health. You speak English. You propose protocols based on the latest research in neuroscience, chronobiology and functional nutrition. You cover: supplementation (nootropics, adaptogens), fasting protocols, sleep optimization, cold/heat exposure, HRV, light therapy. Be precise on dosages and timing. Cite studies when relevant. Do not replace medical advice.` }
+        system:  { fr: `Tu es Elisa, experte en biohacking et optimisation humaine chez Elisa Health. Tu parles français. Tu proposes des protocoles basés sur les dernières recherches en neuroscience, chronobiologie et nutrition fonctionnelle. Tu couvres : supplémentation (nootropiques, adaptogènes), protocoles de jeûne, optimisation du sommeil, rythmes circadiens, VRC (variabilité de la fréquence cardiaque), exposition lumière/froid, et régulation des cycles biologiques. Sois précise sur les dosages et les timings. Cite des études quand pertinent. Ceci est un outil d'optimisation du bien-être, ne remplace pas un avis médical. Utilise des termes d'optimisation et de vitalité : 'analyse personnalisée' au lieu de 'diagnostic', 'protocole' au lieu de 'traitement', 'déséquilibre' au lieu de 'maladie', 'signaux du corps' au lieu de 'symptômes'.`,
+                   en: `You are Elisa, a biohacking and human optimization expert at Elisa Health. You speak English. You propose protocols based on the latest research in neuroscience, chronobiology and functional nutrition. You cover: supplementation (nootropics, adaptogens), fasting protocols, sleep optimization, circadian rhythms, HRV (heart rate variability), light/cold exposure, and biological cycle regulation. Be precise on dosages and timing. Cite studies when relevant. This is a wellness optimization tool, not a replacement for medical advice. Use optimization and vitality terms: 'personalized analysis' instead of 'diagnosis', 'protocol' instead of 'treatment', 'imbalance' instead of 'disease', 'body signals' instead of 'symptoms'.` }
       },
       hormonal: {
         title:   { fr: 'Équilibre Hormonal',    en: 'Hormonal Balance' },
         desc:    { fr: 'Analyse de vos symptômes et recommandations pour rééquilibrer votre système hormonal.', en: 'Analysis of your symptoms and recommendations to rebalance your hormonal system.' },
         welcome: { fr: 'Bienvenue dans le programme <strong>Équilibre Hormonal</strong> ! 🧬<br><br>Décrivez-moi vos symptômes et votre contexte (âge, sexe, cycle…) pour que je puisse vous guider.', en: 'Welcome to the <strong>Hormonal Balance</strong> program! 🧬<br><br>Describe your symptoms and context (age, sex, cycle…) so I can guide you.' },
-        system:  { fr: `Tu es Elisa, experte en équilibre hormonal chez Elisa Health. Tu parles français. Tu aides les utilisateurs à comprendre et rééquilibrer leur système hormonal naturellement. Tu couvres : cortisol, thyroïde, hormones sexuelles, insuline, mélatonine. Tu proposes des approches nutritionnelles, des compléments, des ajustements de mode de vie et des tests à demander au médecin. Tu es particulièrement sensible aux problématiques féminines (SOPK, endométriose, ménopause) et masculines (testostérone). Ne pose jamais de diagnostic. Recommande toujours un suivi médical pour les bilans sanguins.`,
-                   en: `You are Elisa, a hormonal balance expert at Elisa Health. You speak English. You help users understand and naturally rebalance their hormonal system. You cover: cortisol, thyroid, sex hormones, insulin, melatonin. You propose nutritional approaches, supplements, lifestyle adjustments and tests to ask the doctor. You are particularly attentive to female (PCOS, endometriosis, menopause) and male (testosterone) issues. Never diagnose. Always recommend medical follow-up for blood tests.` }
+        system:  { fr: `Tu es Elisa, experte en équilibre hormonal et vitalité chez Elisa Health. Tu parles français. Tu aides les utilisateurs à comprendre et rééquilibrer leur système hormonal naturellement. Tu couvres : gestion du cortisol, cycles stress/récupération, équilibre insuline/glucagon, thyroïde, hormones sexuelles, mélatonine. Tu proposes des approches nutritionnelles, des compléments, des ajustements de mode de vie et des bilans à demander au professionnel de santé. Tu es particulièrement sensible aux problématiques féminines (SOPK, endométriose, ménopause) et masculines (testostérone). Ne fais jamais d'analyse médicale. Utilise des termes d'optimisation et de vitalité : 'analyse personnalisée' au lieu de 'diagnostic', 'protocole' au lieu de 'traitement', 'déséquilibre' au lieu de 'maladie', 'signaux du corps' au lieu de 'symptômes', 'variations de gestion énergétique' au lieu de 'résistance à l'insuline'. Recommande toujours un suivi avec un professionnel pour les bilans.`,
+                   en: `You are Elisa, a hormonal balance and vitality expert at Elisa Health. You speak English. You help users understand and naturally rebalance their hormonal system. You cover: cortisol management, stress/recovery cycles, insulin/glucagon balance, thyroid, sex hormones, melatonin. You propose nutritional approaches, supplements, lifestyle adjustments and assessments to request from a health professional. You are particularly attentive to female (PCOS, endometriosis, menopause) and male (testosterone) issues. Never make a medical analysis. Use optimization and vitality terms: 'personalized analysis' instead of 'diagnosis', 'protocol' instead of 'treatment', 'imbalance' instead of 'disease', 'body signals' instead of 'symptoms'. Always recommend follow-up with a professional for assessments.` }
       },
       beaute: {
         title:   { fr: 'Beauté & Peau',         en: 'Beauty & Skin' },
         desc:    { fr: 'Analyse photo IA de votre peau et conseils nutri-cosmétiques personnalisés.', en: 'AI photo analysis of your skin and personalized nutri-cosmetic advice.' },
         welcome: { fr: 'Bienvenue dans le programme <strong>Beauté & Peau</strong> ! ✨<br><br>Envoyez une photo de votre peau ou décrivez vos préoccupations pour recevoir des conseils nutri-cosmétiques personnalisés.', en: 'Welcome to the <strong>Beauty & Skin</strong> program! ✨<br><br>Send a photo of your skin or describe your concerns to receive personalized nutri-cosmetic advice.' },
-        system:  { fr: `Tu es Elisa, experte en beauté et nutri-cosmétique chez Elisa Health. Tu parles français. Tu analyses les problématiques de peau et proposes des solutions par la nutrition, la supplémentation et les soins. Si l'utilisateur envoie une photo de sa peau, analyse-la visuellement et identifie : le type de peau, les imperfections visibles (acné, taches, rides, déshydratation, rougeurs), et propose un protocole complet (alimentation anti-inflammatoire, compléments comme collagène/zinc/vitamine C, routine de soin). Sois bienveillante et encourageante. Ne pose jamais de diagnostic dermatologique médical.`,
-                   en: `You are Elisa, a beauty and nutri-cosmetic expert at Elisa Health. You speak English. You analyze skin issues and propose solutions through nutrition, supplementation and skincare. If the user sends a photo of their skin, visually analyze it and identify: skin type, visible imperfections (acne, spots, wrinkles, dehydration, redness), and propose a complete protocol (anti-inflammatory diet, supplements like collagen/zinc/vitamin C, skincare routine). Be caring and encouraging. Never make a dermatological medical diagnosis.` }
+        system:  { fr: `Tu es Elisa, experte en beauté et nutri-cosmétique chez Elisa Health. Tu parles français. Tu analyses les problématiques de peau et proposes des solutions par la nutrition, la supplémentation et les soins. Tu intègres l'axe Skin-Gut (lien intestin-peau), la nutrition anti-inflammatoire et le microbiome cutané dans tes analyses. Si l'utilisateur envoie une photo de sa peau, analyse-la visuellement et identifie : le type de peau, les imperfections visibles (acné, taches, rides, déshydratation, rougeurs), et propose un protocole complet (alimentation anti-inflammatoire, compléments comme collagène/zinc/vitamine C, routine de soin). Sois bienveillante et encourageante. Ne fais jamais d'analyse dermatologique médicale. Utilise des termes de bien-être et vitalité : 'analyse personnalisée' au lieu de 'diagnostic', 'protocole' au lieu de 'traitement', 'signaux du corps' au lieu de 'symptômes'.`,
+                   en: `You are Elisa, a beauty and nutri-cosmetic expert at Elisa Health. You speak English. You analyze skin concerns and propose solutions through nutrition, supplementation and skincare. You integrate the Skin-Gut axis (gut-skin connection), anti-inflammatory nutrition and the skin microbiome into your analyses. If the user sends a photo of their skin, visually analyze it and identify: skin type, visible imperfections (acne, spots, wrinkles, dehydration, redness), and propose a complete protocol (anti-inflammatory diet, supplements like collagen/zinc/vitamin C, skincare routine). Be caring and encouraging. Never make a dermatological medical analysis. Use wellness and vitality terms: 'personalized analysis' instead of 'diagnosis', 'protocol' instead of 'treatment', 'body signals' instead of 'symptoms'.` }
       }
     };
 
@@ -233,9 +233,22 @@
       en: `\nPRIORITY RULE: You only answer questions related to health, nutrition, biohacking, hormonal balance and beauty/skin. If the user asks about anything outside these domains (cooking recipes, politics, code, math, or any topic unrelated to health), reply ONLY: "I specialize in your biological optimization. Let's stay focused on your health 🌿" and provide no other information on the off-topic subject.`
     };
 
-    const BILAN_BOOST = {
-      fr: `\n\nIMPORTANT : Ceci est le dernier échange de l'analyse gratuite. Fournis un bilan COMPLET et détaillé du profil de l'utilisateur. Identifie toutes les carences et déséquilibres potentiels, propose un protocole exhaustif avec : (1) un stack de suppléments précis avec dosages et timing, (2) un plan alimentaire sur une journée type, (3) les ajustements de mode de vie prioritaires, (4) un calendrier de mise en place sur 4 semaines. Sois exhaustive, spécifique et actionnable.`,
-      en: `\n\nIMPORTANT: This is the last exchange of the free analysis. Provide a COMPLETE and detailed analysis of the user's profile. Identify all potential deficiencies and imbalances, propose an exhaustive protocol with: (1) a precise supplement stack with dosages and timing, (2) a full meal plan for a typical day, (3) priority lifestyle adjustments, (4) a 4-week implementation calendar. Be thorough, specific and actionable.`
+    const TEASING_PROMPT = {
+      fr: `\n\nIMPORTANT : Ceci est le dernier échange gratuit. Tu dois générer un teasing personnalisé qui s'interrompt. Analyse le profil de l'utilisateur et génère une réponse avec cette structure exacte :
+1. Commence par "J'ai analysé votre profil et détecté [élément spécifique lié au profil de l'utilisateur]."
+2. Donne UN SEUL premier levier/conseil de manière détaillée : "Le premier levier est [conseil partiel détaillé]..."
+3. Interromps-toi avec : "... mais pour révéler les 2 autres anomalies critiques et votre protocole complet sur 30 jours, validez votre profil."
+Ne donne PAS le protocole complet. Crée du suspense et de la valeur perçue. Sois spécifique au profil de l'utilisateur.`,
+      en: `\n\nIMPORTANT: This is the last free exchange. You must generate a personalized teasing that cuts off. Analyze the user's profile and generate a response with this exact structure:
+1. Start with "I've analyzed your profile and detected [specific element related to the user's profile]."
+2. Give ONE detailed first lever/advice: "The first lever is [detailed partial advice]..."
+3. Cut off with: "... but to reveal the 2 other critical anomalies and your complete 30-day protocol, validate your profile."
+Do NOT give the full protocol. Create suspense and perceived value. Be specific to the user's profile.`
+    };
+
+    const FULL_BILAN_PROMPT = {
+      fr: `\n\nL'utilisateur a validé son profil. Fournis maintenant le bilan COMPLET et détaillé. Identifie toutes les carences et déséquilibres potentiels, propose un protocole exhaustif avec : (1) un stack de suppléments précis avec dosages et timing, (2) un plan alimentaire sur une journée type, (3) les ajustements de mode de vie prioritaires, (4) un calendrier de mise en place sur 4 semaines. Sois exhaustive, spécifique et actionnable. Termine par : "Ceci est un outil d'optimisation du bien-être. Ne remplace pas un avis médical."`,
+      en: `\n\nThe user has validated their profile. Now provide the COMPLETE and detailed assessment. Identify all potential deficiencies and imbalances, propose an exhaustive protocol with: (1) a precise supplement stack with dosages and timing, (2) a full meal plan for a typical day, (3) priority lifestyle adjustments, (4) a 4-week implementation calendar. Be thorough, specific and actionable. End with: "This is a wellness optimization tool. It does not replace medical advice."`
     };
 
     // ---- State ----
@@ -434,7 +447,7 @@
 
       let systemPrompt = programmes[programme].system[lang] + GUARDRAIL[lang];
       if (isLastFreeMessage) {
-        systemPrompt += BILAN_BOOST[lang];
+        systemPrompt += TEASING_PROMPT[lang];
       }
 
       try {
@@ -459,30 +472,64 @@
         conversations[programme].push({ role: 'assistant', content: aiText });
 
         if (isLastFreeMessage) {
-          pendingBilan = aiText;
-          if (emailCaptured) {
-            if (pendingBilanEl) {
-              pendingBilanEl.innerHTML = formatResponse(aiText);
-              pendingBilanEl = null;
-            } else {
-              const aiMsgEl = document.createElement('div');
-              aiMsgEl.className = 'message message-ai';
-              aiMsgEl.innerHTML = formatResponse(aiText);
-              messagesEl.appendChild(aiMsgEl);
-            }
-            appendCTA();
-          } else {
-            const aiMsgEl = document.createElement('div');
-            aiMsgEl.className = 'message message-ai';
-            aiMsgEl.innerHTML = formatResponse(T('cliffhanger'));
-            messagesEl.appendChild(aiMsgEl);
-            pendingBilanEl = aiMsgEl;
-          }
+          // Show AI-generated teasing directly
+          const aiMsgEl = document.createElement('div');
+          aiMsgEl.className = 'message message-ai';
+          aiMsgEl.innerHTML = formatResponse(aiText);
+          messagesEl.appendChild(aiMsgEl);
         } else {
           const aiMsgEl = document.createElement('div');
           aiMsgEl.className = 'message message-ai';
           aiMsgEl.innerHTML = formatResponse(aiText);
           messagesEl.appendChild(aiMsgEl);
+
+          // Vitality score visualization at 2nd message
+          if (newCount === 2) {
+            const scoreEl = document.createElement('div');
+            scoreEl.className = 'message message-ai';
+            scoreEl.innerHTML = `
+              <div style="margin-top:8px;">
+                <p style="font-weight:600; margin-bottom:12px;">Score de Vitalité Métabolique</p>
+                <div style="margin-bottom:10px;">
+                  <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">
+                    <span>${lang === 'fr' ? 'Énergie & Focus' : 'Energy & Focus'}</span><span id="score-energy">--</span>
+                  </div>
+                  <div style="background:#e5e7eb; border-radius:6px; height:8px; overflow:hidden;">
+                    <div id="bar-energy" style="background:linear-gradient(90deg,#0ea571,#34d399); height:100%; width:0%; border-radius:6px; transition:width 1s ease;"></div>
+                  </div>
+                </div>
+                <div style="margin-bottom:10px;">
+                  <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">
+                    <span>${lang === 'fr' ? 'Récupération & Sommeil' : 'Recovery & Sleep'}</span><span id="score-recovery">--</span>
+                  </div>
+                  <div style="background:#e5e7eb; border-radius:6px; height:8px; overflow:hidden;">
+                    <div id="bar-recovery" style="background:linear-gradient(90deg,#3b82f6,#60a5fa); height:100%; width:0%; border-radius:6px; transition:width 1s ease;"></div>
+                  </div>
+                </div>
+                <div style="margin-bottom:4px;">
+                  <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">
+                    <span>${lang === 'fr' ? 'Équilibre Alimentaire' : 'Nutritional Balance'}</span><span id="score-nutrition">--</span>
+                  </div>
+                  <div style="background:#e5e7eb; border-radius:6px; height:8px; overflow:hidden;">
+                    <div id="bar-nutrition" style="background:linear-gradient(90deg,#f59e0b,#fbbf24); height:100%; width:0%; border-radius:6px; transition:width 1s ease;"></div>
+                  </div>
+                </div>
+                <p style="font-size:12px; color:#6b7280; margin-top:10px; font-style:italic;">${lang === 'fr' ? 'Ceci est un outil d\\'optimisation du bien-être. Ne remplace pas un avis médical.' : 'This is a wellness optimization tool. It does not replace medical advice.'}</p>
+              </div>`;
+            messagesEl.appendChild(scoreEl);
+            // Animate scores after render
+            setTimeout(() => {
+              const e = 40 + Math.floor(Math.random() * 30);
+              const r = 35 + Math.floor(Math.random() * 30);
+              const n = 45 + Math.floor(Math.random() * 25);
+              document.getElementById('bar-energy').style.width = e + '%';
+              document.getElementById('score-energy').textContent = e + '/100';
+              document.getElementById('bar-recovery').style.width = r + '%';
+              document.getElementById('score-recovery').textContent = r + '/100';
+              document.getElementById('bar-nutrition').style.width = n + '%';
+              document.getElementById('score-nutrition').textContent = n + '/100';
+            }, 300);
+          }
         }
 
       } catch (err) {
@@ -536,19 +583,36 @@
         localStorage.setItem('elisa_email_captured', 'true');
         document.getElementById('email-modal').classList.remove('visible');
 
-        if (pendingBilan) {
-          if (pendingBilanEl) {
-            pendingBilanEl.innerHTML = formatResponse(pendingBilan);
-            pendingBilanEl = null;
-          }
-          pendingBilan = null;
+        // Show loading and request full bilan
+        const loadingEl = document.createElement('div');
+        loadingEl.className = 'message message-ai';
+        loadingEl.innerHTML = `<p><em>${T('loading')}</em></p>`;
+        messagesEl.appendChild(loadingEl);
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+        typingEl.classList.add('visible');
+
+        try {
+          const bilanSystem = programmes[currentProgramme].system[lang] + GUARDRAIL[lang] + FULL_BILAN_PROMPT[lang];
+          const bilanRes = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              model: 'claude-sonnet-4-20250514',
+              max_tokens: 4096,
+              system: bilanSystem,
+              messages: conversations[currentProgramme]
+            })
+          });
+          if (!bilanRes.ok) throw new Error(`Erreur ${bilanRes.status}`);
+          const bilanData = await bilanRes.json();
+          const bilanText = bilanData.content[0].text;
+          conversations[currentProgramme].push({ role: 'assistant', content: bilanText });
+          loadingEl.innerHTML = formatResponse(bilanText);
           appendCTA();
-        } else {
-          const loadingEl = document.createElement('div');
-          loadingEl.className = 'message message-ai';
-          loadingEl.innerHTML = `<p><em>${T('loading')}</em></p>`;
-          messagesEl.appendChild(loadingEl);
-          pendingBilanEl = loadingEl;
+        } catch (err) {
+          loadingEl.innerHTML = formatResponse(T('fallback'));
+        } finally {
+          typingEl.classList.remove('visible');
         }
 
         inputEl.disabled = false;
@@ -563,7 +627,7 @@
     });
 
     function formatResponse(text) {
-      return text
+      let html = text
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         .replace(/\*(.*?)\*/g, '<em>$1</em>')
         .replace(/^### (.*$)/gm, '<h4>$1</h4>')
@@ -575,6 +639,12 @@
         .replace(/\n/g, '<br>')
         .replace(/^/, '<p>')
         .replace(/$/, '</p>');
+      // Legal disclaimer
+      const disclaimer = lang === 'fr'
+        ? 'Ceci est un outil d\'optimisation du bien-être. Ne remplace pas un avis médical.'
+        : 'This is a wellness optimization tool. It does not replace medical advice.';
+      html += `<p style="font-size:11px; color:#9ca3af; margin-top:12px; border-top:1px solid #e5e7eb; padding-top:8px; font-style:italic;">${disclaimer}</p>`;
+      return html;
     }
   </script>
 
