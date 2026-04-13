@@ -143,7 +143,7 @@
       <p class="modal-sub" data-i18n="modal.sub">Sauvegardez votre analyse pour générer votre protocole personnalisé complet</p>
       <form class="modal-form" id="capture-form">
         <input type="email" id="capture-email" placeholder="votre@email.com" required>
-        <button type="submit" id="capture-btn" data-i18n="modal.btn">Générer mon protocole complet →</button>
+        <button type="submit" id="capture-btn" data-i18n="modal.btn">Voir mon analyse complète</button>
       </form>
       <p class="modal-security" data-i18n="modal.security">🔒 Aucune carte bancaire requise</p>
     </div>
@@ -162,7 +162,7 @@
         'placeholder.blocked': 'Entrez votre email pour continuer…',
         'modal.title': 'Étape de Sauvegarde du Profil ✨',
         'modal.sub': 'Sauvegardez votre analyse pour générer votre protocole personnalisé complet',
-        'modal.btn': 'Générer mon protocole complet →',
+        'modal.btn': 'Voir mon analyse complète',
         'modal.security': '🔒 Aucune carte bancaire requise',
         'modal.sending': 'Envoi en cours…',
         'cta.above': 'Votre protocole complet est ci-dessus 👆',
@@ -181,7 +181,7 @@
         'placeholder.blocked': 'Enter your email to continue…',
         'modal.title': 'Profile Save Step ✨',
         'modal.sub': 'Save your analysis to generate your complete personalized protocol',
-        'modal.btn': 'Generate my complete protocol →',
+        'modal.btn': 'See my full analysis',
         'modal.security': '🔒 No credit card required',
         'modal.sending': 'Sending…',
         'cta.above': 'Your full protocol is above 👆',
@@ -234,16 +234,18 @@
     };
 
     const TEASING_PROMPT = {
-      fr: `\n\nIMPORTANT : Ceci est le dernier échange gratuit. Tu dois générer un teasing personnalisé qui s'interrompt. Analyse le profil de l'utilisateur et génère une réponse avec cette structure exacte :
-1. Commence par "J'ai analysé votre profil et détecté [élément spécifique lié au profil de l'utilisateur]."
-2. Donne UN SEUL premier levier/conseil de manière détaillée : "Le premier levier est [conseil partiel détaillé]..."
-3. Interromps-toi avec : "... mais pour révéler les 2 autres anomalies critiques et votre protocole complet sur 30 jours, validez votre profil."
-Ne donne PAS le protocole complet. Crée du suspense et de la valeur perçue. Sois spécifique au profil de l'utilisateur.`,
-      en: `\n\nIMPORTANT: This is the last free exchange. You must generate a personalized teasing that cuts off. Analyze the user's profile and generate a response with this exact structure:
-1. Start with "I've analyzed your profile and detected [specific element related to the user's profile]."
-2. Give ONE detailed first lever/advice: "The first lever is [detailed partial advice]..."
-3. Cut off with: "... but to reveal the 2 other critical anomalies and your complete 30-day protocol, validate your profile."
-Do NOT give the full protocol. Create suspense and perceived value. Be specific to the user's profile.`
+      fr: `\n\nIMPORTANT : Ceci est le dernier échange gratuit. Tu dois générer un teasing personnalisé qui s'interrompt. Utilise EXACTEMENT cette structure en 3 temps :
+1. "Un point précis ressort de notre échange..."
+2. "C'est directement lié à [reformule un élément concret du profil de l'utilisateur, ses habitudes ou ses objectifs mentionnés dans la conversation]."
+3. "C'est le levier qui bloque votre énergie."
+Puis ajoute une ligne vide et : "Pour débloquer votre analyse complète et votre protocole personnalisé sur 30 jours, validez votre profil ci-dessous."
+Ne donne PAS le protocole complet. Sois spécifique au contexte de l'utilisateur dans le point 2.`,
+      en: `\n\nIMPORTANT: This is the last free exchange. You must generate a personalized teasing that cuts off. Use EXACTLY this 3-step structure:
+1. "One specific point stands out from our exchange..."
+2. "It's directly related to [rephrase a concrete element from the user's profile, habits or goals mentioned in the conversation]."
+3. "This is the lever that's blocking your energy."
+Then add an empty line and: "To unlock your complete analysis and personalized 30-day protocol, validate your profile below."
+Do NOT give the full protocol. Be specific to the user's context in point 2.`
     };
 
     const FULL_BILAN_PROMPT = {
@@ -477,58 +479,52 @@ Do NOT give the full protocol. Create suspense and perceived value. Be specific 
           aiMsgEl.className = 'message message-ai';
           aiMsgEl.innerHTML = formatResponse(aiText);
           messagesEl.appendChild(aiMsgEl);
+          // Tracking: ViewContent at message 3
+          if (typeof fbq === 'function') fbq('track', 'ViewContent', { content_name: programme });
+          if (typeof ttq !== 'undefined' && ttq.track) ttq.track('ViewContent', { content_name: programme });
         } else {
           const aiMsgEl = document.createElement('div');
           aiMsgEl.className = 'message message-ai';
           aiMsgEl.innerHTML = formatResponse(aiText);
           messagesEl.appendChild(aiMsgEl);
 
-          // Vitality score visualization at 2nd message
+          // Vitality score — minimal visual at 2nd message
           if (newCount === 2) {
+            const e = 40 + Math.floor(Math.random() * 30);
+            const r = 35 + Math.floor(Math.random() * 30);
+            const n = 45 + Math.floor(Math.random() * 25);
             const scoreEl = document.createElement('div');
             scoreEl.className = 'message message-ai';
+            scoreEl.style.cssText = 'padding:16px 20px;';
             scoreEl.innerHTML = `
-              <div style="margin-top:8px;">
-                <p style="font-weight:600; margin-bottom:12px;">Score de Vitalité Métabolique</p>
-                <div style="margin-bottom:10px;">
-                  <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">
-                    <span>${lang === 'fr' ? 'Énergie & Focus' : 'Energy & Focus'}</span><span id="score-energy">--</span>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+                <span style="font-size:20px;">⚡</span>
+                <span style="font-weight:600;font-size:15px;">${lang === 'fr' ? 'Votre vitalité' : 'Your vitality'}</span>
+              </div>
+              <div style="display:flex;gap:12px;">
+                <div style="flex:1;text-align:center;">
+                  <div style="position:relative;width:56px;height:56px;margin:0 auto 6px;">
+                    <svg width="56" height="56" viewBox="0 0 56 56"><circle cx="28" cy="28" r="24" fill="none" stroke="#e5e7eb" stroke-width="5"/><circle cx="28" cy="28" r="24" fill="none" stroke="#0ea571" stroke-width="5" stroke-dasharray="${Math.round(150.8 * e / 100)} 150.8" stroke-linecap="round" transform="rotate(-90 28 28)" style="transition:stroke-dasharray 1.2s ease;"/></svg>
+                    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">${e}</span>
                   </div>
-                  <div style="background:#e5e7eb; border-radius:6px; height:8px; overflow:hidden;">
-                    <div id="bar-energy" style="background:linear-gradient(90deg,#0ea571,#34d399); height:100%; width:0%; border-radius:6px; transition:width 1s ease;"></div>
-                  </div>
+                  <div style="font-size:11px;color:#6b7280;">${lang === 'fr' ? 'Énergie' : 'Energy'}</div>
                 </div>
-                <div style="margin-bottom:10px;">
-                  <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">
-                    <span>${lang === 'fr' ? 'Récupération & Sommeil' : 'Recovery & Sleep'}</span><span id="score-recovery">--</span>
+                <div style="flex:1;text-align:center;">
+                  <div style="position:relative;width:56px;height:56px;margin:0 auto 6px;">
+                    <svg width="56" height="56" viewBox="0 0 56 56"><circle cx="28" cy="28" r="24" fill="none" stroke="#e5e7eb" stroke-width="5"/><circle cx="28" cy="28" r="24" fill="none" stroke="#3b82f6" stroke-width="5" stroke-dasharray="${Math.round(150.8 * r / 100)} 150.8" stroke-linecap="round" transform="rotate(-90 28 28)" style="transition:stroke-dasharray 1.2s ease;"/></svg>
+                    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">${r}</span>
                   </div>
-                  <div style="background:#e5e7eb; border-radius:6px; height:8px; overflow:hidden;">
-                    <div id="bar-recovery" style="background:linear-gradient(90deg,#3b82f6,#60a5fa); height:100%; width:0%; border-radius:6px; transition:width 1s ease;"></div>
-                  </div>
+                  <div style="font-size:11px;color:#6b7280;">${lang === 'fr' ? 'Récupération' : 'Recovery'}</div>
                 </div>
-                <div style="margin-bottom:4px;">
-                  <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">
-                    <span>${lang === 'fr' ? 'Équilibre Alimentaire' : 'Nutritional Balance'}</span><span id="score-nutrition">--</span>
+                <div style="flex:1;text-align:center;">
+                  <div style="position:relative;width:56px;height:56px;margin:0 auto 6px;">
+                    <svg width="56" height="56" viewBox="0 0 56 56"><circle cx="28" cy="28" r="24" fill="none" stroke="#e5e7eb" stroke-width="5"/><circle cx="28" cy="28" r="24" fill="none" stroke="#f59e0b" stroke-width="5" stroke-dasharray="${Math.round(150.8 * n / 100)} 150.8" stroke-linecap="round" transform="rotate(-90 28 28)" style="transition:stroke-dasharray 1.2s ease;"/></svg>
+                    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">${n}</span>
                   </div>
-                  <div style="background:#e5e7eb; border-radius:6px; height:8px; overflow:hidden;">
-                    <div id="bar-nutrition" style="background:linear-gradient(90deg,#f59e0b,#fbbf24); height:100%; width:0%; border-radius:6px; transition:width 1s ease;"></div>
-                  </div>
+                  <div style="font-size:11px;color:#6b7280;">${lang === 'fr' ? 'Équilibre' : 'Balance'}</div>
                 </div>
-                <p style="font-size:12px; color:#6b7280; margin-top:10px; font-style:italic;">${lang === 'fr' ? 'Ceci est un outil d\\'optimisation du bien-être. Ne remplace pas un avis médical.' : 'This is a wellness optimization tool. It does not replace medical advice.'}</p>
               </div>`;
             messagesEl.appendChild(scoreEl);
-            // Animate scores after render
-            setTimeout(() => {
-              const e = 40 + Math.floor(Math.random() * 30);
-              const r = 35 + Math.floor(Math.random() * 30);
-              const n = 45 + Math.floor(Math.random() * 25);
-              document.getElementById('bar-energy').style.width = e + '%';
-              document.getElementById('score-energy').textContent = e + '/100';
-              document.getElementById('bar-recovery').style.width = r + '%';
-              document.getElementById('score-recovery').textContent = r + '/100';
-              document.getElementById('bar-nutrition').style.width = n + '%';
-              document.getElementById('score-nutrition').textContent = n + '/100';
-            }, 300);
           }
         }
 
@@ -582,6 +578,9 @@ Do NOT give the full protocol. Create suspense and perceived value. Be specific 
         emailCaptured = true;
         localStorage.setItem('elisa_email_captured', 'true');
         document.getElementById('email-modal').classList.remove('visible');
+        // Tracking: Lead at email capture
+        if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: currentProgramme });
+        if (typeof ttq !== 'undefined' && ttq.track) ttq.track('SubmitForm', { content_name: currentProgramme });
 
         // Show loading and request full bilan
         const loadingEl = document.createElement('div');
