@@ -9,22 +9,33 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     .modal-overlay {
-      position: fixed; inset: 0; z-index: 1000;
+      position: fixed; inset: 0; z-index: 9999;
       display: flex; align-items: center; justify-content: center;
       background: rgba(15, 17, 23, 0.6);
+      -webkit-backdrop-filter: blur(4px);
       backdrop-filter: blur(4px);
       padding: 24px;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.3s ease;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.3s ease, visibility 0s linear 0.3s;
     }
-    .modal-overlay.visible { opacity: 1; pointer-events: auto; }
+    .modal-overlay.visible {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition: opacity 0.3s ease, visibility 0s linear 0s;
+    }
     .modal-card {
+      position: relative;
+      z-index: 1;
       background: #fff; border-radius: 16px;
       padding: 48px 40px; max-width: 440px; width: 100%;
       text-align: center;
       box-shadow: 0 24px 48px rgba(15, 17, 23, 0.15);
       transform: translateY(16px);
       transition: transform 0.3s ease;
+      pointer-events: auto;
     }
     .modal-overlay.visible .modal-card { transform: translateY(0); }
     .modal-icon { font-size: 48px; line-height: 1; margin-bottom: 16px; }
@@ -36,13 +47,28 @@
       font-size: 15px; color: #6b7280;
       margin: 0 0 28px 0; line-height: 1.5;
     }
-    .modal-form { display: flex; flex-direction: column; gap: 12px; }
+    .modal-form {
+      display: flex; flex-direction: column; gap: 12px;
+      position: relative; z-index: 2;
+      pointer-events: auto;
+    }
     .modal-form input[type="email"] {
       width: 100%; padding: 14px 16px;
       border: 1.5px solid #d1d5db; border-radius: 8px;
-      font-size: 15px; font-family: inherit;
+      font-size: 16px; /* 16px prevents iOS zoom-on-focus */
+      font-family: inherit;
       outline: none; transition: border-color 0.2s;
       box-sizing: border-box;
+      background: #fff;
+      color: #0f1117;
+      position: relative;
+      z-index: 3;
+      pointer-events: auto !important;
+      -webkit-user-select: text;
+      user-select: text;
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: text;
     }
     .modal-form input[type="email"]:focus { border-color: #0ea571; }
     .modal-form button {
@@ -51,6 +77,12 @@
       font-size: 15px; font-weight: 600;
       cursor: pointer; font-family: inherit;
       transition: background 0.2s;
+      position: relative;
+      z-index: 3;
+      pointer-events: auto;
+      -webkit-appearance: none;
+      appearance: none;
+      touch-action: manipulation;
     }
     .modal-form button:hover { background: #0b8a5e; }
     .modal-form button:disabled { opacity: 0.7; cursor: not-allowed; }
@@ -359,8 +391,20 @@ Do NOT give the full protocol. Be specific to the user's context in point 2.`
       return count;
     }
     function showEmailModal() {
-      document.getElementById('email-modal').classList.add('visible');
-      setTimeout(() => document.getElementById('capture-email').focus(), 350);
+      const modal = document.getElementById('email-modal');
+      const input = document.getElementById('capture-email');
+      modal.classList.add('visible');
+      // Re-enable input in case a previous submission attempt disabled it
+      input.disabled = false;
+      input.readOnly = false;
+      // Focus after the transition; use requestAnimationFrame for better cross-browser reliability
+      setTimeout(() => {
+        try {
+          input.focus({ preventScroll: false });
+          // Safari iOS sometimes needs a click to actually activate the caret
+          input.click();
+        } catch (e) { /* no-op */ }
+      }, 360);
     }
 
     console.log('[funnel] init', { count: getMessageCount(), limit: MSG_LIMIT, emailCaptured, lang });
