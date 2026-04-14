@@ -679,9 +679,17 @@ Do NOT give the full protocol. Be specific to the user's context in point 2.`
           console.error('[funnel] bilan API error:', err.message);
           pendingBilan = T('fallback');
         } else {
+          const isOverloaded = /overload|rate[_\s-]?limit|429|503/i.test(err.message || '');
+          const friendlyMsg = isOverloaded
+            ? (lang === 'fr'
+                ? 'Elisa est très sollicitée en ce moment, réessayez dans quelques instants 🌿'
+                : 'Elisa is very busy right now — please try again in a moment 🌿')
+            : (lang === 'fr'
+                ? `<strong>Erreur :</strong> ${err.message}`
+                : `<strong>Error:</strong> ${err.message}`);
           const errEl = document.createElement('div');
           errEl.className = 'message message-ai';
-          errEl.innerHTML = `<strong>Erreur :</strong> ${err.message}`;
+          errEl.innerHTML = friendlyMsg;
           messagesEl.appendChild(errEl);
         }
       } finally {
