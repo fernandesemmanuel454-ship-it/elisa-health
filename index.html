@@ -989,10 +989,20 @@
       document.getElementById('quiz-offer').style.display = '';
     });
 
-    // Offer → redirect to app with recommended programme preselected
+    // Offer → open Stripe checkout modal with Precision plan
     document.getElementById('quiz-checkout').addEventListener('click', (e) => {
       e.preventDefault();
-      window.location.href = 'app.html?programme=' + encodeURIComponent(recommendedProgramme);
+      quizOverlay.classList.remove('visible');
+      const l = getLang();
+      pendingPlan = 'precision';
+      const price = planPrices['precision'];
+      document.getElementById('checkout-plan-name').textContent = l === 'fr'
+        ? 'Dernière étape pour accéder à votre programme personnalisé'
+        : 'Last step to access your personalized program';
+      checkoutBtnText.textContent = (l === 'fr' ? 'Accéder à mon programme pour ' : 'Access my program for ') + price + (l === 'fr' ? '/mois' : '/month');
+      checkoutCgv.checked = false;
+      checkoutConfirm.disabled = true;
+      checkoutOverlay.classList.add('visible');
     });
   </script>
 
