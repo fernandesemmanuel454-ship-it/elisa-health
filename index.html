@@ -421,6 +421,89 @@
     </div>
   </section>
 
+  <!-- FAQ -->
+  <section id="faq" class="section">
+    <div class="container" style="max-width: 760px;">
+      <h2 class="section-title">Questions fréquentes</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>Est-ce que je peux vraiment résilier à tout moment ?</summary>
+          <p>Oui, sans condition ni pénalité. Vous pouvez résilier depuis votre espace client ou par email à <a href="mailto:contact@elisahealth.eu">contact@elisahealth.eu</a>. Aucun préavis requis.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Elisa remplace-t-elle un médecin ?</summary>
+          <p>Non. Elisa est un outil de bien-être et d'accompagnement au quotidien. Elle ne pose pas de diagnostic médical. Consultez toujours un professionnel de santé pour tout problème médical.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Mes données personnelles sont-elles protégées ?</summary>
+          <p>Oui. Vos données sont hébergées de façon sécurisée et ne sont jamais revendues. Conformément au RGPD, vous pouvez demander leur suppression à tout moment.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Que sont les "consultations illimitées" ?</summary>
+          <p>Vous pouvez poser autant de questions que vous le souhaitez à Elisa dans l'application, sans limite de messages ni de durée.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Comment fonctionne l'analyse photo de peau ?</summary>
+          <p>Vous envoyez une photo de votre peau dans l'application. Elisa analyse visuellement le type de peau, les imperfections visibles et vous propose un protocole nutri-cosmétique personnalisé.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .faq-list { display: flex; flex-direction: column; gap: 12px; }
+    .faq-item {
+      background: #fff;
+      border: 1px solid var(--gray-100);
+      border-radius: 12px;
+      padding: 0;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .faq-item[open] {
+      border-color: var(--green);
+      box-shadow: 0 4px 16px rgba(14, 165, 113, 0.08);
+    }
+    .faq-item summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 20px 24px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      user-select: none;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: "+";
+      color: var(--green);
+      font-size: 1.4rem;
+      font-weight: 400;
+      line-height: 1;
+      transition: transform .25s ease;
+      flex-shrink: 0;
+    }
+    .faq-item[open] summary::after {
+      content: "−";
+      transform: rotate(0);
+    }
+    .faq-item p {
+      padding: 0 24px 22px;
+      margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--gray-600);
+    }
+    .faq-item p a { color: var(--green); text-decoration: underline; }
+    @media (max-width: 480px) {
+      .faq-item summary { padding: 16px 20px; font-size: 0.95rem; }
+      .faq-item p { padding: 0 20px 18px; font-size: 0.9rem; }
+    }
+  </style>
+
   <!-- FOOTER -->
   <footer class="footer">
     <div class="container footer-inner">
