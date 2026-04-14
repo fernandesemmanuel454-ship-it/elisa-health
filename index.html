@@ -127,6 +127,101 @@
     </div>
   </section>
 
+  <!-- COACH IA EN DIRECT -->
+  <section class="section section-alt">
+    <div class="container" style="max-width: 720px; text-align: center;">
+      <h2 class="section-title">Votre coach IA, disponible maintenant</h2>
+      <p class="section-sub">Un échange concret pour comprendre ce qu'Elisa fait pour vous.</p>
+
+      <div class="chat-demo">
+        <div class="chat-demo-header">
+          <span class="chat-demo-dot"></span>
+          <span class="chat-demo-title">Elisa</span>
+          <span class="chat-demo-status">en ligne</span>
+        </div>
+
+        <div class="chat-bubble chat-user">
+          J'ai tout le temps fatiguée même après 8h de sommeil
+        </div>
+        <div class="chat-bubble chat-elisa">
+          Je comprends. Ce type de fatigue persistante malgré un sommeil suffisant est souvent lié à un déséquilibre hormonal ou nutritionnel.<br><br>
+          Dites-moi : est-ce que vous ressentez aussi des difficultés à vous concentrer en début de journée ? 🌿
+        </div>
+      </div>
+
+      <a href="app.html" class="btn btn-lg" style="margin-top: 32px;">Parler à Elisa maintenant</a>
+    </div>
+  </section>
+
+  <style>
+    .chat-demo {
+      max-width: 480px;
+      margin: 40px auto 0;
+      background: #fff;
+      border-radius: 18px;
+      padding: 20px 20px 24px;
+      box-shadow: 0 8px 32px rgba(15, 17, 23, 0.08);
+      border: 1px solid var(--gray-100);
+      text-align: left;
+    }
+    .chat-demo-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 4px 16px;
+      border-bottom: 1px solid var(--gray-100);
+      margin-bottom: 18px;
+    }
+    .chat-demo-dot {
+      width: 10px; height: 10px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px rgba(14, 165, 113, 0.15);
+    }
+    .chat-demo-title {
+      font-weight: 700;
+      color: var(--black);
+      font-size: 0.95rem;
+    }
+    .chat-demo-status {
+      font-size: 0.78rem;
+      color: var(--gray-600);
+      margin-left: 4px;
+    }
+    .chat-bubble {
+      max-width: 85%;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-size: 0.92rem;
+      line-height: 1.55;
+      margin-bottom: 12px;
+      animation: chat-fade-in .5s ease both;
+    }
+    .chat-bubble:last-child { margin-bottom: 0; }
+    .chat-user {
+      background: var(--gray-100);
+      color: var(--gray-900);
+      margin-left: auto;
+      border-bottom-right-radius: 4px;
+    }
+    .chat-elisa {
+      background: var(--green-light);
+      color: var(--gray-900);
+      margin-right: auto;
+      border-bottom-left-radius: 4px;
+      border-left: 3px solid var(--green);
+      animation-delay: .25s;
+    }
+    @keyframes chat-fade-in {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 480px) {
+      .chat-demo { padding: 16px 16px 20px; }
+      .chat-bubble { font-size: 0.88rem; }
+    }
+  </style>
+
   <!-- PROGRAMMES (kept for SEO / direct visitors) -->
   <section id="programmes" class="section">
     <div class="container">
