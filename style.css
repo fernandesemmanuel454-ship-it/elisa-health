@@ -235,6 +235,12 @@ img { max-width: 100%; display: block; }
   align-items: stretch;
 }
 
+.pricing-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 960px;
+  margin: 0 auto;
+}
+
 .pricing-card {
   background: var(--white);
   border: 1.5px solid #e8eaed;
@@ -321,9 +327,11 @@ img { max-width: 100%; display: block; }
 
 @media (max-width: 1024px) {
   .pricing-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .pricing-grid-3 { grid-template-columns: repeat(2, 1fr); max-width: 640px; }
 }
 @media (max-width: 600px) {
   .pricing-grid { grid-template-columns: 1fr; gap: 20px; max-width: 400px; margin: 0 auto; }
+  .pricing-grid-3 { grid-template-columns: 1fr; max-width: 400px; }
   .pricing-card { padding: 32px 24px 28px; }
 }
 
