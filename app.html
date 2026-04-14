@@ -273,6 +273,83 @@ Do NOT give the full protocol. Be specific to the user's context in point 2.`
     let pendingBilan = null;
     let pendingBilanEl = null;
 
+    // ---- User profile memory (localStorage) ----
+    // Stores { firstName, age, objective, programme, lastSummary, lastDate }
+    // so the user is greeted by name and the AI gets continuity across sessions.
+    const PROFILE_KEY = 'elisa_profile';
+    function getProfile() {
+      try { return JSON.parse(localStorage.getItem(PROFILE_KEY) || 'null'); }
+      catch { return null; }
+    }
+    function saveProfile(updates) {
+      const current = getProfile() || {};
+      const next = { ...current, ...updates };
+      localStorage.setItem(PROFILE_KEY, JSON.stringify(next));
+      console.log('[profile] saved', next);
+      return next;
+    }
+    function buildProfilePrefix() {
+      const p = getProfile();
+      if (!p || !p.firstName) return '';
+      const progLabel = programmes[p.programme || currentProgramme]?.title?.[lang] || '';
+      let line = `Profil utilisateur : ${p.firstName}`;
+      if (p.age) line += `, ${p.age} ans`;
+      if (p.objective) line += `, objectif ${p.objective}`;
+      if (progLabel) line += ` (${progLabel})`;
+      line += '.';
+      if (p.lastSummary) line += ` Contexte précédent : ${p.lastSummary}`;
+      return line + '\n\n';
+    }
+    function updateLastSummary(aiText) {
+      const clean = (aiText || '').replace(/\s+/g, ' ').trim();
+      saveProfile({ lastSummary: clean.slice(0, 240), lastDate: new Date().toISOString(), programme: currentProgramme });
+    }
+    function getPersonalizedWelcome(progKey) {
+      const p = getProfile();
+      if (!p || !p.firstName) return null;
+      const progLabel = (programmes[progKey]?.title?.[lang] || '').replace(/^Programme\s+/i, '').toLowerCase();
+      if (lang === 'fr') {
+        return `Bonjour <strong>${p.firstName}</strong>, on continue votre suivi ${progLabel} ? 🌿`;
+      }
+      return `Hello <strong>${p.firstName}</strong>, shall we continue your ${progLabel} journey? 🌿`;
+    }
+    // Background extraction of firstName/age/objective from the conversation.
+    // Fire-and-forget: never blocks the UI and never surfaces errors to the user.
+    async function extractProfileFromConversation(programme) {
+      const convo = conversations[programme];
+      if (!convo || convo.length < 2) return;
+      const extractSystem = `Tu es un extracteur de données. Analyse la conversation et réponds UNIQUEMENT au format JSON strict (aucun texte avant ou après, aucun markdown) avec : {"firstName": "prénom si mentionné sinon null", "age": nombre ou null, "objective": "objectif principal en quelques mots sinon null"}.`;
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 256,
+            system: extractSystem,
+            messages: convo
+          })
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        const raw = data.content?.[0]?.text?.trim() || '';
+        const match = raw.match(/\{[\s\S]*\}/);
+        if (!match) return;
+        const parsed = JSON.parse(match[0]);
+        const updates = { programme };
+        if (parsed.firstName && typeof parsed.firstName === 'string' && parsed.firstName.toLowerCase() !== 'null') {
+          updates.firstName = parsed.firstName.trim();
+        }
+        if (parsed.age != null && !isNaN(parsed.age)) updates.age = parseInt(parsed.age, 10);
+        if (parsed.objective && typeof parsed.objective === 'string' && parsed.objective.toLowerCase() !== 'null') {
+          updates.objective = parsed.objective.trim();
+        }
+        if (Object.keys(updates).length > 1) saveProfile(updates);
+      } catch (err) {
+        console.warn('[profile] extraction failed:', err.message);
+      }
+    }
+
     function getMessageCount() {
       return parseInt(localStorage.getItem('globalMessageCount') || '0', 10);
     }
@@ -356,7 +433,9 @@ Do NOT give the full protocol. Be specific to the user's context in point 2.`
       messagesEl.innerHTML = '';
       const welcomeEl = document.createElement('div');
       welcomeEl.className = 'message message-ai';
-      welcomeEl.innerHTML = prog.welcome[lang];
+      // Use personalized welcome if we have a stored profile, otherwise default
+      const personalized = getPersonalizedWelcome(key);
+      welcomeEl.innerHTML = personalized || prog.welcome[lang];
       messagesEl.appendChild(welcomeEl);
 
       photoSection.style.display = key === 'beaute' ? 'block' : 'none';
@@ -455,7 +534,16 @@ Do NOT give the full protocol. Be specific to the user's context in point 2.`
       typingEl.classList.add('visible');
       messagesEl.scrollTop = messagesEl.scrollHeight;
 
-      let systemPrompt = programmes[programme].system[lang] + GUARDRAIL[lang];
+      // Prepend saved user profile (if any) so Elisa has continuity across sessions
+      let systemPrompt = buildProfilePrefix() + programmes[programme].system[lang] + GUARDRAIL[lang];
+
+      // First session: if no profile yet, ask Elisa to request first name, age, objective
+      // at the end of her response to the user's first message.
+      const hasProfile = !!getProfile()?.firstName;
+      if (!hasProfile && newCount === 1) {
+        systemPrompt += `\n\nIMPORTANT : À la fin de ta réponse, demande naturellement et chaleureusement à l'utilisateur, en une seule phrase, son prénom, son âge et son objectif principal (s'ils ne sont pas déjà clairs dans son message). Cela te permettra de personnaliser le suivi.`;
+      }
+
       if (isLastFreeMessage) {
         systemPrompt += TEASING_PROMPT[lang];
       }
@@ -480,6 +568,12 @@ Do NOT give the full protocol. Be specific to the user's context in point 2.`
         const data = await response.json();
         const aiText = data.content[0].text;
         conversations[programme].push({ role: 'assistant', content: aiText });
+
+        // Profile memory: rolling summary + background extraction after 2nd user msg
+        updateLastSummary(aiText);
+        if (!getProfile()?.firstName && newCount >= 2) {
+          extractProfileFromConversation(programme);
+        }
 
         if (isLastFreeMessage) {
           // Show AI-generated teasing directly
