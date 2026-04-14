@@ -150,10 +150,10 @@
           <p class="quiz-label">Question 1 / 5</p>
           <h3>Qu'est-ce qui vous dérange le plus aujourd'hui ?</h3>
           <div class="quiz-options">
-            <button class="quiz-opt" data-tags="energy">Fatigue constante</button>
-            <button class="quiz-opt" data-tags="weight">Prise de poids</button>
-            <button class="quiz-opt" data-tags="stress">Stress / anxiété</button>
-            <button class="quiz-opt" data-tags="energy">Mauvais sommeil</button>
+            <button class="quiz-opt" data-tags="energy" data-prog="biohacking" data-title="Votre corps manque d'énergie — voici pourquoi">Fatigue constante</button>
+            <button class="quiz-opt" data-tags="weight" data-prog="nutrition" data-title="Votre métabolisme envoie des signaux clairs">Prise de poids</button>
+            <button class="quiz-opt" data-tags="stress" data-prog="hormonal" data-title="Votre système hormonal est sous pression">Stress / anxiété</button>
+            <button class="quiz-opt" data-tags="energy" data-prog="biohacking" data-title="Votre sommeil ne vous régénère plus">Mauvais sommeil</button>
           </div>
         </div>
         <div class="quiz-step" data-step="1" style="display:none;">
@@ -209,7 +209,7 @@
       <!-- Result screen -->
       <div id="quiz-result" style="display:none; text-align:center;">
         <div style="font-size:2.5rem; margin-bottom:16px;">🌿</div>
-        <h3 style="font-size:1.3rem; font-weight:700; color:var(--black); margin-bottom:12px;">Votre corps montre des signes de déséquilibre</h3>
+        <h3 id="quiz-result-title" style="font-size:1.3rem; font-weight:700; color:var(--black); margin-bottom:12px;">Votre corps montre des signes de déséquilibre</h3>
         <p style="font-size:.95rem; color:var(--gray-600); margin-bottom:20px;">Bonne nouvelle : il est possible d'agir avec un programme adapté à votre profil.</p>
         <div style="background:var(--green-light); border-radius:12px; padding:20px 24px; margin-bottom:16px; text-align:left;">
           <p id="quiz-profile-text" style="font-size:.95rem; color:var(--black); line-height:1.6; margin:0; font-weight:500;"></p>
@@ -226,7 +226,7 @@
       <!-- Offer screen (hidden until result CTA click) -->
       <div id="quiz-offer" style="display:none; text-align:center;">
         <p style="font-size:.82rem; font-weight:600; color:var(--green); text-transform:uppercase; letter-spacing:.05em; margin-bottom:8px;">Recommandé pour vous</p>
-        <h3 style="font-size:1.3rem; font-weight:700; color:var(--black); margin-bottom:24px;">Le programme adapté à votre profil</h3>
+        <h3 id="quiz-offer-title" style="font-size:1.3rem; font-weight:700; color:var(--black); margin-bottom:24px;">Le programme adapté à votre profil</h3>
         <div style="font-size:2.8rem; font-weight:800; color:var(--black); line-height:1; margin-bottom:4px;">59€<span style="font-size:.95rem; font-weight:500; color:var(--gray-600);">/mois</span></div>
         <p style="font-size:.85rem; color:var(--gray-600); margin-bottom:28px;">Résiliable à tout moment</p>
         <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:28px; text-align:left;">
@@ -695,10 +695,15 @@
     const totalSteps = quizSteps.length;
     let currentStep = 0;
     const scores = { energy: 0, stress: 0, weight: 0, hormonal: 0 };
+    let recommendedProgramme = 'biohacking'; // set from Q1
+    let resultTitle = 'Votre corps montre des signes de déséquilibre'; // set from Q1
+    const programmeLabels = { nutrition: 'Nutrition', biohacking: 'Biohacking', hormonal: 'Hormonal' };
 
     function openQuiz() {
       currentStep = 0;
       Object.keys(scores).forEach(k => scores[k] = 0);
+      recommendedProgramme = 'biohacking';
+      resultTitle = 'Votre corps montre des signes de déséquilibre';
       quizSteps.forEach((s, i) => s.style.display = i === 0 ? '' : 'none');
       document.getElementById('quiz-result').style.display = 'none';
       document.getElementById('quiz-offer').style.display = 'none';
@@ -718,6 +723,11 @@
       btn.addEventListener('click', () => {
         const tags = btn.dataset.tags.split(',').filter(Boolean);
         tags.forEach(t => { if (scores[t] !== undefined) scores[t]++; });
+        // Q1 sets the recommended programme + result title
+        if (currentStep === 0) {
+          if (btn.dataset.prog) recommendedProgramme = btn.dataset.prog;
+          if (btn.dataset.title) resultTitle = btn.dataset.title;
+        }
         currentStep++;
         if (currentStep < totalSteps) {
           quizSteps.forEach((s, i) => s.style.display = i === currentStep ? '' : 'none');
@@ -751,6 +761,8 @@
         };
         const top = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
         document.getElementById('quiz-profile-text').textContent = profileTexts[top];
+        document.getElementById('quiz-result-title').textContent = resultTitle;
+        document.getElementById('quiz-offer-title').textContent = 'Le programme ' + (programmeLabels[recommendedProgramme] || '') + ' adapté à votre profil';
         document.getElementById('quiz-result').style.display = '';
       }, 1800);
     }
@@ -761,13 +773,10 @@
       document.getElementById('quiz-offer').style.display = '';
     });
 
-    // Offer → Stripe checkout (reuses existing checkout modal)
+    // Offer → redirect to app with recommended programme preselected
     document.getElementById('quiz-checkout').addEventListener('click', (e) => {
       e.preventDefault();
-      quizOverlay.classList.remove('visible');
-      // Trigger the precision plan checkout
-      const precisionBtn = document.querySelector('[data-plan="precision"]');
-      if (precisionBtn) precisionBtn.click();
+      window.location.href = 'app.html?programme=' + encodeURIComponent(recommendedProgramme);
     });
   </script>
 
