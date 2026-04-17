@@ -378,7 +378,7 @@
           <span style="font-size:.9rem; color:var(--gray-600);">✓ Export PDF des plans</span>
         </div>
         <p style="font-size:.9rem; color:var(--gray-600); margin-bottom:24px; font-style:italic;">Conçu pour vous aider à retrouver votre énergie durablement et reprendre le contrôle.</p>
-        <a href="#" data-plan="precision" class="btn btn-lg btn-block" id="quiz-checkout">Commencer à 59€/mois</a>
+        <a href="https://www.elisahealth.eu/app.html" data-plan="precision" class="btn btn-lg btn-block" id="quiz-checkout">Commencer à 59€/mois</a>
       </div>
     </div>
   </div>
@@ -399,7 +399,7 @@
             <li data-i18n="price.ess.f4">✓ Analyse photo peau</li>
             <li class="disabled" data-i18n="price.ess.f5">✗ Programme Hormonal</li>
           </ul>
-          <a href="#" data-plan="essentiel" class="btn btn-outline btn-block" data-i18n="price.ess.order">S'abonner — 29€/mois</a>
+          <a href="https://www.elisahealth.eu/app.html" data-plan="essentiel" class="btn btn-outline btn-block" data-i18n="price.ess.order">S'abonner — 29€/mois</a>
         </div>
         <div class="pricing-card pricing-featured">
           <div class="pricing-badge" data-i18n="price.prec.badge">Le plus choisi</div>
@@ -412,7 +412,7 @@
             <li data-i18n="price.prec.f4">✓ Analyse photo peau IA — identifie type de peau, imperfections et propose un protocole nutri-cosmétique personnalisé</li>
             <li data-i18n="price.prec.f5">✓ Export PDF des plans</li>
           </ul>
-          <a href="#" data-plan="precision" class="btn btn-block" data-i18n="price.prec.order">S'abonner — 59€/mois</a>
+          <a href="https://www.elisahealth.eu/app.html" data-plan="precision" class="btn btn-block" data-i18n="price.prec.order">S'abonner — 59€/mois</a>
         </div>
         <div class="pricing-card">
           <div class="pricing-name" data-i18n="price.pro.name">Famille</div>
@@ -424,7 +424,7 @@
             <li data-i18n="price.pro.f4">✓ Suivi personnalisé par membre</li>
             <li data-i18n="price.pro.f5">✓ Support prioritaire</li>
           </ul>
-          <a href="#" data-plan="pro" class="btn btn-outline btn-block" data-i18n="price.pro.order">S'abonner — 97€/mois</a>
+          <a href="https://www.elisahealth.eu/app.html" data-plan="pro" class="btn btn-outline btn-block" data-i18n="price.pro.order">S'abonner — 97€/mois</a>
         </div>
       </div>
     </div>
@@ -518,7 +518,7 @@
     <div class="container footer-inner">
       <div class="footer-brand">
         <a href="index.html" class="logo">
-          <img src="logo.png" alt="Elisa Health" style="height: 36px; width: auto; display: block;">
+          <img src="logo.png" alt="Elisa Health" loading="lazy" style="height: 36px; width: auto; display: block;">
         </a>
         <p data-i18n="foot.brand">Intelligence artificielle au service de votre santé.</p>
       </div>
@@ -606,8 +606,9 @@
     }
     .checkout-overlay.visible .checkout-modal { transform: translateY(0); }
     .checkout-close {
-      position: absolute; top: 16px; right: 20px;
+      position: absolute; top: 12px; right: 16px;
       background: none; border: none; font-size: 1.5rem;
+      min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center;
       color: var(--gray-600); cursor: pointer; line-height: 1;
     }
     .checkout-close:hover { color: var(--black); }
@@ -675,9 +676,10 @@
     }
     .quiz-overlay.visible .quiz-modal { transform: translateY(0); }
     .quiz-close {
-      position: absolute; top: 16px; right: 20px;
+      position: absolute; top: 12px; right: 16px;
       background: none; border: none; font-size: 1.5rem;
       color: var(--gray-600); cursor: pointer;
+      min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center;
     }
     .quiz-close:hover { color: var(--black); }
     .quiz-progress {
