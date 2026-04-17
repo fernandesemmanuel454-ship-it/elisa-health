@@ -170,7 +170,7 @@
         </div>
       </div>
 
-      <a href="app.html" class="btn btn-lg" style="margin-top: 32px;">Parler à Elisa maintenant</a>
+      <a href="app.html" class="btn btn-lg" id="cta-parler-elisa" style="margin-top: 32px;">Parler à Elisa maintenant</a>
     </div>
   </section>
 
@@ -840,6 +840,7 @@
       el.addEventListener('click', (e) => {
         e.preventDefault();
         const plan = el.dataset.plan;
+        dataLayer.push({ event: 'paiement_initie', plan: plan });
         const l = getLang();
         pendingPlan = plan;
         const price = planPrices[plan] || '';
@@ -927,8 +928,9 @@
       quizOverlay.classList.add('visible');
     }
 
-    document.getElementById('start-quiz-hero').addEventListener('click', e => { e.preventDefault(); openQuiz(); });
-    document.getElementById('start-quiz-problem').addEventListener('click', e => { e.preventDefault(); openQuiz(); });
+    document.getElementById('cta-parler-elisa')?.addEventListener('click', () => { dataLayer.push({ event: 'tchat_ouvert' }); });
+    document.getElementById('start-quiz-hero').addEventListener('click', e => { e.preventDefault(); dataLayer.push({ event: 'tchat_ouvert' }); openQuiz(); });
+    document.getElementById('start-quiz-problem').addEventListener('click', e => { e.preventDefault(); dataLayer.push({ event: 'tchat_ouvert' }); openQuiz(); });
     document.getElementById('quiz-close').addEventListener('click', () => quizOverlay.classList.remove('visible'));
     quizOverlay.addEventListener('click', e => { if (e.target === quizOverlay) quizOverlay.classList.remove('visible'); });
 

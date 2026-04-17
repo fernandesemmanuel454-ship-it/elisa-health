@@ -626,6 +626,7 @@ Do NOT give the full protocol. Be specific to the user's context in point 2.`
           aiMsgEl.innerHTML = formatResponse(aiText);
           messagesEl.appendChild(aiMsgEl);
           // Tracking: ViewContent at message 3
+          if (typeof dataLayer !== 'undefined') dataLayer.push({ event: 'tchat_termine' });
           if (typeof fbq === 'function') fbq('track', 'ViewContent', { content_name: programme });
           if (typeof ttq !== 'undefined' && ttq.track) ttq.track('ViewContent', { content_name: programme });
         } else {
