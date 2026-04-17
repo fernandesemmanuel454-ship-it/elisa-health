@@ -734,6 +734,7 @@ Do NOT give the full protocol. Be specific to the user's context in point 2.`
         localStorage.setItem('elisa_email_captured', 'true');
         document.getElementById('email-modal').classList.remove('visible');
         // Tracking: Lead at email capture
+        if (typeof gtag === 'function') gtag('event', 'conversion', { 'send_to': 'AW-18097146789/aV-cCOyRyZ0cEKWXsrVD', 'value': 5.0, 'currency': 'EUR' });
         if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: currentProgramme });
         if (typeof ttq !== 'undefined' && ttq.track) ttq.track('SubmitForm', { content_name: currentProgramme });
 
