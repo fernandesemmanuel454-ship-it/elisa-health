@@ -1,6 +1,39 @@
 {
+  "redirects": [
+    {
+      "source": "/app.html",
+      "destination": "/app",
+      "statusCode": 301
+    },
+    {
+      "source": "/cgv.html",
+      "destination": "/cgv",
+      "statusCode": 301
+    },
+    {
+      "source": "/mentions-legales.html",
+      "destination": "/mentions-legales",
+      "statusCode": 301
+    },
+    {
+      "source": "/confidentialite.html",
+      "destination": "/confidentialite",
+      "statusCode": 301
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        { "type": "host", "value": "elisahealth.eu" }
+      ],
+      "destination": "https://www.elisahealth.eu/$1",
+      "statusCode": 301
+    }
+  ],
   "rewrites": [
     { "source": "/app", "destination": "/app.html" },
+    { "source": "/cgv", "destination": "/cgv.html" },
+    { "source": "/mentions-legales", "destination": "/mentions-legales.html" },
+    { "source": "/confidentialite", "destination": "/confidentialite.html" },
     { "source": "/futur-test", "destination": "/futur-test.html" }
   ],
   "headers": [
